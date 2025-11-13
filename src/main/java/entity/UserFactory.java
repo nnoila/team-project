@@ -5,7 +5,7 @@ package entity;
  */
 public class UserFactory {
 
-    public User create(String name, String password) {
-        return new User(name, password);
+    public User create(String name, String userId, String email, String password) {
+        return new User(name, userId, email, password);
     }
 }
