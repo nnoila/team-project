@@ -8,6 +8,11 @@ public class Transaction {
      public String description;
      public int transactionId;
      public String category;
+     public int amount;
+
+     public int getAmount() {
+        return amount;
+     }
 
      public String getUserId() {
          return this.userId;
@@ -47,5 +52,9 @@ public class Transaction {
 
      public void setCategory(String category) {
          this.category = category;
+     }
+
+     public void setAmount(int amount) {
+         this.amount = amount;
      }
 }
