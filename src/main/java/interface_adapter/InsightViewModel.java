@@ -1,4 +1,4 @@
-package view;
+package interface_adapter;
 
 public class InsightViewModel {
 

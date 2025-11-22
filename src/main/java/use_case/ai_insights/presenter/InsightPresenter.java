@@ -2,7 +2,7 @@ package use_case.ai_insights.presenter;
 
 import entity.Insight;
 import entity.SpendingSummary;
-import view.InsightViewModel;
+import interface_adapter.InsightViewModel;
 
 public class InsightPresenter {
 

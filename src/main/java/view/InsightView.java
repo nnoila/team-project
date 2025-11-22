@@ -1,11 +1,11 @@
-package app;
+package view;
 
 import use_case.ai_insights.GeminiClient;
 import use_case.ai_insights.InsightService;
 import entity.SpendingSummary;
 import controller.InsightsController;
 import use_case.ai_insights.presenter.InsightPresenter;
-import view.InsightViewModel;
+import interface_adapter.InsightViewModel;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
-public class InsightApp extends Application {
+public class InsightView extends Application {
 
     @Override
     public void start(Stage stage) {
