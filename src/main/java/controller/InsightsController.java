@@ -17,7 +17,7 @@ public class InsightsController {
     public void generateInsight(SpendingSummary summary, String userId) {
         Insight insight = interactor.generateInsights(summary, userId);
 
-        presenter.present(insight);
+        presenter.present(insight, summary);
     }
 
 }
