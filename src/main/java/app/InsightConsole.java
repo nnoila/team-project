@@ -1,9 +1,9 @@
-package ui;
+package app;
 
-import ai_insights.GeminiClient;
-import ai_insights.InsightService;
+import use_case.ai_insights.GeminiClient;
+import use_case.ai_insights.InsightService;
 import entity.Insight;
-import ai_insights.SpendingSummary;
+import entity.SpendingSummary;
 
 import java.util.Map;
 

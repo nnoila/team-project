@@ -1,4 +1,7 @@
-package ai_insights;
+package use_case.ai_insights;
+
+import entity.SpendingSummary;
+import entity.Transaction;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ai_insights;
+package entity;
 
 import java.time.LocalDate;
 

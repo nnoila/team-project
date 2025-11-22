@@ -1,6 +1,7 @@
-package ai_insights;
+package use_case.ai_insights;
 
 import entity.Insight;
+import entity.SpendingSummary;
 import org.json.JSONObject;
 import org.json.JSONArray;
 

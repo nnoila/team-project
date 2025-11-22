@@ -1,4 +1,6 @@
-package ai_insights;
+package use_case.ai_insights;
+
+import entity.SpendingSummary;
 
 import java.util.Map;
 

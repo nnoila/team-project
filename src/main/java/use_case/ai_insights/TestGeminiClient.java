@@ -1,4 +1,4 @@
-package ai_insights;
+package use_case.ai_insights;
 
 public class TestGeminiClient {
     public static void main(String[] args) {
