@@ -1,23 +1,32 @@
 package use_case.filter_search;
 
+/**
+ * Input data for the Filter & Search Transactions use case.
+ * This object carries the raw data provided by the user (via the Controller)
+ * to the Interactor.
+ */
 public class FilterSearchInputData {
 
+    private final String userId;
     private final String startDate;
     private final String endDate;
     private final String category;
     private final String keyword;
-    private final String userId;
 
-    public FilterSearchInputData(String startDate,
+    public FilterSearchInputData(String userId,
+                                 String startDate,
                                  String endDate,
                                  String category,
-                                 String keyword,
-                                 String userId) {
+                                 String keyword) {
+        this.userId = userId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.category = category;
         this.keyword = keyword;
-        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getStartDate() {
@@ -34,9 +43,5 @@ public class FilterSearchInputData {
 
     public String getKeyword() {
         return keyword;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 }

@@ -3,10 +3,12 @@ package use_case.filter_search;
 public interface FilterSearchOutputBoundary {
 
     /**
-     * results of the filter search use case.
-     *
-     * @param outputData data w matched items and message.
+     * @param outputData the data containing the filtered list of transactions
      */
-    void present(FilterSearchOutputData outputData);
-}
+    void prepareSuccessView(FilterSearchOutputData outputData);
 
+    /**
+     * @param errorMessage a message describing what went wrong
+     */
+    void prepareFailView(String errorMessage);
+}

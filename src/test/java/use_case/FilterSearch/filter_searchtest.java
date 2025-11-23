@@ -1,6 +1,5 @@
 package use_case.FilterSearch;
 
-import entity.FilterSearchUser;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,7 +47,6 @@ class FilterSearchInteractorTest {
                 "user123"
         );
 
-        // Execute
         interactor.execute(input);
     }
 }

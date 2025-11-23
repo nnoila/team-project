@@ -3,10 +3,7 @@ package use_case.filter_search;
 public interface FilterSearchInputBoundary {
 
     /**
-     *
-     *
-     * @param inputData the request model containing filters
-     *                  like date range, category, or keyword.
+     * @param inputData the user-selected filters (date range, category, keyword)
      */
     void execute(FilterSearchInputData inputData);
 }
