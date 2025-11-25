@@ -1,16 +1,16 @@
-package use_case.ai_categorizing;
+package use_case.ai_client;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class TransactionCategorizingClient {
+public class GeminiClient {
 
     private static final String MODEL = "gemini-2.5-flash";
     private static final String API_KEY = System.getenv("GEMINI_API_KEY");
 
-    public String categorizeTransactions(String prompt) {
+    public String generateInsight(String prompt) {
 
         if (API_KEY == null) {
             throw new IllegalStateException("Missing GEMINI_API_KEY environment variable.");
@@ -19,9 +19,14 @@ public class TransactionCategorizingClient {
         String body = """
         {
           "contents": [
-            { "parts": [ { "text": "%s" } ] }
+            {
+              "parts": [
+                { "text": "%s" }
+              ]
+            }
           ]
-        }""".formatted(prompt.replace("\"", "'"));
+        }  \s
+       \s""".formatted(prompt.replace("\"", "'"));
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
