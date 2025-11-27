@@ -4,20 +4,20 @@ import java.time.LocalDate;
 
 public class Transaction {
     private final LocalDate date;
-    private final String title;
+    private final String description;
     private final double amount;
     private String category;
 
 
-    public Transaction(LocalDate date, String title, double amount) {
+    public Transaction(LocalDate date, String description, double amount) {
         this.date = date;
-        this.title = title;
+        this.description = description;
         this.amount = amount;
     }
 
-    public Transaction(LocalDate date, String title, double amount, String category) {
+    public Transaction(LocalDate date, String description, double amount, String category) {
         this.date = date;
-        this.title = title;
+        this.description = description;
         this.amount = amount;
         this.category = category;
     }
@@ -26,7 +26,6 @@ public class Transaction {
     public double getAmount() {return amount;}
     public String getCategory() {return category;}
     public void setCategory(String category) {this.category = category;}
-    public String getTitle() {return title;}
+    public String getDescription() {return description;}
 
 }
-
