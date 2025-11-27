@@ -1,3 +1,7 @@
+package entity;
+
+import java.util.Map;
+
 public class SpendingReport {
     private String month;
     private float totalSpent;
