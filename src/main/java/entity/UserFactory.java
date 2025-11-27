@@ -11,12 +11,12 @@ import java.security.NoSuchAlgorithmException;
  */
 public class UserFactory {
 
-    public User createUser(String name, String email, String password) {
-        return new User(UUID.randomUUID().toString(), name, email, hashPasswordSHA256(password));
+    public User createUser(String name, String passwordHash) {
+        return new User(UUID.randomUUID().toString(), name, passwordHash);
     }
 
-    public User loadUser(String userId, String name, String email, String passwordHash) {
-        return new User(userId, name, email, passwordHash);
+    public User loadUser(String userId, String name, String passwordHash) {
+        return new User(userId, name, passwordHash);
     }
 
     public static String hashPasswordSHA256(String password) {
