@@ -1,44 +1,61 @@
 package entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * A simple entity representing a user. Users have a name, email, password, and userId.
+ * A simple entity representing a user. Users have userid, name, email, encrypted password, preferences and alert
+ * thresholds.
  */
 public class User {
 
-    private final String name;
     private final String userId;
+    private final String name;
     private final String email;
-    private final String password;
+    private final String passwordHash;
+    private final UserPreferences preferences;
+    private final Map<String, Float> alertThresholds;
 
     /**
-     * Creates a new user with the given non-empty name and non-empty password.
-     * @param name the name
+     * Creates a new user with the given non-empty user id, name, email, encrypted password, default preferences, and
+     * alert thresholds.
      * @param userId the user id
+     * @param name the name
      * @param email the email
-     * @param password the password
-     * @throws IllegalArgumentException if the name, user id, email or password are empty
+     * @param passwordHash the encrypted password
+     * @throws IllegalArgumentException if the name, user id, email, and encrypted password are empty
      */
-    public User(String name, String userId, String email, String password) {
-        if ("".equals(name) || "".equals(userId) || "".equals(email) || "".equals(password)) {
+    public User(String userId, String name, String email, String passwordHash) {
+        if ("".equals(name) || "".equals(userId) || "".equals(email) || "".equals(passwordHash)) {
             throw new IllegalArgumentException("Field(s) cannot be empty or null");
         }
 
         this.name = name;
         this.userId = userId;
         this.email = email;
-        this.password = password;
+        this.passwordHash = passwordHash;
+        this.preferences = new UserPreferences();
+        this.alertThresholds = new HashMap<>();
     }
 
-    public String getName() {
-        return name;
+    public boolean authenticatePassword(String otherPasswordHash) {
+        return otherPasswordHash.equals(passwordHash);
+    }
+
+    public void addAlertThreshold(String category, float threshold) {
+        alertThresholds.put(category, threshold);
     }
 
     public String getUserId() { return userId; }
 
+    public String getName() { return name; }
+
     public String getEmail() { return email; }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getPasswordHash() { return passwordHash; }
+
+    public UserPreferences getPreferences() { return preferences; }
+
+    public Map<String, Float> getAlertThresholds() { return alertThresholds; }
 
 }
