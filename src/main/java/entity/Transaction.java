@@ -3,58 +3,29 @@ package entity;
 import java.time.LocalDate;
 
 public class Transaction {
-     public String userId;
-     public LocalDate date;
-     public String description;
-     public int transactionId;
-     public String category;
-     public int amount;
+    private final LocalDate date;
+    private final String description;
+    private final double amount;
+    private String category;
 
-     public int getAmount() {
-        return amount;
-     }
 
-     public String getUserId() {
-         return this.userId;
-     }
+    public Transaction(LocalDate date, String description, double amount) {
+        this.date = date;
+        this.description = description;
+        this.amount = amount;
+    }
 
-     public LocalDate getDate() {
-         return this.date;
-     }
+    public Transaction(LocalDate date, String description, double amount, String category) {
+        this.date = date;
+        this.description = description;
+        this.amount = amount;
+        this.category = category;
+    }
 
-     public String getDescription() {
-         return this.description;
-     }
+    public LocalDate getDate() {return date;}
+    public double getAmount() {return amount;}
+    public String getCategory() {return category;}
+    public void setCategory(String category) {this.category = category;}
+    public String getDescription() {return description;}
 
-     public int getTransactionId() {
-         return this.transactionId;
-     }
-
-     public String getCategory() {
-         return this.category;
-     }
-
-     public void setUserId(String userId) {
-         this.userId = userId;
-     }
-
-     public void setDate(LocalDate date) {
-         this.date = date;
-     }
-
-     public void setDescription(String description) {
-         this.description = description;
-     }
-
-     public void setTransactionId(int transactionId) {
-         this.transactionId = transactionId;
-     }
-
-     public void setCategory(String category) {
-         this.category = category;
-     }
-
-     public void setAmount(int amount) {
-         this.amount = amount;
-     }
 }

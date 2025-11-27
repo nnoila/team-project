@@ -16,7 +16,7 @@ public class TrendAnalyzer {
 
         for (Transaction t: transactions) {
             totals.put(t.getCategory(),
-                    totals.getOrDefault(t.category, 0.0) + t.getAmount());
+                    totals.getOrDefault(t.getCategory(), 0.0) + t.getAmount());
             totalSpent += t.getAmount();
         }
 

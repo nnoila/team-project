@@ -57,8 +57,8 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
                     final String[] col = row.split(",");
                     final String username = String.valueOf(col[headers.get("username")]);
                     final String password = String.valueOf(col[headers.get("password")]);
-                    //final User user = userFactory.create(username, password);
-                    //accounts.put(username, user);
+                    final User user = userFactory.createUser(username, password);
+                    accounts.put(username, user);
                 }
             }
             catch (IOException ex) {
@@ -76,7 +76,7 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
 
             for (User user : accounts.values()) {
                 final String line = String.format("%s,%s",
-                        user.getName(), user.getPassword());
+                        user.getName(), user.getPasswordHash());
                 writer.write(line);
                 writer.newLine();
             }
