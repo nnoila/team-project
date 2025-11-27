@@ -1,4 +1,4 @@
-package use_case.Upload_CSV;
+package use_case.upload_statement;
 
 import java.util.Map;
 import java.util.List;
@@ -8,6 +8,7 @@ public class UploadStatementOutputData {
     private final int numTransactionsImported;
     private final boolean success;
     private final String message;
+    private final double totalSpend;
 
     private final Map<String, Double> categoryTotals;
     private final List<String> alerts;
@@ -17,13 +18,15 @@ public class UploadStatementOutputData {
             boolean success,
             String message,
             Map<String, Double> categoryTotals,
-            List<String> alerts
+            List<String> alerts,
+            double totalSpend
     ) {
         this.numTransactionsImported = numTransactionsImported;
         this.success = success;
         this.message = message;
         this.categoryTotals = categoryTotals;
         this.alerts = alerts;
+        this.totalSpend = totalSpend;
     }
 
     public int getNumTransactionsImported() { return numTransactionsImported; }
@@ -31,4 +34,5 @@ public class UploadStatementOutputData {
     public String getMessage() { return message; }
     public Map<String, Double> getCategoryTotals() { return categoryTotals; }
     public List<String> getAlerts() { return alerts; }
+    public double getTotalSpend() { return totalSpend; }
 }

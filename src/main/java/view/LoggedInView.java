@@ -4,6 +4,7 @@ import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.upload_statement.UploadStatementController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController = null;
     private LogoutController logoutController;
+    private UploadStatementController uploadStatementController;
 
     private final JLabel username;
 
@@ -93,12 +95,8 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             java.io.File file = fileChooser.getSelectedFile();
+            uploadStatementController.execute(file.getAbsolutePath());
 
-            // Here you call your controller.
-            // Example:
-            // uploadController.execute(file.getAbsolutePath());
-
-            System.out.println("Selected file: " + file.getAbsolutePath());
         }
     }
 
@@ -111,4 +109,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void setLogoutController(LogoutController logoutController) {
         // TODO: save the logout controller in the instance variable.
     }
+    public void setUploadStatementController(UploadStatementController uploadStatementController) {
+        this.uploadStatementController = uploadStatementController; }
 }

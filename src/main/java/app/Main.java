@@ -9,9 +9,11 @@ public class Main {
                 .addLoginView()
                 .addSignupView()
                 .addLoggedInView()
+                .addUploadStatementView()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
+                .addUploadStatementUseCase()
                 .build();
 
         application.pack();
