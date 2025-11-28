@@ -2,6 +2,8 @@ package interface_adapter.spending_limits;
 
 import use_case.spending_limits.SpendingLimitsInputBoundary;
 
+import java.util.Map;
+
 public class SpendingLimitsController {
     private final SpendingLimitsInputBoundary interactor;
 
@@ -9,7 +11,12 @@ public class SpendingLimitsController {
         this.interactor = interactor;
     }
 
-    public void goToSpendingLimits() {
-        interactor.execute();
+    public void loadLimits(String username) {
+        interactor.loadLimits(username);
     }
+
+    public void saveLimits(String username, Map<String, Double> limits) {
+        interactor.saveLimits(username, limits);
+    }
+
 }

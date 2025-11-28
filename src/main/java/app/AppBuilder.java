@@ -1,5 +1,6 @@
 package app;
 
+import data_access.FileSpendingLimitsDAO;
 import data_access.FileUserDataAccessObject;
 import data_access.InMemoryTransactionDataAccessObject;
 import entity.UserFactory;
@@ -160,9 +161,10 @@ public class AppBuilder {
 
     public AppBuilder addSpendingLimitsUseCase() {
         final SpendingLimitsOutputBoundary spendingLimitsOutputBoundary = new SpendingLimitsPresenter(viewManagerModel,
-                        spendingLimitsViewModel);
+                        spendingLimitsViewModel, uploadStatementViewModel);
         final SpendingLimitsInputBoundary spendingLimitsInteractor =
-                new SpendingLimitsInteractor(spendingLimitsOutputBoundary);
+                new SpendingLimitsInteractor(spendingLimitsOutputBoundary, new FileSpendingLimitsDAO());
+        spendingLimitsView.setController(new SpendingLimitsController(spendingLimitsInteractor));
         return this;
     }
 
