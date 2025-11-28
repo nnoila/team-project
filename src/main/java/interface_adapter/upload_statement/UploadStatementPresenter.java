@@ -1,6 +1,7 @@
 package interface_adapter.upload_statement;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.spending_limits.SpendingLimitsState;
 import interface_adapter.spending_limits.SpendingLimitsViewModel;
 import use_case.upload_statement.UploadStatementOutputBoundary;
 import use_case.upload_statement.UploadStatementOutputData;
@@ -22,7 +23,7 @@ public class UploadStatementPresenter implements UploadStatementOutputBoundary {
     public void prepareSuccessView(UploadStatementOutputData outputData) {
         final UploadStatementState state = this.uploadStatementViewModel.getState();
         state.setTotalSpend(outputData.getTotalSpend());
-
+        state.setUsername(outputData.getUsername());
         this.uploadStatementViewModel.firePropertyChange();
 
         // Switch to UploadStatementView
@@ -38,6 +39,8 @@ public class UploadStatementPresenter implements UploadStatementOutputBoundary {
 
     @Override
     public void prepareSpendingLimitsView() {
+        final SpendingLimitsState spendingLimitsState = this.spendingLimitsViewModel.getState();
+        spendingLimitsState.setUsername(this.uploadStatementViewModel.getState().getUsername());
         this.viewManagerModel.setState(spendingLimitsViewModel.getViewName());
         this.viewManagerModel.firePropertyChange();
     }

@@ -95,8 +95,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             java.io.File file = fileChooser.getSelectedFile();
-            uploadStatementController.execute(file.getAbsolutePath());
-
+            uploadStatementController.execute(file.getAbsolutePath(), loggedInViewModel.getState().getUsername());
         }
     }
 

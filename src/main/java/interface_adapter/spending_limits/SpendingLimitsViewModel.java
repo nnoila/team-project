@@ -19,14 +19,4 @@ public class SpendingLimitsViewModel extends ViewModel<SpendingLimitsState> {
         getState().setLimits(limits);
         firePropertyChange();
     }
-
-    public String getMessage() {
-        return getState().getMessage();
-    }
-
-    public void setMessage(String message) {
-        getState().setMessage(message);
-        firePropertyChange();
-    }
-
 }

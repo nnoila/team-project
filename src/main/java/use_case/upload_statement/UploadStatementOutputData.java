@@ -12,6 +12,7 @@ public class UploadStatementOutputData {
 
     private final Map<String, Double> categoryTotals;
     private final List<String> alerts;
+    private final String username;
 
     public UploadStatementOutputData(
             int numTransactionsImported,
@@ -19,7 +20,8 @@ public class UploadStatementOutputData {
             String message,
             Map<String, Double> categoryTotals,
             List<String> alerts,
-            double totalSpend
+            double totalSpend,
+            String username
     ) {
         this.numTransactionsImported = numTransactionsImported;
         this.success = success;
@@ -27,6 +29,7 @@ public class UploadStatementOutputData {
         this.categoryTotals = categoryTotals;
         this.alerts = alerts;
         this.totalSpend = totalSpend;
+        this.username = username;
     }
 
     public int getNumTransactionsImported() { return numTransactionsImported; }
@@ -35,4 +38,5 @@ public class UploadStatementOutputData {
     public Map<String, Double> getCategoryTotals() { return categoryTotals; }
     public List<String> getAlerts() { return alerts; }
     public double getTotalSpend() { return totalSpend; }
+    public String getUsername() { return username; }
 }

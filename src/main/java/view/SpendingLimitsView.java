@@ -23,8 +23,6 @@ public class SpendingLimitsView extends JPanel implements PropertyChangeListener
     private final JButton saveButton;
     private final String viewName = "spending limits";
 
-    private final String username = "ghina2";
-
     public SpendingLimitsView(SpendingLimitsViewModel viewModel) {
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
@@ -62,7 +60,7 @@ public class SpendingLimitsView extends JPanel implements PropertyChangeListener
             }
         }
 
-        controller.saveLimits(username, limits);
+        controller.saveLimits(viewModel.getState().getUsername(), limits);
     }
 
     @Override

@@ -5,11 +5,10 @@ import java.util.Map;
 
 public class SpendingLimitsState {
     private Map<String, Double> limits;
-    private String message;
+    private String username;
 
     public SpendingLimitsState() {
         this.limits = new HashMap<>();
-        this.message = "";
     }
 
     public Map<String, Double> getLimits() {
@@ -20,11 +19,9 @@ public class SpendingLimitsState {
         this.limits = limits;
     }
 
-    public String getMessage() {
-        return message;
+    public String getUsername() {
+        return username;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    public void setUsername(String username) { this.username = username; }
 }

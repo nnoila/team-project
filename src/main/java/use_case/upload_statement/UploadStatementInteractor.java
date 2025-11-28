@@ -49,7 +49,7 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
             double totalSpend = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
             UploadStatementOutputData outputData = new UploadStatementOutputData(transactionList.size(),
                     true, "Successfully processed your statement", new HashMap<String, Double>(),
-                    new ArrayList(), totalSpend);
+                    new ArrayList(), totalSpend, inputData.getUsername());
             uploadStatementPresenter.prepareSuccessView(outputData);
         } catch (IOException e) {
             throw new RuntimeException("Invalid file or unable to read CSV");
