@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UploadStatementInteractor implements UploadStatementInputBoundary {
     private final InMemoryTransactionDataAccessObject transactionGateway;
-    private final UploadStatementPresenter uploadStatementPresenter;
+    private final UploadStatementOutputBoundary uploadStatementPresenter;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     public UploadStatementInteractor(InMemoryTransactionDataAccessObject transactionGateway,
@@ -54,5 +54,10 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
         } catch (IOException e) {
             throw new RuntimeException("Invalid file or unable to read CSV");
         }
+    }
+
+    @Override
+    public void goToSpendingLimits() {
+        uploadStatementPresenter.prepareSpendingLimitsView();
     }
 }

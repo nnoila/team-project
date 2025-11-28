@@ -14,4 +14,8 @@ public class UploadStatementController {
         UploadStatementInputData data = new UploadStatementInputData(filePath);
         interactor.execute(data);
     }
+
+    public void goToSpendingLimits() {
+        interactor.goToSpendingLimits();
+    }
 }
