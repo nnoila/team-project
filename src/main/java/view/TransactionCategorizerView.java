@@ -2,70 +2,78 @@ package view;
 
 import entity.Transaction;
 import interface_adapter.CategorizerViewModel;
-import use_case.ai_client.GeminiClient;
-import use_case.transaction_categorizer.TransactionCategorizerService;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
+import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionCategorizerView extends Application {
+/**
+ * Transaction Categorizer View (Swing) for AppBuilder integration
+ */
+public class TransactionCategorizerView extends JPanel {
 
-    @Override
-    public void start(Stage stage) {
+    private final String viewName = "transaction categorizer";
+    private final CategorizerViewModel viewModel;
+    private final JButton categorizeButton = new JButton("Categorize Transactions");
+    private final JTextArea resultArea = new JTextArea(20, 50);
 
-        Label resultLabel = new Label("Press the button to categorize transactions.");
-        resultLabel.setWrapText(true);
+    public TransactionCategorizerView(CategorizerViewModel viewModel) {
+        this.viewModel = viewModel;
+        setLayout(new BorderLayout());
 
-        Button categorizeButton = new Button("Categorize Transactions");
+        resultArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(resultArea);
 
-        CategorizerViewModel vm = new CategorizerViewModel();
-        GeminiClient gemini = new GeminiClient();
-        TransactionCategorizerService service = new TransactionCategorizerService(gemini);
+        add(categorizeButton, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
 
-        // Sample transactions
-        List<Transaction> transactions = new ArrayList<>();
-        transactions.add(new Transaction(LocalDate.now(), "Starbucks Coffee", 5.25, ""));
-        transactions.add(new Transaction(LocalDate.now(), "Walmart Grocery", 120.50, ""));
-        transactions.add(new Transaction(LocalDate.now(), "Uber Ride", 15.75, ""));
+        List<Transaction> transactions = loadDummyTransactions();
 
-        categorizeButton.setOnAction(event -> {
-            service.categorizeTransactions(transactions);
-            vm.setCategorizedTransactions(transactions);
-
-            StringBuilder sb = new StringBuilder("Categorized Transactions:\n\n");
-            for (Transaction t : vm.getCategorizedTransactions()) {
-                sb.append(t.getDateString())
-                        .append(" - ")
-                        .append(t.getDescription())
-                        .append(" - $")
-                        .append(t.getAmount())
-                        .append(" - Category: ")
-                        .append(t.getCategory())
-                        .append("\n");
+        categorizeButton.addActionListener(e -> {
+            // Dummy categorization
+            for (Transaction t : transactions) {
+                t.setCategory(dummyCategorize(t));
             }
-
-            resultLabel.setText(sb.toString());
+            viewModel.setCategorizedTransactions(transactions);
+            updateResultArea();
         });
-
-        VBox layout = new VBox(15, categorizeButton, resultLabel);
-        layout.setStyle("-fx-padding: 20;");
-
-        Scene scene = new Scene(layout, 600, 400);
-        stage.setScene(scene);
-        stage.setTitle("Transaction Categorizer");
-        stage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public String getViewName() {
+        return viewName;
+    }
+
+    private void updateResultArea() {
+        StringBuilder sb = new StringBuilder("Categorized Transactions:\n\n");
+        for (Transaction t : viewModel.getCategorizedTransactions()) {
+            sb.append(t.getDateString())
+                    .append(" - ")
+                    .append(t.getDescription())
+                    .append(" - $")
+                    .append(t.getAmount())
+                    .append(" - Category: ")
+                    .append(t.getCategory())
+                    .append("\n");
+        }
+        resultArea.setText(sb.toString());
+    }
+
+    private List<Transaction> loadDummyTransactions() {
+        List<Transaction> list = new ArrayList<>();
+        list.add(new Transaction(LocalDate.now(), "Starbucks Coffee", 5.50, ""));
+        list.add(new Transaction(LocalDate.now(), "Grocery Store", 32.75, ""));
+        list.add(new Transaction(LocalDate.now(), "Cinema Ticket", 12.00, ""));
+        return list;
+    }
+
+    private String dummyCategorize(Transaction t) {
+        String desc = t.getDescription().toLowerCase();
+        if (desc.contains("coffee") || desc.contains("cafe")) return "dining out";
+        if (desc.contains("grocery") || desc.contains("supermarket")) return "groceries";
+        if (desc.contains("cinema") || desc.contains("movie")) return "entertainment";
+        return "miscellaneous";
     }
 }
 
