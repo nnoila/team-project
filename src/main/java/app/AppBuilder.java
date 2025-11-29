@@ -1,6 +1,7 @@
 package app;
 
 import data_access.FileUserDataAccessObject;
+import data_access.InMemoryTransactionDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.ChangePasswordController;
@@ -14,6 +15,9 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.upload_statement.UploadStatementController;
+import interface_adapter.upload_statement.UploadStatementPresenter;
+import interface_adapter.upload_statement.UploadStatementViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -26,10 +30,9 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import use_case.upload_statement.UploadStatementInputBoundary;
+import use_case.upload_statement.UploadStatementInteractor;
+import view.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +49,7 @@ public class AppBuilder {
 
     // DAO version using local file storage
     final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
-
+    final InMemoryTransactionDataAccessObject transactionDataAccessObject = new InMemoryTransactionDataAccessObject();
     // DAO version using a shared external database
     // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
@@ -56,6 +59,8 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private UploadStatementViewModel uploadStatementViewModel;
+    private UploadStatementView uploadStatementView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -79,6 +84,13 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         loggedInView = new LoggedInView(loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addUploadStatementView() {
+        uploadStatementViewModel = new UploadStatementViewModel();
+        uploadStatementView = new UploadStatementView(uploadStatementViewModel);
+        cardPanel.add(uploadStatementView, uploadStatementView.getViewName());
         return this;
     }
 
@@ -112,7 +124,6 @@ public class AppBuilder {
                 new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
 
         ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
         return this;
     }
 
@@ -129,6 +140,17 @@ public class AppBuilder {
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
+        return this;
+    }
+
+    public AppBuilder addUploadStatementUseCase() {
+        final UploadStatementPresenter uploadStatementOutputBoundary =
+                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel);
+
+        final UploadStatementInputBoundary uploadStatementInteractor = new UploadStatementInteractor(transactionDataAccessObject,
+                uploadStatementOutputBoundary);
+        UploadStatementController uploadStatementController = new UploadStatementController(uploadStatementInteractor);
+        loggedInView.setUploadStatementController(uploadStatementController);
         return this;
     }
 
