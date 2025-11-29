@@ -1,7 +1,8 @@
 package use_case.spending_report;
+import view.SpendingReportView;
 
 public class GenerateReportPresenter implements GenerateReportOutputBoundary {
-    private final SpendingReportView view;
+    private SpendingReportView view;
 
     public GenerateReportPresenter(SpendingReportView view) {
         this.view = view;

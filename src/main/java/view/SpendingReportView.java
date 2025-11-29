@@ -1,24 +1,21 @@
-package use_case.spending_report;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class SpendingReportView extends JFrame {
+public class SpendingReportView extends JPanel {
     private final JComboBox<String> monthDropdown;
     private final JComboBox<String> chartTypeDropdown;
     private final JPanel chartPanelContainer;
+    private final String viewName = "spending report";
     
     public SpendingReportView() {
-        setTitle("Monthly Spending Report");
-        setSize(900, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel();
@@ -45,6 +42,7 @@ public class SpendingReportView extends JFrame {
     public JComboBox<String> getMonthDropdown() { return monthDropdown; }
     public JComboBox<String> getChartTypeDropdown() { return chartTypeDropdown; }
     public JPanel getChartPanelContainer() { return chartPanelContainer; }
+    public String getViewName() { return viewName; }
     
     public void addMonthDropdownListener(ActionListener listener) {
         monthDropdown.addActionListener(listener);

@@ -8,6 +8,7 @@ public class SpendingReportViewModel extends JFrame {
     private Map<String, Float> categoryData;
     private String currentMonth;
     private String chartType;
+    private final String viewName = "spending report";
 
     public SpendingReportViewModel() {
         this.chartType = "Bar Chart";
@@ -24,6 +25,8 @@ public class SpendingReportViewModel extends JFrame {
     
     public String getChartType() { return chartType; }
     public void setChartType(String chartType) { this.chartType = chartType; }
+    
+    public String getViewName() { return viewName; }
     
     public boolean hasData() {
         return categoryData != null && !categoryData.isEmpty();

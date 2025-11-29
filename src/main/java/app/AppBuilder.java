@@ -33,6 +33,11 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.upload_statement.UploadStatementInputBoundary;
 import use_case.upload_statement.UploadStatementInteractor;
 import view.*;
+import view.SpendingReportView;
+import use_case.spending_report.SpendingReportViewModel;
+import use_case.spending_report.GenerateReportPresenter;
+import use_case.spending_report.GenerateReportInteractor;
+import use_case.spending_report.GenerateReportController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,6 +66,9 @@ public class AppBuilder {
     private LoginView loginView;
     private UploadStatementViewModel uploadStatementViewModel;
     private UploadStatementView uploadStatementView;
+    private SpendingLimitsView spendingLimitsView;
+    private SpendingReportView spendingReportView;
+    private SpendingReportViewModel spendingReportViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -127,6 +135,37 @@ public class AppBuilder {
         return this;
     }
 
+
+    public AppBuilder addSpendingReportUseCase() {
+        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView);
+        final GenerateReportInteractor interactor = new GenerateReportInteractor(
+                transactionDataAccessObject, presenter);
+        final GenerateReportController controller = new GenerateReportController(interactor);
+
+        spendingReportView.addMonthDropdownListener(e -> {
+            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
+            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
+            spendingReportViewModel.setChartType(chartType);
+            controller.generateReport(1, selectedMonth);
+        });
+
+        spendingReportView.addChartTypeDropdownListener(e -> {
+            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
+            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
+            spendingReportViewModel.setChartType(chartType);
+            controller.generateReport(1, selectedMonth);
+        });
+
+        return this;
+    }
+
+    public AppBuilder addSpendingReportView() {
+        spendingReportViewModel = new SpendingReportViewModel();
+        spendingReportView = new SpendingReportView();
+        cardPanel.add(spendingReportView, spendingReportView.getViewName());
+        return this;
+    }
+
     /**
      * Adds the Logout Use Case to the application.
      * @return this builder
@@ -145,8 +184,7 @@ public class AppBuilder {
 
     public AppBuilder addUploadStatementUseCase() {
         final UploadStatementPresenter uploadStatementOutputBoundary =
-                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel);
-
+                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel, spendingReportViewModel);
         final UploadStatementInputBoundary uploadStatementInteractor = new UploadStatementInteractor(transactionDataAccessObject,
                 uploadStatementOutputBoundary);
         UploadStatementController uploadStatementController = new UploadStatementController(uploadStatementInteractor);

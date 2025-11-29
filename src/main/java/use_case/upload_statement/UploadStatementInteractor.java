@@ -55,4 +55,17 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
             throw new RuntimeException("Invalid file or unable to read CSV");
         }
     }
+<<<<<<< Updated upstream
+=======
+
+    @Override
+    public void goToSpendingLimits() {
+        uploadStatementPresenter.prepareSpendingLimitsView();
+    }
+
+    @Override
+    public void goToSpendingReport() {
+        uploadStatementPresenter.prepareSpendingReportView();
+    }
+>>>>>>> Stashed changes
 }
