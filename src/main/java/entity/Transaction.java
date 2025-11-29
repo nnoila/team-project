@@ -10,7 +10,16 @@ public class Transaction {
     private String merchant;
     private float amount;
     private String category;
-    
+
+    // Constructor for CSV data
+    public Transaction(LocalDate date, double amount, String description) {
+        this.id = -1;
+        this.userId = 1;
+        this.date = date;
+        this.merchant = description;
+        this.amount = (float) amount;
+    }
+
     // Constructor for CSV data
     public Transaction(LocalDate date, String category, double amount, String description) {
         this.id = -1;
