@@ -66,9 +66,6 @@ public class AppBuilder {
     private LoginView loginView;
     private UploadStatementViewModel uploadStatementViewModel;
     private UploadStatementView uploadStatementView;
-    private SpendingLimitsView spendingLimitsView;
-    private SpendingReportView spendingReportView;
-    private SpendingReportViewModel spendingReportViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -99,6 +96,12 @@ public class AppBuilder {
         uploadStatementViewModel = new UploadStatementViewModel();
         uploadStatementView = new UploadStatementView(uploadStatementViewModel);
         cardPanel.add(uploadStatementView, uploadStatementView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addSpendingReportView() {
+        spendingReportViewModel = new SpendingReportViewModel();
+        spendingReportView = new SpendingReportView();
         return this;
     }
 
@@ -189,6 +192,41 @@ public class AppBuilder {
                 uploadStatementOutputBoundary);
         UploadStatementController uploadStatementController = new UploadStatementController(uploadStatementInteractor);
         loggedInView.setUploadStatementController(uploadStatementController);
+        return this;
+    }
+
+    public AppBuilder addSpendingReportUseCase() {
+        if (spendingReportView == null) {
+            spendingReportViewModel = new SpendingReportViewModel();
+            spendingReportView = new SpendingReportView();
+        }
+
+        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView);
+        final GenerateReportInteractor interactor = new GenerateReportInteractor(
+                transactionDataAccessObject, presenter);
+        final GenerateReportController controller = new GenerateReportController(interactor);
+
+        // Wire UI listeners on the SpendingReportView to call the controller
+        spendingReportView.addMonthDropdownListener(e -> {
+            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
+            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
+            if (spendingReportViewModel != null) spendingReportViewModel.setChartType(chartType);
+            controller.generateReport(1, selectedMonth);
+        });
+
+        spendingReportView.addChartTypeDropdownListener(e -> {
+            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
+            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
+            if (spendingReportViewModel != null) spendingReportViewModel.setChartType(chartType);
+            controller.generateReport(1, selectedMonth);
+        });
+
+        SwingUtilities.invokeLater(() -> {
+            spendingReportView.setVisible(true);
+            spendingReportView.setInitialMonth("December 2025");
+            controller.generateReport(1, "December 2025");
+        });
+
         return this;
     }
 
