@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
+
         AppBuilder appBuilder = new AppBuilder();
         JFrame application = appBuilder
                 .addLoginView()
@@ -11,13 +12,14 @@ public class Main {
                 .addLoggedInView()
                 .addUploadStatementView()
                 .addSpendingLimitsView()
+                .addSpendingReportView()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
                 .addUploadStatementUseCase()
                 .addSpendingLimitsUseCase()
+                .addSpendingReportUseCase()
                 .build();
-
         application.pack();
         application.setLocationRelativeTo(null);
         application.setVisible(true);

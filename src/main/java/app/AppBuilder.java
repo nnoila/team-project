@@ -143,6 +143,15 @@ public class AppBuilder {
         return this;
     }
 
+
+    public AppBuilder addSpendingReportUseCase() {
+        return this;
+    }
+
+    public AppBuilder addSpendingReportView() {
+        return this;
+    }
+
     /**
      * Adds the Logout Use Case to the application.
      * @return this builder
