@@ -1,43 +1,46 @@
 package use_case.filter_search;
 
-import entity.Transaction;
 import java.util.List;
 
 public class FilterSearchInteractor implements FilterSearchInputBoundary {
 
-    private final FilterSearchUserDataAccessInterface transactionDataAccess;
     private final FilterSearchOutputBoundary presenter;
+    private final FilterSearchUserDataAccessInterface userDataAccess;
+    private final FilterSearchCategoryDataAccessInterface categoryDataAccess;
 
-    public FilterSearchInteractor(FilterSearchUserDataAccessInterface transactionDataAccess,
-                                  FilterSearchOutputBoundary presenter) {
-        this.transactionDataAccess = transactionDataAccess;
+    public FilterSearchInteractor(FilterSearchOutputBoundary presenter,
+                                  FilterSearchUserDataAccessInterface userDataAccess,
+                                  FilterSearchCategoryDataAccessInterface categoryDataAccess) {
         this.presenter = presenter;
+        this.userDataAccess = userDataAccess;
+        this.categoryDataAccess = categoryDataAccess;
     }
 
     @Override
     public void execute(FilterSearchInputData inputData) {
 
-        // Step 1: Ask DAO to filter based on criteria
-        List<Transaction> results = transactionDataAccess.filterTransactions(
-                inputData.getStartDate(),
-                inputData.getEndDate(),
-                inputData.getCategory(),
-                inputData.getKeyword(),
-                inputData.getUserId()
-        );
-
-        // Step 2: Build output message
-        String message;
-        if (results.isEmpty()) {
-            message = "No matching transactions found.";
-        } else {
-            message = results.size() + " matching transactions found.";
+        // 1. Validate input
+        if (inputData.getSearchText() == null || inputData.getSearchText().isEmpty()) {
+            presenter.presentError("Search text cannot be empty.");
+            return;
         }
 
-        // Step 3: Construct output data
-        FilterSearchOutputData outputData = new FilterSearchOutputData(results, message);
+        // 2. Validate category (category may be OPTIONAL)
+        String category = inputData.getCategory();
 
-        // Step 4: Send results to presenter
-        presenter.prepareSuccessView(outputData);
+        if (category != null && !category.isEmpty() &&
+                !categoryDataAccess.categoryExists(category)) {
+            presenter.presentError("Invalid category: " + category);
+            return;
+        }
+
+        // 3. Perform search
+        List<String> results = userDataAccess.search(
+                inputData.getSearchText(),
+                category
+        );
+
+        // 4. Return results
+        presenter.present(new FilterSearchOutputData(results));
     }
 }
