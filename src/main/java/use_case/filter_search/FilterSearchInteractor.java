@@ -1,46 +1,52 @@
 package use_case.filter_search;
 
+import entity.Transaction;
 import java.util.List;
 
 public class FilterSearchInteractor implements FilterSearchInputBoundary {
 
     private final FilterSearchOutputBoundary presenter;
-    private final FilterSearchUserDataAccessInterface userDataAccess;
-    private final FilterSearchCategoryDataAccessInterface categoryDataAccess;
+    private final FilterSearchUserDataAccessInterface dataAccess;
+    private final FilterSearchCategoryDataAccessInterface categoryAccess;
 
     public FilterSearchInteractor(FilterSearchOutputBoundary presenter,
-                                  FilterSearchUserDataAccessInterface userDataAccess,
-                                  FilterSearchCategoryDataAccessInterface categoryDataAccess) {
+                                  FilterSearchUserDataAccessInterface dataAccess,
+                                  FilterSearchCategoryDataAccessInterface categoryAccess) {
+
         this.presenter = presenter;
-        this.userDataAccess = userDataAccess;
-        this.categoryDataAccess = categoryDataAccess;
+        this.dataAccess = dataAccess;
+        this.categoryAccess = categoryAccess;
     }
 
     @Override
-    public void execute(FilterSearchInputData inputData) {
+    public void execute(FilterSearchInputData input) {
 
-        // 1. Validate input
-        if (inputData.getSearchText() == null || inputData.getSearchText().isEmpty()) {
+        // 1. Validate search text
+        if (input.getSearchText() == null || input.getSearchText().isEmpty()) {
             presenter.presentError("Search text cannot be empty.");
             return;
         }
 
-        // 2. Validate category (category may be OPTIONAL)
-        String category = inputData.getCategory();
+        // 2. Validate category
+        if (input.getCategory() != null &&
+                !input.getCategory().isEmpty() &&
+                !categoryAccess.categoryExists(input.getCategory())) {
 
-        if (category != null && !category.isEmpty() &&
-                !categoryDataAccess.categoryExists(category)) {
-            presenter.presentError("Invalid category: " + category);
+            presenter.presentError("Invalid category: " + input.getCategory());
             return;
         }
 
-        // 3. Perform search
-        List<String> results = userDataAccess.search(
-                inputData.getSearchText(),
-                category
+        // 3. Perform search through repository
+        List<Transaction> results = dataAccess.search(
+                input.getSearchText(),
+                input.getCategory(),
+                input.getStartDate(),
+                input.getEndDate(),
+                input.getMinAmount(),
+                input.getMaxAmount()
         );
 
-        // 4. Return results
+        // 4. Present results
         presenter.present(new FilterSearchOutputData(results));
     }
 }
