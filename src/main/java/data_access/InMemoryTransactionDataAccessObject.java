@@ -31,8 +31,8 @@ public class InMemoryTransactionDataAccessObject {
         return result;
     }
 
-    public Map<String, Double> getTotalSpendByCategory() {
-        HashMap<String, Double> result = new HashMap<>();
+    public Map<String, Float> getTotalSpendByCategory() {
+        HashMap<String, Float> result = new HashMap<>();
         for (Transaction transaction : this.transactions) {
             if (result.containsKey(transaction.getCategory())) {
                 result.put(transaction.getCategory(), result.get(transaction.getCategory()) + transaction.getAmount());

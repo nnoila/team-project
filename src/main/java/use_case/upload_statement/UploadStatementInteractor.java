@@ -41,7 +41,7 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
                 String title = values[1];
                 double amount = Double.parseDouble(values[2]);
 
-                Transaction transaction = new Transaction(date, title, amount);
+                Transaction transaction = new Transaction(date, amount, title);
 
                 transactionGateway.saveTransaction(transaction);
             }

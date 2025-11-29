@@ -1,5 +1,7 @@
 package app;
 
+import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -16,5 +18,8 @@ public class Main {
                 .addUploadStatementUseCase()
                 .addSpendingReportUseCase()
                 .build();
+        application.pack();
+        application.setLocationRelativeTo(null);
+        application.setVisible(true);
     }
 }
