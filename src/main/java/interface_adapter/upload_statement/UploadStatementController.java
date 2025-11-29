@@ -10,8 +10,12 @@ public class UploadStatementController {
         this.interactor = interactor;
     }
 
-    public void execute(String filePath) {
-        UploadStatementInputData data = new UploadStatementInputData(filePath);
+    public void execute(String filePath, String username) {
+        UploadStatementInputData data = new UploadStatementInputData(filePath, username);
         interactor.execute(data);
+    }
+
+    public void goToSpendingLimits() {
+        interactor.goToSpendingLimits();
     }
 }
