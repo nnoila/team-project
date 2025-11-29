@@ -1,5 +1,6 @@
 package app;
 
+import data_access.FileSpendingLimitsDAO;
 import data_access.FileUserDataAccessObject;
 import data_access.InMemoryTransactionDataAccessObject;
 import entity.UserFactory;
@@ -15,6 +16,9 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.spending_limits.SpendingLimitsController;
+import interface_adapter.spending_limits.SpendingLimitsPresenter;
+import interface_adapter.spending_limits.SpendingLimitsViewModel;
 import interface_adapter.upload_statement.UploadStatementController;
 import interface_adapter.upload_statement.UploadStatementPresenter;
 import interface_adapter.upload_statement.UploadStatementViewModel;
@@ -30,6 +34,9 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.spending_limits.SpendingLimitsInputBoundary;
+import use_case.spending_limits.SpendingLimitsInteractor;
+import use_case.spending_limits.SpendingLimitsOutputBoundary;
 import use_case.upload_statement.UploadStatementInputBoundary;
 import use_case.upload_statement.UploadStatementInteractor;
 import view.*;
@@ -57,10 +64,12 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private SpendingLimitsViewModel spendingLimitsViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
     private UploadStatementViewModel uploadStatementViewModel;
     private UploadStatementView uploadStatementView;
+    private SpendingLimitsView spendingLimitsView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -91,6 +100,13 @@ public class AppBuilder {
         uploadStatementViewModel = new UploadStatementViewModel();
         uploadStatementView = new UploadStatementView(uploadStatementViewModel);
         cardPanel.add(uploadStatementView, uploadStatementView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addSpendingLimitsView() {
+        spendingLimitsViewModel = new SpendingLimitsViewModel();
+        spendingLimitsView = new SpendingLimitsView(spendingLimitsViewModel);
+        cardPanel.add(spendingLimitsView, spendingLimitsView.getViewName());
         return this;
     }
 
@@ -152,13 +168,22 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addSpendingLimitsUseCase() {
+        final SpendingLimitsOutputBoundary spendingLimitsOutputBoundary = new SpendingLimitsPresenter(viewManagerModel,
+                        spendingLimitsViewModel, uploadStatementViewModel);
+        final SpendingLimitsInputBoundary spendingLimitsInteractor =
+                new SpendingLimitsInteractor(spendingLimitsOutputBoundary, new FileSpendingLimitsDAO());
+        spendingLimitsView.setController(new SpendingLimitsController(spendingLimitsInteractor));
+        return this;
+    }
+
     public AppBuilder addUploadStatementUseCase() {
         final UploadStatementPresenter uploadStatementOutputBoundary =
-                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel);
-
+                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel);
         final UploadStatementInputBoundary uploadStatementInteractor = new UploadStatementInteractor(transactionDataAccessObject,
                 uploadStatementOutputBoundary);
         UploadStatementController uploadStatementController = new UploadStatementController(uploadStatementInteractor);
+        uploadStatementView.setUploadStatementController(uploadStatementController);
         loggedInView.setUploadStatementController(uploadStatementController);
         return this;
     }

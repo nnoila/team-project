@@ -11,11 +11,13 @@ public class Main {
                 .addSignupView()
                 .addLoggedInView()
                 .addUploadStatementView()
+                .addSpendingLimitsView()
                 .addSpendingReportView()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
                 .addUploadStatementUseCase()
+                .addSpendingLimitsUseCase()
                 .addSpendingReportUseCase()
                 .build();
         application.pack();
