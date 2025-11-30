@@ -26,7 +26,7 @@ public class TransactionCategorizerService {
                 You are a classification engine.
                 
                 Categorize each transaction into EXACTLY one of the following categories:
-                SHOPPING, DINING OUT, ENTERTAINMENT, UTILITIES, TRANSPORTATION, FITNESS, MISCELLANEOUS.
+                GROCERIES, SHOPPING, DINING OUT, ENTERTAINMENT, UTILITIES, TRANSPORTATION, FITNESS, MISCELLANEOUS.
                 
                 IMPORTANT:
                 - Respond ONLY with VALID JSON.
