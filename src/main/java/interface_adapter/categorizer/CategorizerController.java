@@ -18,4 +18,8 @@ public class CategorizerController {
         categorizerInputBoundary.generateCategories(transactions);
     }
 
+    public void goToSpendingReport(String username) {
+        categorizerInputBoundary.goToSpendingReport(username);
+    }
+
 }

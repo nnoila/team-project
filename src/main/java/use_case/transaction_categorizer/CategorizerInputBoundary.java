@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CategorizerInputBoundary {
     void generateCategories(List<Transaction> transactions);
+    void goToSpendingReport(String username);
 }

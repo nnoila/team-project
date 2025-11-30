@@ -21,4 +21,9 @@ public class CategorizerInteractor implements CategorizerInputBoundary {
        categorizerService.categorize(transactions);
        categorizerOutputBoundary.displayCategorizationResults();
     }
+
+    @Override
+    public void goToSpendingReport(String username) {
+        categorizerOutputBoundary.goToSpendingReport(username);
+    }
 }

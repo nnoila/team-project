@@ -127,7 +127,8 @@ public class AppBuilder {
     // Transaction Categorizer View
     public AppBuilder addCategorizerView() {
         categorizerViewModel = new CategorizerViewModel();
-        final CategorizerOutputBoundary categorizerOutputBoundary = new CategorizerPresenter(categorizerViewModel);
+        final CategorizerOutputBoundary categorizerOutputBoundary = new CategorizerPresenter(categorizerViewModel,
+                viewManagerModel, spendingReportViewModel);
         CategorizerInputBoundary categorizerInputBoundary =
                 new CategorizerInteractor(new TransactionCategorizerService(new GeminiClient()), categorizerOutputBoundary);
         CategorizerController categorizerController = new CategorizerController(categorizerInputBoundary);
@@ -198,7 +199,7 @@ public class AppBuilder {
 
     public AppBuilder addSpendingReportView() {
         spendingReportViewModel = new SpendingReportViewModel();
-        spendingReportView = new SpendingReportView();
+        spendingReportView = new SpendingReportView(spendingReportViewModel);
         cardPanel.add(spendingReportView, spendingReportView.getViewName());
         return this;
     }
@@ -245,19 +246,7 @@ public class AppBuilder {
         final GenerateReportInteractor interactor = new GenerateReportInteractor(
                 transactionDataAccessObject, presenter);
         final GenerateReportController controller = new GenerateReportController(interactor);
-
-        // Wire UI listeners on the SpendingReportView to call the controller
-        spendingReportView.addChartTypeDropdownListener(e -> {
-            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
-            if (spendingReportViewModel != null) spendingReportViewModel.setChartType(chartType);
-            controller.generateReport("default");
-        });
-
-        SwingUtilities.invokeLater(() -> {
-            // spendingReportView.setVisible(true);
-            controller.generateReport("default");
-        });
-
+        spendingReportView.setGenerateReportController(controller);
         return this;
     }
 

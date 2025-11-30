@@ -23,6 +23,7 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
     private final JTextArea resultsArea = new JTextArea();
     private final JButton categorizeButton = new JButton("Categorize Transactions");
     private final JButton insightButton = new JButton("Generate Insights");
+    private final JButton viewReportButton = new JButton("View Report");
 
     private final CategorizerViewModel vm;
     private CategorizerController categorizerController;
@@ -34,6 +35,7 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
         vm.addPropertyChangeListener(this);
         JPanel topPanel = new JPanel();
         topPanel.add(categorizeButton);
+        topPanel.add(viewReportButton);
         topPanel.add(insightButton);
         add(topPanel, BorderLayout.NORTH);
         add(new JScrollPane(resultsArea), BorderLayout.CENTER);
@@ -41,6 +43,9 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
         categorizeButton.addActionListener(e ->
                 categorizerController.categorizeTransactions(vm.getTransactions()));
         insightButton.addActionListener(e -> generateInsights());
+        viewReportButton.addActionListener(e -> {
+            categorizerController.goToSpendingReport(vm.getTransactions().get(0).getUsername());
+        });
     }
 
     private void generateInsights() {
