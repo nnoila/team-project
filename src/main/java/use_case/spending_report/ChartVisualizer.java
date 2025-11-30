@@ -135,7 +135,7 @@ public class ChartVisualizer {
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12f));
             for (Map.Entry<String, Float> e : entries) {
                 g2.setColor(Color.BLACK);
-                g2.drawString(e.getKey() + " ($" + e.getValue() + ")", 20, legendY);
+                g2.drawString(e.getKey() + " ($" + String.format("%.2f", e.getValue()) + ")", 20, legendY);
                 legendY += 20;
             }
         }
