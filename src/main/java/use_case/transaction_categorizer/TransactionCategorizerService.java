@@ -43,7 +43,7 @@ public class TransactionCategorizerService {
                 """);
 
         for (Transaction t : transactions) {
-            batchPrompt.append("- ").append(t.getDescription())
+            batchPrompt.append("- ").append(t.getMerchant())
                     .append(" ($").append(t.getAmount()).append(")\n");
         }
 
@@ -94,7 +94,6 @@ public class TransactionCategorizerService {
         } catch (Exception e) {
             System.err.println("Failed to parse batch, applying fallback");
             transactions.forEach(t -> t.setCategory("MISCELLANEOUS"));
-
         }
 
     }

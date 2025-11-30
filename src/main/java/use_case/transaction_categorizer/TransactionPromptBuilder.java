@@ -24,7 +24,7 @@ public class TransactionPromptBuilder {
             """
                 .formatted(
                         FIXED_CATEGORIES,
-                        t.getDescription(),
+                        t.getMerchant(),
                         t.getAmount()
                 );
     }
@@ -51,7 +51,7 @@ public class TransactionPromptBuilder {
 
         for (Transaction t : transactions) {
             sb.append("- ")
-                    .append(t.getDescription())
+                    .append(t.getMerchant())
                     .append(" $")
                     .append(t.getAmount())
                     .append("\n");

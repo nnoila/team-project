@@ -1,6 +1,6 @@
 package interface_adapter.upload_statement;
 
-public class UploadStatementState {
+public class    UploadStatementState {
     private double totalSpend;
     private String username;
 

@@ -15,11 +15,14 @@ public class UploadStatementController {
         interactor.execute(data);
     }
 
+    public void goToSpendingReport() {
+        interactor.goToSpendingReport();
+    }
     public void goToSpendingLimits() {
         interactor.goToSpendingLimits();
     }
 
-    public void goToCategorizer() {
-        interactor.goToCategorizer();
+    public void goToCategorizer(UploadStatementInputData inputData) {
+        interactor.goToCategorizer(inputData);
     }
 }

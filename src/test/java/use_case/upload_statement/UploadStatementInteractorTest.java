@@ -1,5 +1,6 @@
 package use_case.upload_statement;
 
+import data_access.CSVTransactionDAO;
 import data_access.InMemoryTransactionDataAccessObject;
 import entity.Transaction;
 import interface_adapter.upload_statement.UploadStatementPresenter;
@@ -20,7 +21,7 @@ class UploadStatementInteractorTest {
         private boolean spendingLimitsCalled = false;
 
         public StubPresenter() {
-            super(null, null, null); // we won't use ViewManager here
+            super(null, null, null, null, null); // we won't use ViewManager here
         }
 
         @Override
@@ -50,7 +51,7 @@ class UploadStatementInteractorTest {
             fw.write("2025-11-05,Transport,35.00,Gas station\n");
         }
 
-        InMemoryTransactionDataAccessObject dao = new InMemoryTransactionDataAccessObject();
+        CSVTransactionDAO dao = new CSVTransactionDAO("src/test/resources/csv/transactions.csv");
         StubPresenter presenter = new StubPresenter();
 
         UploadStatementInteractor interactor =

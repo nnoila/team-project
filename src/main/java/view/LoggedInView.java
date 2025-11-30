@@ -46,7 +46,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         username = new JLabel();
 
         uploadStatement = new JButton("Upload statement");
-        uploadStatement.addActionListener(this);
+
 
         final JPanel buttons = new JPanel();
         changePasswordButton = new JButton("Change Password");

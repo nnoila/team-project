@@ -1,9 +1,9 @@
 package use_case.upload_statement;
-
 import java.util.Map;
 import java.util.List;
 
-public class UploadStatementOutputData {
+public class
+UploadStatementOutputData {
 
     private final int numTransactionsImported;
     private final boolean success;

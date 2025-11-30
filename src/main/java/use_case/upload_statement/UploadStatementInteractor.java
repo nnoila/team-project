@@ -1,7 +1,7 @@
 package use_case.upload_statement;
 
-import data_access.InMemoryTransactionDataAccessObject;
 import entity.Transaction;
+import interface_adapter.TransactionDataAccess;
 import interface_adapter.upload_statement.UploadStatementPresenter;
 
 import java.io.BufferedReader;
@@ -14,11 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UploadStatementInteractor implements UploadStatementInputBoundary {
-    private final InMemoryTransactionDataAccessObject transactionGateway;
+    private final TransactionDataAccess transactionGateway;
     private final UploadStatementOutputBoundary uploadStatementPresenter;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public UploadStatementInteractor(InMemoryTransactionDataAccessObject transactionGateway,
+    public UploadStatementInteractor(TransactionDataAccess transactionGateway,
                                      UploadStatementPresenter uploadStatementPresenter) {
         this.transactionGateway = transactionGateway;
         this.uploadStatementPresenter = uploadStatementPresenter;
@@ -26,7 +26,6 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
 
     @Override
     public void execute(UploadStatementInputData inputData) {
-
         String path = inputData.getCsvFilePath();
 
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
@@ -38,15 +37,15 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
                 String[] values = line.split(",",4);
 
                 LocalDate date = LocalDate.parse(values[0].trim(), formatter);
-                String category = values[1].trim();
-                double amount = Double.parseDouble(values[2]);
-                String description = values[3].trim();
+                String description = values[1].trim();
+                double amount = Double.parseDouble(values[2].trim());
 
-                Transaction transaction = new Transaction(date, category, amount, description);
+                Transaction transaction = new Transaction(date, "", amount, description,
+                        inputData.getUsername());
 
                 transactionGateway.saveTransaction(transaction);
             }
-            List<Transaction> transactionList = transactionGateway.getAllTransactions();
+            List<Transaction> transactionList = transactionGateway.getTransactions(inputData.getUsername());
             double totalSpend = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
             UploadStatementOutputData outputData = new UploadStatementOutputData(transactionList.size(),
                     true, "Successfully processed your statement", new HashMap<String, Double>(),
@@ -56,15 +55,20 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
             throw new RuntimeException("Invalid file or unable to read CSV");
         }
     }
-
     @Override
     public void goToSpendingLimits() {
         uploadStatementPresenter.prepareSpendingLimitsView();
     }
 
     @Override
-    public void goToCategorizer() {
-        uploadStatementPresenter.prepareCategorizerView();
+    public void goToSpendingReport() {
+        uploadStatementPresenter.prepareSpendingReportView();
+    }
+
+
+    @Override
+    public void goToCategorizer(UploadStatementInputData inputData) {
+        uploadStatementPresenter.prepareCategorizerView(transactionGateway.getTransactions(inputData.getUsername()));
     }
 
 }

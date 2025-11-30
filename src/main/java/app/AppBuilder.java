@@ -1,11 +1,15 @@
 package app;
 
+import data_access.CSVTransactionDAO;
 import data_access.FileSpendingLimitsDAO;
 import data_access.FileUserDataAccessObject;
 import data_access.InMemoryTransactionDataAccessObject;
 import entity.Transaction;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.categorizer.CategorizerController;
+import interface_adapter.categorizer.CategorizerPresenter;
+import interface_adapter.categorizer.CategorizerViewModel;
 import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -38,11 +42,16 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.spending_limits.SpendingLimitsInputBoundary;
 import use_case.spending_limits.SpendingLimitsInteractor;
 import use_case.spending_limits.SpendingLimitsOutputBoundary;
+import use_case.transaction_categorizer.*;
 import use_case.upload_statement.UploadStatementInputBoundary;
 import use_case.upload_statement.UploadStatementInteractor;
 import view.*;
+import view.SpendingReportView;
+import use_case.spending_report.SpendingReportViewModel;
+import use_case.spending_report.GenerateReportPresenter;
+import use_case.spending_report.GenerateReportInteractor;
+import use_case.spending_report.GenerateReportController;
 
-import use_case.transaction_categorizer.TransactionCategorizerService; // <-- ADDED
 import view.TransactionCategorizerView; // <-- ADDED
 
 import javax.swing.*;
@@ -57,7 +66,7 @@ public class AppBuilder {
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
-    final InMemoryTransactionDataAccessObject transactionDataAccessObject = new InMemoryTransactionDataAccessObject();
+    final CSVTransactionDAO transactionDataAccessObject = new CSVTransactionDAO("transactions.csv");
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -69,7 +78,9 @@ public class AppBuilder {
     private UploadStatementViewModel uploadStatementViewModel;
     private UploadStatementView uploadStatementView;
     private SpendingLimitsView spendingLimitsView;
-
+    private SpendingReportView spendingReportView;
+    private SpendingReportViewModel spendingReportViewModel;
+    private CategorizerViewModel categorizerViewModel;
     // Transaction Categorizer View
     private TransactionCategorizerView categorizerView;
     private TransactionCategorizerService categorizerService;
@@ -115,10 +126,19 @@ public class AppBuilder {
 
     // Transaction Categorizer View
     public AppBuilder addCategorizerView() {
-        List<Transaction> transactions = transactionDataAccessObject.getAllTransactions();
-        categorizerView = new TransactionCategorizerView(transactions);
+        categorizerViewModel = new CategorizerViewModel();
+        final CategorizerOutputBoundary categorizerOutputBoundary = new CategorizerPresenter(categorizerViewModel,
+                viewManagerModel, spendingReportViewModel);
+        CategorizerInputBoundary categorizerInputBoundary =
+                new CategorizerInteractor(new TransactionCategorizerService(new GeminiClient()), categorizerOutputBoundary);
+        CategorizerController categorizerController = new CategorizerController(categorizerInputBoundary);
+        categorizerView = new TransactionCategorizerView(categorizerViewModel);
+        categorizerView.setCategorizerController(categorizerController);
         cardPanel.add(categorizerView, categorizerView.getViewName());
+        return this;
+    }
 
+    public AppBuilder addCategorizerUseCase() {
         return this;
     }
 
@@ -152,17 +172,83 @@ public class AppBuilder {
                 new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
 
         ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
+
+        loggedInView.setChangePasswordController(changePasswordController);
+        return this;
+    }
+
+//    public AppBuilder addSpendingReportUseCase() {
+//        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView);
+//        final GenerateReportInteractor interactor = new GenerateReportInteractor(
+//                transactionDataAccessObject, presenter);
+//        final GenerateReportController controller = new GenerateReportController(interactor);
+//
+//        spendingReportView.addMonthDropdownListener(e -> {
+//            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
+//            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
+//            spendingReportViewModel.setChartType(chartType);
+//            controller.generateReport(1, selectedMonth);
+//        });
+//
+//        spendingReportView.addChartTypeDropdownListener(e -> {
+//            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
+//            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
+//            spendingReportViewModel.setChartType(chartType);
+//            controller.generateReport(1, selectedMonth);
+//        });
+//        return this;
+//    }
+
+    public AppBuilder addSpendingReportView() {
+        spendingReportViewModel = new SpendingReportViewModel();
+        spendingReportView = new SpendingReportView(spendingReportViewModel);
+        cardPanel.add(spendingReportView, spendingReportView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Logout Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addLogoutUseCase() {
+        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
+                loggedInViewModel, loginViewModel);
+
+        final LogoutInputBoundary logoutInteractor =
+                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+
+        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        loggedInView.setLogoutController(logoutController);
+        return this;
+    }
+
+    public AppBuilder addSpendingLimitsUseCase() {
+        final SpendingLimitsOutputBoundary spendingLimitsOutputBoundary = new SpendingLimitsPresenter(viewManagerModel,
+                        spendingLimitsViewModel, uploadStatementViewModel);
+        final SpendingLimitsInputBoundary spendingLimitsInteractor =
+                new SpendingLimitsInteractor(spendingLimitsOutputBoundary, new FileSpendingLimitsDAO());
+        spendingLimitsView.setController(new SpendingLimitsController(spendingLimitsInteractor));
         return this;
     }
 
     public AppBuilder addUploadStatementUseCase() {
         final UploadStatementPresenter uploadStatementOutputBoundary =
-                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel);
+                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel,
+                        spendingReportViewModel, categorizerViewModel);
         final UploadStatementInputBoundary uploadStatementInteractor = new UploadStatementInteractor(transactionDataAccessObject,
                 uploadStatementOutputBoundary);
         UploadStatementController uploadStatementController = new UploadStatementController(uploadStatementInteractor);
         uploadStatementView.setUploadStatementController(uploadStatementController);
         loggedInView.setUploadStatementController(uploadStatementController);
+        return this;
+    }
+
+    public AppBuilder addSpendingReportUseCase() {
+        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView, viewManagerModel);
+        final GenerateReportInteractor interactor = new GenerateReportInteractor(
+                transactionDataAccessObject, presenter);
+        final GenerateReportController controller = new GenerateReportController(interactor);
+        spendingReportView.setGenerateReportController(controller);
         return this;
     }
 

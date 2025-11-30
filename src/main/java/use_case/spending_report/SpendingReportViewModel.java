@@ -1,18 +1,24 @@
 package use_case.spending_report;
 
+import interface_adapter.ViewModel;
+
 import java.util.Map;
 
 import javax.swing.JFrame;
 
-public class SpendingReportViewModel extends JFrame {
+public class SpendingReportViewModel extends ViewModel<SpendingReportState> {
     private Map<String, Float> categoryData;
     private String currentMonth;
     private String chartType;
+    private final String viewName = "spending report";
 
     public SpendingReportViewModel() {
+        super("spending report");
+        setState(new SpendingReportState());
         this.chartType = "Bar Chart";
     }
 
+    public void setUsername(String username) {this.getState().setUsername(username);}
     public Map<String, Float> getCategoryData() { return categoryData; }
 
     public void setCategoryData(Map<String, Float> categoryData) {
@@ -25,24 +31,10 @@ public class SpendingReportViewModel extends JFrame {
     public String getChartType() { return chartType; }
     public void setChartType(String chartType) { this.chartType = chartType; }
     
+    public String getViewName() { return viewName; }
+    
     public boolean hasData() {
         return categoryData != null && !categoryData.isEmpty();
     }
-
-    // monthDropdown.addActionListener((ActionEvent e) -> {
-    //     if (controller != null) {
-    //         String selectedMonth = (String) monthDropdown.getSelectedItem();
-    //         controller.generateReport(userId, selectedMonth);
-    //     } else {
-    //         System.err.println("Controller not set yet!");
-    //     }
-    // });
-
-    // chartTypeDropdown.addActionListener((ActionEvent e) -> {
-    //     if (controller != null) {
-    //         String selectedMonth = (String) monthDropdown.getSelectedItem();
-    //         controller.generateReport(userId, selectedMonth);
-    //     }
-    // });
 
 }

@@ -1,22 +1,34 @@
 package interface_adapter.upload_statement;
 
+import entity.Transaction;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.categorizer.CategorizerState;
+import interface_adapter.categorizer.CategorizerViewModel;
 import interface_adapter.spending_limits.SpendingLimitsState;
 import interface_adapter.spending_limits.SpendingLimitsViewModel;
+import use_case.spending_report.SpendingReportViewModel;
 import use_case.upload_statement.UploadStatementOutputBoundary;
 import use_case.upload_statement.UploadStatementOutputData;
+
+import java.util.List;
 
 public class UploadStatementPresenter implements UploadStatementOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final UploadStatementViewModel uploadStatementViewModel;
     private final SpendingLimitsViewModel spendingLimitsViewModel;
+    private final SpendingReportViewModel spendingReportViewModel;
+    private final CategorizerViewModel categorizerViewModel;
 
     public UploadStatementPresenter(ViewManagerModel viewManagerModel,
                                     UploadStatementViewModel uploadStatementViewModel,
-                                    SpendingLimitsViewModel spendingLimitsViewModel) {
+                                    SpendingLimitsViewModel spendingLimitsViewModel,
+                                    SpendingReportViewModel spendingReportViewModel,
+                                    CategorizerViewModel categorizerViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.uploadStatementViewModel = uploadStatementViewModel;
+        this.spendingReportViewModel = spendingReportViewModel;
         this.spendingLimitsViewModel = spendingLimitsViewModel;
+        this.categorizerViewModel = categorizerViewModel;
     }
 
     @Override
@@ -25,6 +37,7 @@ public class UploadStatementPresenter implements UploadStatementOutputBoundary {
         state.setTotalSpend(outputData.getTotalSpend());
         state.setUsername(outputData.getUsername());
         this.uploadStatementViewModel.firePropertyChange();
+
 
         // Switch to UploadStatementView
         this.viewManagerModel.setState(uploadStatementViewModel.getViewName());
@@ -46,9 +59,16 @@ public class UploadStatementPresenter implements UploadStatementOutputBoundary {
     }
 
     @Override
-    public void prepareCategorizerView() {
-        viewManagerModel.setState("categorizer view");
-        viewManagerModel.firePropertyChange();
+    public void prepareSpendingReportView() {
+        this.viewManagerModel.setState(spendingReportViewModel.getViewName());
+        this.viewManagerModel.firePropertyChange();
+    }
+
+    @Override
+    public void prepareCategorizerView(List<Transaction> transactions) {
+        this.categorizerViewModel.setTransactions(transactions);
+        this.viewManagerModel.setState("categorizer view");
+        this.viewManagerModel.firePropertyChange();
     }
 
 }

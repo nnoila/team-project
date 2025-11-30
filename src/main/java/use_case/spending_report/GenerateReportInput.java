@@ -1,14 +1,11 @@
 package use_case.spending_report;
 
 public class GenerateReportInput {
-    private final String month;
-    private final int userId;
+    private final String username;
 
-    public GenerateReportInput(int userId, String month) {
-        this.userId = userId;
-        this.month = month;
+    public GenerateReportInput(String username) {
+        this.username = username;
     }
 
-    public int getUserId() { return userId; }
-    public String getMonth() { return month; }
+    public String getUsername() { return username; }
 }
