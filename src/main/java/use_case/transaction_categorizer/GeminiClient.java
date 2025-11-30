@@ -1,4 +1,4 @@
-package use_case.ai_insights;
+package use_case.transaction_categorizer;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -10,10 +10,10 @@ public class GeminiClient {
     private static final String MODEL = "gemini-2.5-flash";
     private static final String API_KEY = System.getenv("GEMINI_API_KEY");
 
-    public String generateInsight(String prompt) {
+    public String askGemini(String prompt) {
 
         if (API_KEY == null) {
-            throw new IllegalStateException("Missing GEMINI_API_KEY environment variable.");
+            return "ERROR_NO_KEY";
         }
 
         String body = """
@@ -25,8 +25,8 @@ public class GeminiClient {
               ]
             }
           ]
-        }  \s
-       \s""".formatted(prompt.replace("\"", "'"));
+        }
+        """.formatted(prompt.replace("\"", "'"));
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -39,11 +39,10 @@ public class GeminiClient {
             HttpResponse<String> response = HttpClient.newHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
-            return response.body().trim();
+            return response.body();
 
         } catch (Exception e) {
-            return "Error contacting Gemini: " + e.getMessage();
+            return "ERROR contacting Gemini: " + e.getMessage();
         }
     }
-
 }

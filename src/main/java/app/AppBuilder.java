@@ -41,6 +41,9 @@ import use_case.upload_statement.UploadStatementInputBoundary;
 import use_case.upload_statement.UploadStatementInteractor;
 import view.*;
 
+import use_case.transaction_categorizer.TransactionCategorizerService; // <-- ADDED
+import view.TransactionCategorizerView; // <-- ADDED
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -51,14 +54,8 @@ public class AppBuilder {
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    // set which data access implementation to use, can be any
-    // of the classes from the data_access package
-
-    // DAO version using local file storage
     final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
     final InMemoryTransactionDataAccessObject transactionDataAccessObject = new InMemoryTransactionDataAccessObject();
-    // DAO version using a shared external database
-    // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -70,6 +67,10 @@ public class AppBuilder {
     private UploadStatementViewModel uploadStatementViewModel;
     private UploadStatementView uploadStatementView;
     private SpendingLimitsView spendingLimitsView;
+
+    // <-- NEW: Transaction Categorizer View
+    private TransactionCategorizerView categorizerView;
+    private TransactionCategorizerService categorizerService;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -110,6 +111,15 @@ public class AppBuilder {
         return this;
     }
 
+    // <-- NEW: Add Transaction Categorizer View
+    public AppBuilder addCategorizerView() {
+        // Initialize your Gemini AI categorizer with transaction DAO
+        categorizerService = new TransactionCategorizerService(transactionDataAccessObject, System.getenv("GEMINI_API_KEY"));
+        categorizerView = new TransactionCategorizerView(categorizerService);
+        cardPanel.add(categorizerView, categorizerView.getViewName());
+        return this;
+    }
+
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
@@ -143,40 +153,6 @@ public class AppBuilder {
         return this;
     }
 
-
-    public AppBuilder addSpendingReportUseCase() {
-        return this;
-    }
-
-    public AppBuilder addSpendingReportView() {
-        return this;
-    }
-
-    /**
-     * Adds the Logout Use Case to the application.
-     * @return this builder
-     */
-    public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-
-        final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
-
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
-        return this;
-    }
-
-    public AppBuilder addSpendingLimitsUseCase() {
-        final SpendingLimitsOutputBoundary spendingLimitsOutputBoundary = new SpendingLimitsPresenter(viewManagerModel,
-                        spendingLimitsViewModel, uploadStatementViewModel);
-        final SpendingLimitsInputBoundary spendingLimitsInteractor =
-                new SpendingLimitsInteractor(spendingLimitsOutputBoundary, new FileSpendingLimitsDAO());
-        spendingLimitsView.setController(new SpendingLimitsController(spendingLimitsInteractor));
-        return this;
-    }
-
     public AppBuilder addUploadStatementUseCase() {
         final UploadStatementPresenter uploadStatementOutputBoundary =
                 new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel);
@@ -189,9 +165,8 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        final JFrame application = new JFrame("User Login Example");
+        final JFrame application = new JFrame("User App Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         application.add(cardPanel);
 
         viewManagerModel.setState(signupView.getViewName());
@@ -200,5 +175,8 @@ public class AppBuilder {
         return application;
     }
 
-
+    // <-- Optional: getter to test categorizer outside GUI
+    public TransactionCategorizerView getCategorizerView() {
+        return categorizerView;
+    }
 }
