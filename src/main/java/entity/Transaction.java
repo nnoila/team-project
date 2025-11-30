@@ -3,58 +3,25 @@ package entity;
 import java.time.LocalDate;
 
 public class Transaction {
-     public String userId;
-     public LocalDate date;
-     public String description;
-     public int transactionId;
-     public String category;
-     public int amount;
 
-     public int getAmount() {
-        return amount;
-     }
+    private final LocalDate date;
+    private final double amount;
+    private final String description;
+    private String category; // assigned by AI after upload
 
-     public String getUserId() {
-         return this.userId;
-     }
+    public Transaction(LocalDate date, String category, double amount, String description) {
+        this.date = date;
+        this.amount = amount;
+        this.description = description;
+        this.category = "Uncategorized";
+    }
 
-     public LocalDate getDate() {
-         return this.date;
-     }
+    public LocalDate getDate() { return date; }
+    public double getAmount() { return amount; }
+    public String getDescription() { return description; }
+    public String getCategory() { return category; }
 
-     public String getDescription() {
-         return this.description;
-     }
-
-     public int getTransactionId() {
-         return this.transactionId;
-     }
-
-     public String getCategory() {
-         return this.category;
-     }
-
-     public void setUserId(String userId) {
-         this.userId = userId;
-     }
-
-     public void setDate(LocalDate date) {
-         this.date = date;
-     }
-
-     public void setDescription(String description) {
-         this.description = description;
-     }
-
-     public void setTransactionId(int transactionId) {
-         this.transactionId = transactionId;
-     }
-
-     public void setCategory(String category) {
-         this.category = category;
-     }
-
-     public void setAmount(int amount) {
-         this.amount = amount;
-     }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

@@ -52,8 +52,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 final String name = userJSONObject.getString(USERNAME);
                 final String password = userJSONObject.getString(PASSWORD);
 
-                //return userFactory.create(name, password);
-                return null;
+                return userFactory.createUser(name, password);
             }
             else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
@@ -75,7 +74,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     @Override
-    public boolean existsByName(String username) {
+    public boolean existsByUsername(String username) {
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         final Request request = new Request.Builder()
@@ -87,7 +86,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
             final JSONObject responseBody = new JSONObject(response.body().string());
 
-            //                throw new RuntimeException(responseBody.getString("message"));
             return responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE;
         }
         catch (IOException | JSONException ex) {
@@ -103,8 +101,8 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         // POST METHOD
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
         final JSONObject requestBody = new JSONObject();
-        requestBody.put(USERNAME, user.getName());
-        requestBody.put(PASSWORD, user.getPassword());
+        requestBody.put(USERNAME, user.getUsername());
+        // requestBody.put(PASSWORD, user.getPassword());
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
                 .url("http://vm003.teach.cs.toronto.edu:20112/user")
@@ -136,8 +134,8 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         // POST METHOD
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
         final JSONObject requestBody = new JSONObject();
-        requestBody.put(USERNAME, user.getName());
-        requestBody.put(PASSWORD, user.getPassword());
+        requestBody.put(USERNAME, user.getUsername());
+        requestBody.put(PASSWORD, user.getPasswordHash());
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
                                     .url("http://vm003.teach.cs.toronto.edu:20112/user")

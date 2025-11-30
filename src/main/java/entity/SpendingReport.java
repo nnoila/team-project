@@ -2,6 +2,9 @@ package entity;
 
 import java.util.Map;
 
+/**
+ * Spending Report class.
+ */
 public class SpendingReport {
     private String month;
     private float totalSpent;

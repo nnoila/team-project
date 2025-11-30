@@ -9,9 +9,13 @@ public class Main {
                 .addLoginView()
                 .addSignupView()
                 .addLoggedInView()
+                .addUploadStatementView()
+                .addSpendingLimitsView()
+                .addCategorizerView() // <-- Added the transaction categorizer GUI
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
+                .addUploadStatementUseCase()
                 .build();
 
         application.pack();

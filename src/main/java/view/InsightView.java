@@ -7,26 +7,24 @@ import controller.InsightsController;
 import use_case.ai_insights.presenter.InsightPresenter;
 import interface_adapter.InsightViewModel;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
+import javax.swing.*;
+import java.awt.*;
 import java.util.Map;
 
-public class InsightView extends Application {
+public class InsightView extends JFrame {
 
-    @Override
-    public void start(Stage stage) {
+    public InsightView() {
 
-        Label resultLabel = new Label("Press the button to generate insights on your spending pattern.");
-        resultLabel.setWrapText(true);
-        Label spendingSummaryLabel = new Label();
-        spendingSummaryLabel.setWrapText(true);
+        JLabel spendingSummaryLabel = new JLabel("<html>Loading summary...</html>");
+        JLabel resultLabel = new JLabel("<html>Press the button to generate insights on your spending pattern.</html>");
 
-        Button generateButton = new Button("Generate AI Insight");
+        JButton generateButton = new JButton("Generate AI Insight");
+
+        spendingSummaryLabel.setPreferredSize(new Dimension(550, 100));
+        resultLabel.setPreferredSize(new Dimension(550, 250));
+
+        spendingSummaryLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        resultLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 
         InsightViewModel vm = new InsightViewModel();
         InsightPresenter presenter = new InsightPresenter(vm);
@@ -45,27 +43,33 @@ public class InsightView extends Application {
         );
 
         presenter.presentSummary(summary);
-        spendingSummaryLabel.setText(vm.getSpendingBreakdown());
+        spendingSummaryLabel.setText("<html>" + vm.getSpendingBreakdown().replace("\n", "<br>") + "</html>");
 
-        generateButton.setOnAction(event -> {
+        generateButton.addActionListener(e -> {
             controller.generateInsight(summary, "demoUser");
+            String formattedOutput = "<html>" +
+                    vm.getSummary().replace("\n", "<br>") +
+                    "<br><br><b>Tips:</b><br>" +
+                    vm.getRecommendations().replace("\n", "<br>") +
+                    "<br><br>" + vm.getDate() +
+                    "</html>";
 
-            resultLabel.setText(vm.getSummary() + "\n\nTips:\n" +
-                            vm.getRecommendations() + "\n\n" +
-                            vm.getDate()
-            );
+            resultLabel.setText(formattedOutput);
         });
 
-        VBox layout = new VBox(15, spendingSummaryLabel, generateButton, resultLabel);
-        layout.setStyle("-fx-padding: 20;");
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(spendingSummaryLabel);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(generateButton);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(resultLabel);
 
-        Scene scene = new Scene(layout, 600, 500);
-        stage.setScene(scene);
-        stage.setTitle("AI Spending Insights");
-        stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+        setContentPane(panel);
+        setTitle("AI Spending Insights");
+        setSize(600, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
     }
 }
