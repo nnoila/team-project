@@ -52,7 +52,7 @@ public class TransactionCategorizerService {
                 t.setCategory(aiCategory);
 
             } catch (Exception e) {
-                System.err.println("Failed to parse Gemini response: " + raw);
+                System.err.println("Failed to parse Gemini response: " + e.getMessage());
                 t.setCategory("Miscellaneous");
             }
         }
