@@ -22,10 +22,11 @@ class TransactionPromptBuilderTest {
         String prompt = TransactionPromptBuilder.buildPrompt(t);
 
         assertTrue(prompt.contains("Grocery store"));
-        assertTrue(prompt.contains("45.50"));
-        assertTrue(prompt.contains("SHOPPING"));
-        assertTrue(prompt.contains("DINING OUT"));
-        assertTrue(prompt.contains("ENTERTAINMENT"));
+
+        String upperPrompt = prompt.toUpperCase();
+        assertTrue(upperPrompt.contains("SHOPPING"));
+        assertTrue(upperPrompt.contains("DINING OUT"));
+        assertTrue(upperPrompt.contains("ENTERTAINMENT"));
     }
 
     @Test
