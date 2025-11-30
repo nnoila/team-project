@@ -26,7 +26,7 @@ API Used: https://aistudio.google.com/welcome
 4. As a user, I want to _set personalized spending limits and receive alerts when I exceed them_. - Ghina
 5. As a user, I want to search and _filter my transactions_. - Anika
 6. As a user, I want to _securely log in and manage my account_. - Jesslyn
-7. As a user, I want to _receive AI-generated insights and tips_ to improve budgeting. — Naila
+7. As a user, I want to _receive AI-generated insights and tips_ to improve budgeting. - Naila
 
 ## Demo & Animations
 

@@ -13,6 +13,10 @@ import java.util.Map;
 public class InsightPromptBuilder {
 
     public static String buildPrompt(SpendingSummary summary) {
+        String highest = summary.highestCategory();
+        if (highest == null || highest.isBlank()) {
+            highest = "Unknown";
+        }
 
         StringBuilder spendingLines = new StringBuilder();
         for (Map.Entry<String, Double> entry : summary.totals().entrySet()) {
@@ -42,7 +46,8 @@ public class InsightPromptBuilder {
 
             User's spending data:
             """ + spendingLines + """
-            Total spent: $""" + summary.totalSpent();
+            Total spent: $""" + summary.totalSpent() + "\n" +
+            "Highest spending category: " + highest;
     }
 
 }
