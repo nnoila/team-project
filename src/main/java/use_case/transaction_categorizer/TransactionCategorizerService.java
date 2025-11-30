@@ -108,6 +108,8 @@ public class TransactionCategorizerService {
             case "transport", "taxi", "uber", "bus", "car" -> "TRANSPORTATION";
             case "entertainment", "movies", "concert", "streaming" -> "ENTERTAINMENT";
             case "utilities", "internet", "phone", "electricity" -> "UTILITIES";
+            case "groceries" -> "GROCERIES";
+            case "gym", "fitness", "run" -> "FITNESS";
             default -> raw;
         };
     }
