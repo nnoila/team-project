@@ -97,4 +97,27 @@ class InsightServiceTest {
         assertTrue(insight.getRecommendations().isEmpty());
     }
 
+    static class FakeSuccessClient extends InsightClient {
+        @Override
+        public String generateInsight(String prompt) {
+            return "{}";
+        }
+    }
+
+    @Test
+    void generateInsightsSetsTimestamp() {
+        InsightService service = new InsightService(new FakeSuccessClient());
+
+        SpendingSummary summary = new SpendingSummary(
+                50.0,
+                Map.of("Food", 50.0),
+                "Food"
+        );
+
+        Insight insight = service.generateInsights(summary, "user456");
+
+        assertNotNull(insight.getGeneratedAt());
+    }
+
+
 }

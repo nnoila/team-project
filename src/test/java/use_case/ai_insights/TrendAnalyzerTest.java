@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,4 +40,19 @@ class TrendAnalyzerTest {
         assertTrue(summary.totals().isEmpty());
         assertEquals("Unknown", summary.highestCategory());
     }
+
+    @Test
+    void buildPromptHandlesEmptyTotals() {
+        SpendingSummary summary = new SpendingSummary(
+                0.0,
+                Map.of(),
+                "Unknown"
+        );
+
+        String prompt = InsightPromptBuilder.buildPrompt(summary);
+
+        assertTrue(prompt.contains("Total spent: $0.00") || prompt.contains("Total spent: $0"));
+        assertTrue(prompt.contains("Unknown") || prompt.contains("No category"));
+    }
+
 }
