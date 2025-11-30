@@ -21,7 +21,7 @@ class InsightServiceTest {
 
         @Override
         public String generateInsight(String prompt) {
-            // We ignore the prompt, just return stubbed Gemini-like response
+            // we ignore the prompt, just return stubbed Gemini-like response
             JSONObject inner = new JSONObject()
                     .put("summary", "You spent a lot on food.")
                     .put("tips", List.of("Cook at home more", "Track grocery deals"));
