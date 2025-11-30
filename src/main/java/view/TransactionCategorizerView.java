@@ -1,5 +1,6 @@
 package view;
 
+import entity.SpendingLimit;
 import entity.SpendingSummary;
 import entity.Transaction;
 import interface_adapter.categorizer.CategorizerController;
@@ -53,11 +54,12 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
             JOptionPane.showMessageDialog(this, "Categorize transactions first.");
             return;
         }
-
         TrendAnalyzer analyzer = new TrendAnalyzer();
         SpendingSummary summary = analyzer.analyze(vm.getTransactions());
-
-        new InsightView(summary);
+        List<SpendingLimit> spendingLimits =
+                categorizerController.getSpendingLimits(vm.getTransactions().get(0).getUsername());
+        new  InsightView(new SpendingSummary(summary.totalSpent(), summary.totals(),
+                summary.highestCategory(), spendingLimits));
     }
 
     public String getViewName() { return viewName; }

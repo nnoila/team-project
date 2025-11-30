@@ -1,5 +1,7 @@
 package use_case.ai_insights;
 import entity.Insight;
+import entity.SpendingLimit;
+import entity.Transaction;
 import use_case.transaction_categorizer.GeminiClient;
 import entity.SpendingSummary;
 
@@ -26,6 +28,14 @@ public class InsightPromptBuilder {
                     .append("\n");
         }
 
+        StringBuilder spendingLimitsLines = new StringBuilder();
+        for (SpendingLimit spendingLimit : summary.spendingLimits()) {
+            spendingLimitsLines.append(spendingLimit.getCategory())
+                    .append(": $")
+                    .append(spendingLimit.getLimit())
+                    .append("\n");
+        }
+
         return """
             You are a financial assistant. Analyze the user's spending.
 
@@ -46,6 +56,8 @@ public class InsightPromptBuilder {
 
             User's spending data:
             """ + spendingLines + """
+            User's spending limits:
+            """ + spendingLimitsLines + """
             Total spent: $""" + summary.totalSpent() + "\n" +
             "Highest spending category: " + highest;
     }

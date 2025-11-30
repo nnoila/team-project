@@ -5,6 +5,7 @@ import use_case.ai_insights.InsightService;
 import entity.Insight;
 import entity.SpendingSummary;
 
+import java.util.List;
 import java.util.Map;
 
 public class InsightConsole {
@@ -19,7 +20,7 @@ public class InsightConsole {
                         "Groceries", 320.25,
                         "Shopping", 30.00
                 ),
-                "Groceries"
+                "Groceries", List.of()
         );
 
         String userId = "naila";

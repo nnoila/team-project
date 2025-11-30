@@ -1,5 +1,6 @@
 package interface_adapter.categorizer;
 
+import entity.SpendingLimit;
 import entity.Transaction;
 import use_case.transaction_categorizer.CategorizerInputBoundary;
 import use_case.transaction_categorizer.TransactionCategorizerService;
@@ -20,6 +21,10 @@ public class CategorizerController {
 
     public void goToSpendingReport(String username) {
         categorizerInputBoundary.goToSpendingReport(username);
+    }
+
+    public List<SpendingLimit> getSpendingLimits(String username) {
+        return categorizerInputBoundary.getSpendingLimits(username);
     }
 
 }

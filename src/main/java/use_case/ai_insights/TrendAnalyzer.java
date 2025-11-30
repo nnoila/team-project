@@ -32,7 +32,7 @@ public class TrendAnalyzer {
                 .orElse("Unknown");
 
 
-        return new SpendingSummary(totalSpent, totals, highestCategory);
+        return new SpendingSummary(totalSpent, totals, highestCategory, List.of());
     }
 
 }

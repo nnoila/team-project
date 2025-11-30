@@ -3,6 +3,7 @@ package use_case.ai_insights;
 import entity.SpendingSummary;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +18,8 @@ class InsightPromptBuilderTest {
                         "Food", 60.0,
                         "Shopping", 40.0
                 ),
-                "Food"
+                "Food",
+                List.of()
         );
 
         String prompt = InsightPromptBuilder.buildPrompt(summary);

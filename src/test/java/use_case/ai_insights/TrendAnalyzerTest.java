@@ -46,7 +46,7 @@ class TrendAnalyzerTest {
         SpendingSummary summary = new SpendingSummary(
                 0.0,
                 Map.of(),
-                "Unknown"
+                "Unknown", List.of()
         );
 
         String prompt = InsightPromptBuilder.buildPrompt(summary);

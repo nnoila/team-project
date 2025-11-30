@@ -1,5 +1,6 @@
 package use_case.transaction_categorizer;
 
+import entity.SpendingLimit;
 import entity.Transaction;
 
 import java.util.List;
@@ -7,4 +8,5 @@ import java.util.List;
 public interface CategorizerInputBoundary {
     void generateCategories(List<Transaction> transactions);
     void goToSpendingReport(String username);
+    List<SpendingLimit> getSpendingLimits(String username);
 }

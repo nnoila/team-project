@@ -39,6 +39,7 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.spending_limits.SpendingLimitsDataAccessInterface;
 import use_case.spending_limits.SpendingLimitsInputBoundary;
 import use_case.spending_limits.SpendingLimitsInteractor;
 import use_case.spending_limits.SpendingLimitsOutputBoundary;
@@ -130,7 +131,7 @@ public class AppBuilder {
         final CategorizerOutputBoundary categorizerOutputBoundary = new CategorizerPresenter(categorizerViewModel,
                 viewManagerModel, spendingReportViewModel);
         CategorizerInputBoundary categorizerInputBoundary =
-                new CategorizerInteractor(new TransactionCategorizerService(new GeminiClient()), categorizerOutputBoundary);
+                new CategorizerInteractor(new TransactionCategorizerService(new GeminiClient()), categorizerOutputBoundary, new FileSpendingLimitsDAO());
         CategorizerController categorizerController = new CategorizerController(categorizerInputBoundary);
         categorizerView = new TransactionCategorizerView(categorizerViewModel);
         categorizerView.setCategorizerController(categorizerController);

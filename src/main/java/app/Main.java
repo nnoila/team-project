@@ -16,11 +16,11 @@ public class Main {
                 .addCategorizerView() // <-- Added the transaction categorizer GUI
                 .addCategorizerUseCase()
                 .addSignupUseCase()
-                .addSpendingLimitsUseCase()
                 .addUploadStatementView()
+                .addUploadStatementUseCase()
+                .addSpendingLimitsUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
-                .addUploadStatementUseCase()
                 .build();
 
         application.pack();

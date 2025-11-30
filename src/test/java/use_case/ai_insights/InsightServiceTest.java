@@ -45,7 +45,7 @@ class InsightServiceTest {
         SpendingSummary summary = new SpendingSummary(
                 200.0,
                 Map.of("Food", 150.0, "Other", 50.0),
-                "Food"
+                "Food", List.of()
         );
 
         InsightService service = new InsightService(new StubInsightClient("{}"));
@@ -62,7 +62,7 @@ class InsightServiceTest {
         SpendingSummary summary = new SpendingSummary(
                 0.0,
                 Map.of(),
-                "Unknown"
+                "Unknown", List.of()
         );
 
         InsightService service = new InsightService(new StubInsightClient("{}"));
@@ -87,7 +87,7 @@ class InsightServiceTest {
         SpendingSummary summary = new SpendingSummary(
                 150.0,
                 Map.of("Food", 150.0),
-                "Food"
+                "Food", List.of()
         );
 
         Insight insight = service.generateInsights(summary, "userABC");
@@ -111,7 +111,7 @@ class InsightServiceTest {
         SpendingSummary summary = new SpendingSummary(
                 50.0,
                 Map.of("Food", 50.0),
-                "Food"
+                "Food", List.of()
         );
 
         Insight insight = service.generateInsights(summary, "user456");
