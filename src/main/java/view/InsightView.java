@@ -1,6 +1,6 @@
 package view;
 
-import use_case.transaction_categorizer.GeminiClient;
+import use_case.ai_insights.InsightClient;
 import use_case.ai_insights.InsightService;
 import entity.SpendingSummary;
 import controller.InsightsController;
@@ -28,7 +28,7 @@ public class InsightView extends JFrame {
 
         InsightViewModel vm = new InsightViewModel();
         InsightPresenter presenter = new InsightPresenter(vm);
-        InsightService interactor = new InsightService(new GeminiClient());
+        InsightService interactor = new InsightService(new InsightClient());
         InsightsController controller = new InsightsController(interactor, presenter);
 
         // temp spending data

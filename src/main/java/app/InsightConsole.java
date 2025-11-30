@@ -1,6 +1,6 @@
 package app;
 
-import use_case.ai_insights.GeminiClient;
+import use_case.ai_insights.InsightClient;
 import use_case.ai_insights.InsightService;
 import entity.Insight;
 import entity.SpendingSummary;
@@ -24,7 +24,7 @@ public class InsightConsole {
 
         String userId = "naila";
 
-        InsightService service = new InsightService(new GeminiClient());
+        InsightService service = new InsightService(new InsightClient());
         Insight insight = service.generateInsights(summary, userId);
 
         System.out.println("\n========== AI SPENDING INSIGHTS ==========\n");
