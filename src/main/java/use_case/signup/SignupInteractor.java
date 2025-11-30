@@ -21,24 +21,29 @@ public class SignupInteractor implements SignupInputBoundary {
 
     @Override
     public void execute(SignupInputData signupInputData) {
-        if (userDataAccessObject.existsByName(signupInputData.getUsername())) {
+        final String username = signupInputData.getUsername();
+        final String password = signupInputData.getPassword();
+        final String repeatPassword = signupInputData.getRepeatPassword();
+
+        if (userDataAccessObject.existsByUsername(username)) {
             userPresenter.prepareFailView("User already exists.");
         }
-        else if (!signupInputData.getPassword().equals(signupInputData.getRepeatPassword())) {
+        else if (!password.equals(repeatPassword)) {
             userPresenter.prepareFailView("Passwords don't match.");
         }
-        else if ("".equals(signupInputData.getPassword())) {
+        else if (password.isEmpty()) {
             userPresenter.prepareFailView("New password cannot be empty");
         }
-        else if ("".equals(signupInputData.getUsername())) {
+        else if (username.isEmpty()) {
             userPresenter.prepareFailView("Username cannot be empty");
         }
         else {
-            final User user = userFactory.createUser(signupInputData.getUsername(),
-                    UserFactory.hashPasswordSHA256(signupInputData.getPassword()));
+            final String passwordHash = UserFactory.hashPasswordSHA256(password);
+
+            final User user = userFactory.createUser(username, passwordHash);
             userDataAccessObject.save(user);
 
-            final SignupOutputData signupOutputData = new SignupOutputData(user.getName());
+            final SignupOutputData signupOutputData = new SignupOutputData(user.getUsername());
             userPresenter.prepareSuccessView(signupOutputData);
         }
     }

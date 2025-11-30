@@ -21,4 +21,8 @@ public class UploadStatementController {
     public void goToSpendingLimits() {
         interactor.goToSpendingLimits();
     }
+
+    public void goToCategorizer() {
+        interactor.goToCategorizer();
+    }
 }

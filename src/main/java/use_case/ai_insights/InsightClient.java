@@ -5,7 +5,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class GeminiClient {
+public class InsightClient {
 
     private static final String MODEL = "gemini-2.5-flash";
     private static final String API_KEY = System.getenv("GEMINI_API_KEY");
@@ -46,4 +46,8 @@ public class GeminiClient {
         }
     }
 
+
+
+
 }
+

@@ -20,27 +20,20 @@ public class LoginInteractor implements LoginInputBoundary {
     public void execute(LoginInputData loginInputData) {
         final String username = loginInputData.getUsername();
         final String password = loginInputData.getPassword();
-        if (!userDataAccessObject.existsByName(username)) {
+        if (!userDataAccessObject.existsByUsername(username)) {
             loginPresenter.prepareFailView(username + ": Account does not exist.");
         }
         else {
-            final String pwdHash = userDataAccessObject.get(username).getPasswordHash();
-            System.out.println(pwdHash);
-            System.out.println(UserFactory.hashPasswordSHA256(password));
-            System.out.println(UserFactory.hashPasswordSHA256(password));
-            System.out.println(UserFactory.hashPasswordSHA256(password));
-            if (!pwdHash.equals(UserFactory.hashPasswordSHA256(password))) {
+            final User user = userDataAccessObject.get(username);
+            final String inputPasswordHash = UserFactory.hashPasswordSHA256(password);
+
+            if (!user.authenticatePassword(inputPasswordHash)) {
                 loginPresenter.prepareFailView("Incorrect password for \"" + username + "\".");
             }
-            else {
 
-                final User user = userDataAccessObject.get(loginInputData.getUsername());
-
-                userDataAccessObject.setCurrentUsername(username);
-
-                final LoginOutputData loginOutputData = new LoginOutputData(user.getName());
-                loginPresenter.prepareSuccessView(loginOutputData);
-            }
+            userDataAccessObject.setCurrentUsername(username);
+            final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername());
+            loginPresenter.prepareSuccessView(loginOutputData);
         }
     }
 }

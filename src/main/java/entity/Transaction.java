@@ -1,7 +1,6 @@
 package entity;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Transaction {
     private String username;
@@ -24,19 +23,8 @@ public class Transaction {
     public String getUsername() {return username;}
     public Float getAmount() { return amount; }
     public String getCategory() { return category; }
-    
-    public String getMonthYear() {
-        return date.getMonth().toString().substring(0, 3) + " " + date.getYear();
-    }
-    
-    public String getDateString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return date.format(formatter);
-    }
-    
-    @Override
-    public String toString() {
-        return String.format("%s | %s | $%.2f | %s", 
-            getDateString(), category, amount, merchant);
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

@@ -1,7 +1,13 @@
 package use_case.ai_insights;
-
+import entity.Insight;
+import use_case.transaction_categorizer.GeminiClient;
 import entity.SpendingSummary;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 public class InsightPromptBuilder {
@@ -38,4 +44,5 @@ public class InsightPromptBuilder {
             """ + spendingLines + """
             Total spent: $""" + summary.totalSpent();
     }
+
 }

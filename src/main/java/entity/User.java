@@ -10,26 +10,26 @@ import java.util.Map;
 public class User {
 
     private final String userId;
-    private final String name;
+    private final String username;
     private final String passwordHash;
     private final UserPreferences preferences;
     private final Map<String, Float> alertThresholds;
 
     /**
-     * Creates a new user with the given non-empty user id, name, email, encrypted password, default preferences, and
+     * Creates a new user with the given non-empty user id, username, encrypted password, default preferences, and
      * alert thresholds.
      * @param userId the user id
-     * @param name the name
+     * @param username the username
      * @param passwordHash the encrypted password
      * @throws IllegalArgumentException if the name, user id, email, and encrypted password are empty
      */
-    public User(String userId, String name, String passwordHash) {
-        if ("".equals(name) || "".equals(userId) || "".equals(passwordHash)) {
+    public User(String userId, String username, String passwordHash) {
+        if ("".equals(username) || "".equals(userId) || "".equals(passwordHash)) {
             throw new IllegalArgumentException("Field(s) cannot be empty or null");
         }
 
-        this.name = name;
         this.userId = userId;
+        this.username = username;
         this.passwordHash = passwordHash;
         this.preferences = new UserPreferences();
         this.alertThresholds = new HashMap<>();
@@ -45,7 +45,7 @@ public class User {
 
     public String getUserId() { return userId; }
 
-    public String getName() { return name; }
+    public String getUsername() { return username; }
 
     public String getPasswordHash() { return passwordHash; }
 

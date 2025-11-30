@@ -1,8 +1,13 @@
 package use_case.ai_insights;
-
-import entity.SpendingSummary;
+import entity.Insight;
 import entity.Transaction;
+import use_case.transaction_categorizer.GeminiClient;
+import entity.SpendingSummary;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,4 +34,5 @@ public class TrendAnalyzer {
 
         return new SpendingSummary(totalSpent, totals, highestCategory);
     }
+
 }

@@ -32,7 +32,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     private final JButton logOut;
 
-    private final JTextField passwordInputField = new JTextField(15);
+    private final JButton changePasswordButton;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
@@ -49,10 +49,12 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
 
         final JPanel buttons = new JPanel();
+        changePasswordButton = new JButton("Change Password");
+        buttons.add(changePasswordButton);
         logOut = new JButton("Log Out");
         buttons.add(logOut);
 
-
+        changePasswordButton.addActionListener(this);
         logOut.addActionListener(this);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -79,13 +81,45 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
      * @param evt the ActionEvent to react to
      */
     public void actionPerformed(ActionEvent evt) {
-        // TODO: execute the logout use case through the Controller
-        System.out.println("Click " + evt.getActionCommand());
+        Object source = evt.getSource();
+        if (source.equals(logOut)) {
+            logoutController.execute();
+        }
+        else if (source.equals(changePasswordButton)) {
+            handleChangePassword();
+        }
+    }
+
+    private void handleChangePassword() {
+        // Simple dialog to get the new password from the user
+        JPasswordField newPasswordField = new JPasswordField(15);
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                newPasswordField,
+                "Enter new password",
+                JOptionPane.OK_CANCEL_OPTION
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            String newPassword = new String(newPasswordField.getPassword());
+            String currentUsername = loggedInViewModel.getState().getUsername();
+            changePasswordController.execute(newPassword, currentUsername);
+        }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        // Update the displayed username when state changes
+        final LoggedInState state = (LoggedInState) evt.getNewValue();
+        username.setText(state.getUsername());
 
+        // Display password error if present (for change password feature)
+        if (state.getPasswordError() != null) {
+            passwordErrorField.setText(state.getPasswordError());
+            JOptionPane.showMessageDialog(this, state.getPasswordError());
+        } else {
+            passwordErrorField.setText("");
+        }
     }
 
     private void chooseCSVFile() {
@@ -106,8 +140,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
 
     public void setLogoutController(LogoutController logoutController) {
-        // TODO: save the logout controller in the instance variable.
+        this.logoutController = logoutController;
     }
     public void setUploadStatementController(UploadStatementController uploadStatementController) {
         this.uploadStatementController = uploadStatementController; }
+    public void setChangePasswordController(ChangePasswordController changePasswordController) {
+        this.changePasswordController = changePasswordController;
+    }
 }

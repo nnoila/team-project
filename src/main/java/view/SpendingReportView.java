@@ -52,7 +52,7 @@ public class SpendingReportView extends JPanel {
             chartPanelContainer.removeAll();
             chartPanelContainer.revalidate();
             chartPanelContainer.repaint();
-            JOptionPane.showMessageDialog(this, "No transactions found for this month.");
+            // JOptionPane.showMessageDialog(this, "No transactions found for this month.");
             return;
         }
         chartPanelContainer.removeAll();

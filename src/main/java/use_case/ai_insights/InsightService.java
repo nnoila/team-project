@@ -1,9 +1,10 @@
 package use_case.ai_insights;
-
 import entity.Insight;
+import use_case.ai_insights.InsightClient;
 import entity.SpendingSummary;
-import org.json.JSONObject;
+
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ import java.util.List;
 
 public class InsightService {
 
-    private final GeminiClient gemini;
+    private final InsightClient gemini;
 
-    public InsightService(GeminiClient gemini) {
+    public InsightService(InsightClient gemini) {
         this.gemini = gemini;
     }
 
@@ -74,3 +75,5 @@ public class InsightService {
         return insight;
     }
 }
+
+

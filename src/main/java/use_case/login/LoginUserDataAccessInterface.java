@@ -12,13 +12,7 @@ public interface LoginUserDataAccessInterface {
      * @param username the username to look for
      * @return true if a user with the given username exists; false otherwise
      */
-    boolean existsByName(String username);
-
-    /**
-     * Saves the user.
-     * @param user the user to save
-     */
-    void save(User user);
+    boolean existsByUsername(String username);
 
     /**
      * Returns the user with the given username.

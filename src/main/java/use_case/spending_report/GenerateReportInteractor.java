@@ -29,7 +29,7 @@ public class GenerateReportInteractor implements GenerateReportInputBoundary {
         Map<String, Float> categoryTotals = new HashMap<>();
         for (Transaction t : transactions) {
             String category = t.getCategory();
-            Float amount = t.getAmount();
+            Float amount = (float) t.getAmount();
             
             if (categoryTotals.containsKey(category)) {
                 categoryTotals.put(category, categoryTotals.get(category) + amount);

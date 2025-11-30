@@ -4,4 +4,5 @@ public interface UploadStatementInputBoundary {
     void execute(UploadStatementInputData inputData);
     void goToSpendingLimits();
     void goToSpendingReport();
+    void goToCategorizer();
 }

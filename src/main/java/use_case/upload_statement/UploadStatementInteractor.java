@@ -34,7 +34,7 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
             br.readLine();
 
             while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
+                String[] values = line.split(",",4);
 
                 LocalDate date = LocalDate.parse(values[0].trim(), formatter);
                 String description = values[1].trim();
@@ -64,4 +64,9 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
     public void goToSpendingReport() {
         uploadStatementPresenter.prepareSpendingReportView();
     }
+
+    public void goToCategorizer() {
+        uploadStatementPresenter.prepareCategorizerView();
+    }
+
 }

@@ -5,5 +5,6 @@ public interface UploadStatementOutputBoundary {
     void prepareFailView(String errorMessage);
     void prepareSpendingLimitsView();
     void prepareSpendingReportView();
+    void prepareCategorizerView();
 }
 

@@ -1,10 +1,10 @@
 package view;
 
-import use_case.ai_insights.GeminiClient;
+import use_case.ai_insights.InsightClient;
 import use_case.ai_insights.InsightService;
 import entity.SpendingSummary;
 import controller.InsightsController;
-import use_case.ai_insights.presenter.InsightPresenter;
+import use_case.ai_insights.InsightPresenter;
 import interface_adapter.InsightViewModel;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class InsightView extends JFrame {
 
-    public InsightView() {
+    public InsightView(SpendingSummary summary) {
 
         JLabel spendingSummaryLabel = new JLabel("<html>Loading summary...</html>");
         JLabel resultLabel = new JLabel("<html>Press the button to generate insights on your spending pattern.</html>");
@@ -28,21 +28,12 @@ public class InsightView extends JFrame {
 
         InsightViewModel vm = new InsightViewModel();
         InsightPresenter presenter = new InsightPresenter(vm);
-        InsightService interactor = new InsightService(new GeminiClient());
+        InsightService interactor = new InsightService(new InsightClient());
         InsightsController controller = new InsightsController(interactor, presenter);
 
-        // temp spending data
-        SpendingSummary summary = new SpendingSummary(
-                560.75,
-                Map.of(
-                        "Dining", 210.50,
-                        "Groceries", 320.25,
-                        "Shopping", 30.00
-                ),
-                "Groceries"
-        );
-
         presenter.presentSummary(summary);
+
+
         spendingSummaryLabel.setText("<html>" + vm.getSpendingBreakdown().replace("\n", "<br>") + "</html>");
 
         generateButton.addActionListener(e -> {

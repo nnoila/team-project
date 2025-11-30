@@ -171,7 +171,21 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        JOptionPane.showMessageDialog(this, "Cancel not implemented yet.");
+        if (evt.getSource().equals(cancel)) {
+            // Clear fields and errors in both view and ViewModel
+            usernameInputField.setText("");
+            passwordInputField.setText("");
+            repeatPasswordInputField.setText("");
+
+            final SignupState state = signupViewModel.getState();
+            state.setUsername("");
+            state.setPassword("");
+            state.setRepeatPassword("");
+            state.setUsernameError(null);
+            state.setPasswordError(null);
+            state.setRepeatPasswordError(null);
+            signupViewModel.setState(state);
+        }
     }
 
     @Override
@@ -179,6 +193,12 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         final SignupState state = (SignupState) evt.getNewValue();
         if (state.getUsernameError() != null) {
             JOptionPane.showMessageDialog(this, state.getUsernameError());
+        }
+        else if (state.getPasswordError() != null) {
+            JOptionPane.showMessageDialog(this, state.getPasswordError());
+        }
+        else if (state.getRepeatPasswordError() != null) {
+            JOptionPane.showMessageDialog(this, state.getRepeatPasswordError());
         }
     }
 

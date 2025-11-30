@@ -20,11 +20,12 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
                                                  ChangePasswordUserDataAccessInterface,
                                                  LogoutUserDataAccessInterface {
 
-    private static final String HEADER = "username,password";
+    private static final String HEADER = "userId,username,password";
 
     private final File csvFile;
     private final Map<String, Integer> headers = new LinkedHashMap<>();
-    private final Map<String, User> accounts = new HashMap<>();
+    private final Map<String, User> accountsByUserId = new HashMap<>();
+    private final Map<String, User> accountsByUsername = new HashMap<>();
 
     private String currentUsername;
 
@@ -37,8 +38,9 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory) {
 
         csvFile = new File(csvPath);
-        headers.put("username", 0);
-        headers.put("password", 1);
+        headers.put("userId", 0);
+        headers.put("username", 1);
+        headers.put("password", 2);
 
         if (csvFile.length() == 0) {
             save();
@@ -55,10 +57,15 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
                 String row;
                 while ((row = reader.readLine()) != null) {
                     final String[] col = row.split(",");
+                    final String userId = String.valueOf(col[headers.get("userId")]);
                     final String username = String.valueOf(col[headers.get("username")]);
                     final String password = String.valueOf(col[headers.get("password")]);
-                    final User user = userFactory.createUser(username, password);
-                    accounts.put(username, user);
+
+                    final User user = userFactory.loadUser(userId, username, password);
+
+                    // Populate both mappings
+                    accountsByUserId.put(userId, user);
+                    accountsByUsername.put(username, user);
                 }
             }
             catch (IOException ex) {
@@ -74,9 +81,9 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
             writer.write(String.join(",", headers.keySet()));
             writer.newLine();
 
-            for (User user : accounts.values()) {
-                final String line = String.format("%s,%s",
-                        user.getName(), user.getPasswordHash());
+            for (User user : accountsByUserId.values()) {
+                final String line = String.format("%s,%s,%s",
+                        user.getUserId(), user.getUsername(), user.getPasswordHash());
                 writer.write(line);
                 writer.newLine();
             }
@@ -91,13 +98,14 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
 
     @Override
     public void save(User user) {
-        accounts.put(user.getName(), user);
+        accountsByUserId.put(user.getUserId(), user);
+        accountsByUsername.put(user.getUsername(), user);
         this.save();
     }
 
     @Override
     public User get(String username) {
-        return accounts.get(username);
+        return accountsByUsername.get(username);
     }
 
     @Override
@@ -111,14 +119,13 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     @Override
-    public boolean existsByName(String identifier) {
-        return accounts.containsKey(identifier);
-    }
+    public boolean existsByUsername(String identifier) { return accountsByUsername.containsKey(identifier); }
 
     @Override
     public void changePassword(User user) {
         // Replace the User object in the map
-        accounts.put(user.getName(), user);
+        accountsByUserId.put(user.getUserId(), user);
+        accountsByUsername.put(user.getUsername(), user);
         save();
     }
 }

@@ -12,7 +12,7 @@ import interface_adapter.TransactionDataAccess;
 public class CSVTransactionDAO implements TransactionDataAccess {
     private List<Transaction> transactions;
     private String csvFilePath;
-    
+
     public CSVTransactionDAO(String csvFilePath) {
         this.csvFilePath = csvFilePath;
         this.transactions = loadTransactionsFromCSV();
@@ -20,7 +20,7 @@ public class CSVTransactionDAO implements TransactionDataAccess {
 
     private List<Transaction> loadTransactionsFromCSV() {
         List<Transaction> loadedTransactions = new ArrayList<>();
-        
+
         try {
             File file = new File(csvFilePath);
             if (!file.exists()) {
@@ -28,19 +28,19 @@ public class CSVTransactionDAO implements TransactionDataAccess {
                 System.err.println("Current directory: " + new File(".").getAbsolutePath());
                 return loadedTransactions; // Return empty list instead of crashing
             }
-            
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            
+
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 String line;
                 boolean isFirstLine = true;
-                
+
                 while ((line = br.readLine()) != null) {
                     if (isFirstLine) {
                         isFirstLine = false;
                         continue;
                     }
-                    
+
                     String[] values = line.split(",");
                     if (values.length == 4) {
                         LocalDate date = LocalDate.parse(values[0].trim(), formatter);
@@ -59,7 +59,7 @@ public class CSVTransactionDAO implements TransactionDataAccess {
             System.err.println("Error parsing CSV data: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         System.out.println("Loaded " + loadedTransactions.size() + " transactions from CSV");
         return loadedTransactions;
     }
@@ -75,12 +75,6 @@ public class CSVTransactionDAO implements TransactionDataAccess {
         try (FileWriter fw = new FileWriter(csvFilePath, true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
-
-            File file = new File(csvFilePath);
-            if (file.length() > 0) {
-                bw.newLine();
-            }
-
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             out.printf("%s,%s,%.2f,%s,%s%n",
@@ -95,4 +89,10 @@ public class CSVTransactionDAO implements TransactionDataAccess {
             System.err.println("Error writing to CSV: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<Transaction> getAllTransactions() {
+        return new ArrayList<>(transactions); // defensive copy
+    }
+
 }

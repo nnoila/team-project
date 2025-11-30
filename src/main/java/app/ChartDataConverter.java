@@ -17,8 +17,8 @@ public class ChartDataConverter {
             .collect(Collectors.groupingBy(
                 Transaction::getCategory,
                 Collectors.groupingBy(
-                    Transaction::getMonthYear,
-                    Collectors.summingDouble(Transaction::getAmount)
+                     t -> t.getDate().getMonth().toString(),
+                     Collectors.summingDouble(Transaction::getAmount)
                 )
             ));
         

@@ -3,6 +3,8 @@ package app;
 import data_access.CSVTransactionDAO;
 import data_access.FileSpendingLimitsDAO;
 import data_access.FileUserDataAccessObject;
+import data_access.InMemoryTransactionDataAccessObject;
+import entity.Transaction;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.ChangePasswordController;
@@ -46,8 +48,12 @@ import use_case.spending_report.GenerateReportPresenter;
 import use_case.spending_report.GenerateReportInteractor;
 import use_case.spending_report.GenerateReportController;
 
+import use_case.transaction_categorizer.TransactionCategorizerService; // <-- ADDED
+import view.TransactionCategorizerView; // <-- ADDED
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -56,10 +62,6 @@ public class AppBuilder {
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    // set which data access implementation to use, can be any
-    // of the classes from the data_access package
-
-    // DAO version using local file storage
     final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
     final CSVTransactionDAO transactionDataAccessObject = new CSVTransactionDAO("transactions.csv");
 
@@ -75,6 +77,10 @@ public class AppBuilder {
     private SpendingLimitsView spendingLimitsView;
     private SpendingReportView spendingReportView;
     private SpendingReportViewModel spendingReportViewModel;
+
+    // Transaction Categorizer View
+    private TransactionCategorizerView categorizerView;
+    private TransactionCategorizerService categorizerService;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -115,6 +121,15 @@ public class AppBuilder {
         return this;
     }
 
+    // Transaction Categorizer View
+    public AppBuilder addCategorizerView() {
+        List<Transaction> transactions = transactionDataAccessObject.getAllTransactions();
+        categorizerView = new TransactionCategorizerView(transactions);
+        cardPanel.add(categorizerView, categorizerView.getViewName());
+
+        return this;
+    }
+
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
@@ -147,7 +162,6 @@ public class AppBuilder {
         ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
         return this;
     }
-
 
 //    public AppBuilder addSpendingReportUseCase() {
 //        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView);
@@ -215,11 +229,6 @@ public class AppBuilder {
     }
 
     public AppBuilder addSpendingReportUseCase() {
-        if (spendingReportView == null) {
-            spendingReportViewModel = new SpendingReportViewModel();
-            spendingReportView = new SpendingReportView();
-        }
-
         final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView);
         final GenerateReportInteractor interactor = new GenerateReportInteractor(
                 transactionDataAccessObject, presenter);
@@ -233,7 +242,7 @@ public class AppBuilder {
         });
 
         SwingUtilities.invokeLater(() -> {
-            spendingReportView.setVisible(true);
+            // spendingReportView.setVisible(true);
             controller.generateReport("default");
         });
 
@@ -241,9 +250,8 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        final JFrame application = new JFrame("User Login Example");
+        final JFrame application = new JFrame("User App Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         application.add(cardPanel);
 
         viewManagerModel.setState(signupView.getViewName());
@@ -252,5 +260,8 @@ public class AppBuilder {
         return application;
     }
 
-
+    // getter to test categorizer outside GUI
+    public TransactionCategorizerView getCategorizerView() {
+        return categorizerView;
+    }
 }
