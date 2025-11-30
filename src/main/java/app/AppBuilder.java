@@ -7,6 +7,9 @@ import data_access.InMemoryTransactionDataAccessObject;
 import entity.Transaction;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.categorizer.CategorizerController;
+import interface_adapter.categorizer.CategorizerPresenter;
+import interface_adapter.categorizer.CategorizerViewModel;
 import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -39,6 +42,7 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.spending_limits.SpendingLimitsInputBoundary;
 import use_case.spending_limits.SpendingLimitsInteractor;
 import use_case.spending_limits.SpendingLimitsOutputBoundary;
+import use_case.transaction_categorizer.*;
 import use_case.upload_statement.UploadStatementInputBoundary;
 import use_case.upload_statement.UploadStatementInteractor;
 import view.*;
@@ -48,7 +52,6 @@ import use_case.spending_report.GenerateReportPresenter;
 import use_case.spending_report.GenerateReportInteractor;
 import use_case.spending_report.GenerateReportController;
 
-import use_case.transaction_categorizer.TransactionCategorizerService; // <-- ADDED
 import view.TransactionCategorizerView; // <-- ADDED
 
 import javax.swing.*;
@@ -77,7 +80,7 @@ public class AppBuilder {
     private SpendingLimitsView spendingLimitsView;
     private SpendingReportView spendingReportView;
     private SpendingReportViewModel spendingReportViewModel;
-
+    private CategorizerViewModel categorizerViewModel;
     // Transaction Categorizer View
     private TransactionCategorizerView categorizerView;
     private TransactionCategorizerService categorizerService;
@@ -123,10 +126,18 @@ public class AppBuilder {
 
     // Transaction Categorizer View
     public AppBuilder addCategorizerView() {
-        List<Transaction> transactions = transactionDataAccessObject.getAllTransactions();
-        categorizerView = new TransactionCategorizerView(transactions);
+        categorizerViewModel = new CategorizerViewModel();
+        final CategorizerOutputBoundary categorizerOutputBoundary = new CategorizerPresenter(categorizerViewModel);
+        CategorizerInputBoundary categorizerInputBoundary =
+                new CategorizerInteractor(new TransactionCategorizerService(new GeminiClient()), categorizerOutputBoundary);
+        CategorizerController categorizerController = new CategorizerController(categorizerInputBoundary);
+        categorizerView = new TransactionCategorizerView(categorizerViewModel);
+        categorizerView.setCategorizerController(categorizerController);
         cardPanel.add(categorizerView, categorizerView.getViewName());
+        return this;
+    }
 
+    public AppBuilder addCategorizerUseCase() {
         return this;
     }
 
@@ -219,7 +230,8 @@ public class AppBuilder {
 
     public AppBuilder addUploadStatementUseCase() {
         final UploadStatementPresenter uploadStatementOutputBoundary =
-                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel, spendingReportViewModel);
+                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel,
+                        spendingReportViewModel, categorizerViewModel);
         final UploadStatementInputBoundary uploadStatementInteractor = new UploadStatementInteractor(transactionDataAccessObject,
                 uploadStatementOutputBoundary);
         UploadStatementController uploadStatementController = new UploadStatementController(uploadStatementInteractor);

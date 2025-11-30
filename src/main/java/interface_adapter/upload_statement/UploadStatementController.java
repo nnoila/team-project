@@ -22,7 +22,7 @@ public class UploadStatementController {
         interactor.goToSpendingLimits();
     }
 
-    public void goToCategorizer() {
-        interactor.goToCategorizer();
+    public void goToCategorizer(UploadStatementInputData inputData) {
+        interactor.goToCategorizer(inputData);
     }
 }

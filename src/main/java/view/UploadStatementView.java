@@ -4,6 +4,7 @@ package view;
 import interface_adapter.upload_statement.UploadStatementController;
 import interface_adapter.upload_statement.UploadStatementState;
 import interface_adapter.upload_statement.UploadStatementViewModel;
+import use_case.upload_statement.UploadStatementInputData;
 
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
@@ -35,7 +36,7 @@ public class UploadStatementView extends JPanel implements PropertyChangeListene
         analyzeStatementButton = new JButton("Analyze Statement");
         buttons.add(analyzeStatementButton);
         analyzeStatementButton.addActionListener(e ->
-                this.uploadStatementController.goToCategorizer()
+                this.uploadStatementController.goToCategorizer(new UploadStatementInputData("", viewModel.getState().getUsername()))
         );
         setSpendingAlertsButton = new JButton("Set Spending Alerts");
         buttons.add(setSpendingAlertsButton);

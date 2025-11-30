@@ -9,9 +9,10 @@ public class Main {
                 .addLoginView()
                 .addSignupView()
                 .addLoggedInView()
-                .addUploadStatementView()
                 .addSpendingLimitsView()
                 .addCategorizerView() // <-- Added the transaction categorizer GUI
+                .addCategorizerUseCase()
+                .addUploadStatementView()
                 .addSpendingReportView()
                 .addSignupUseCase()
                 .addSpendingLimitsUseCase()

@@ -65,8 +65,10 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
         uploadStatementPresenter.prepareSpendingReportView();
     }
 
-    public void goToCategorizer() {
-        uploadStatementPresenter.prepareCategorizerView();
+
+    @Override
+    public void goToCategorizer(UploadStatementInputData inputData) {
+        uploadStatementPresenter.prepareCategorizerView(transactionGateway.getTransactions(inputData.getUsername()));
     }
 
 }
