@@ -16,6 +16,12 @@ public class TransactionCategorizerService {
 
     public void categorize(List<Transaction> transactions) {
 
+        if (System.getenv("GEMINI_API_KEY") == null) {
+            System.out.println("No Gemini API key detected: fallback mode.");
+            transactions.forEach(t -> t.setCategory("ERRNOKEY"));
+            return;
+        }
+
         StringBuilder batchPrompt = new StringBuilder("""
                 You are a classification engine.
                 
@@ -41,10 +47,9 @@ public class TransactionCategorizerService {
                     .append(" ($").append(t.getAmount()).append(")\n");
         }
 
-        // 2) Make ONE call to Gemini
         String response = client.askGemini(batchPrompt.toString());
 
-        System.out.println("\n===== RAW BATCH RESPONSE =====\n" + response + "\n========================\n");
+        System.out.println("\nRAW BATCH RESPONSE\n" + response);
 
         try {
             response = response.replace("```json", "")
@@ -73,7 +78,7 @@ public class TransactionCategorizerService {
             }
 
         } catch (Exception e) {
-            System.err.println("Failed to parse batch — applying fallback");
+            System.err.println("Failed to parse batch, applying fallback");
             transactions.forEach(t -> t.setCategory("MISCELLANEOUS"));
 
         }
