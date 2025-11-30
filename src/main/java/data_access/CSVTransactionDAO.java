@@ -76,6 +76,11 @@ public class CSVTransactionDAO implements TransactionDataAccess {
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
 
+            File file = new File(csvFilePath);
+            if (file.length() > 0) {
+                bw.newLine();
+            }
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             out.printf("%s,%s,%.2f,%s,%s%n",
