@@ -3,13 +3,12 @@ package view;
 import use_case.ai_insights.InsightClient;
 import use_case.ai_insights.InsightService;
 import entity.SpendingSummary;
-import controller.InsightsController;
+import use_case.ai_insights.InsightsController;
 import use_case.ai_insights.InsightPresenter;
 import interface_adapter.InsightViewModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
 
 public class InsightView extends JFrame {
 
