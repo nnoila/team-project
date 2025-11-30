@@ -4,7 +4,7 @@ import use_case.transaction_categorizer.GeminiClient;
 import use_case.ai_insights.InsightService;
 import entity.SpendingSummary;
 import controller.InsightsController;
-import use_case.ai_insights.presenter.InsightPresenter;
+import use_case.ai_insights.InsightPresenter;
 import interface_adapter.InsightViewModel;
 
 import javax.swing.*;

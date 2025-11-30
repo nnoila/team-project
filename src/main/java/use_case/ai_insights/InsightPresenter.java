@@ -1,6 +1,7 @@
 package use_case.ai_insights;
 import entity.Insight;
 import use_case.transaction_categorizer.GeminiClient;
+import interface_adapter.InsightViewModel;
 import entity.SpendingSummary;
 
 import org.json.JSONArray;

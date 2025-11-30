@@ -3,7 +3,7 @@ package controller;
 import entity.Insight;
 import entity.SpendingSummary;
 import use_case.ai_insights.InsightService;
-import use_case.ai_insights.presenter.InsightPresenter;
+import use_case.ai_insights.InsightPresenter;
 
 public class InsightsController {
     private final InsightService interactor;
