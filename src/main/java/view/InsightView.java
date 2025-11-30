@@ -5,7 +5,7 @@ import use_case.ai_insights.InsightService;
 import entity.SpendingSummary;
 import use_case.ai_insights.InsightsController;
 import use_case.ai_insights.InsightPresenter;
-import interface_adapter.InsightViewModel;
+import use_case.ai_insights.InsightViewModel;
 
 import javax.swing.*;
 import java.awt.*;

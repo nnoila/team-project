@@ -1,4 +1,4 @@
-package interface_adapter;
+package use_case.ai_insights;
 
 public class InsightViewModel {
 
