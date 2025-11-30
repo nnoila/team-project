@@ -51,12 +51,27 @@ public class TransactionCategorizerService {
 
         System.out.println("\nRAW BATCH RESPONSE\n" + response);
 
-        try {
-            response = response.replace("```json", "")
+        try {response = response
+                .replace("```json", "")
+                .replace("```", "")
+                .trim();
+
+            JSONObject fullJson = new JSONObject(response);
+
+            String textBlock = fullJson
+                    .getJSONArray("candidates")
+                    .getJSONObject(0)
+                    .getJSONObject("content")
+                    .getJSONArray("parts")
+                    .getJSONObject(0)
+                    .getString("text");
+
+            textBlock = textBlock
+                    .replace("```json", "")
                     .replace("```", "")
                     .trim();
 
-            String jsonOnly = response.replaceAll("(?s).*?(\\[.*\\]).*", "$1");
+            String jsonOnly = textBlock.substring(textBlock.indexOf("["), textBlock.lastIndexOf("]") + 1);
 
             JSONArray jsonArray = new JSONArray(jsonOnly);
 
@@ -65,16 +80,15 @@ public class TransactionCategorizerService {
                         .optString("category", "MISCELLANEOUS")
                         .trim()
                         .toUpperCase()
-                        .replaceAll("[^A-Z ]", ""); // clean symbols
+                        .replaceAll("[^A-Z ]", "");
 
                 category = normalizeCategory(category);
-                category = category.toUpperCase();
 
                 if (!TransactionPromptBuilder.isValid(category)) {
                     category = "MISCELLANEOUS";
                 }
 
-                transactions.get(i).setCategory(category);
+                transactions.get(i).setCategory(category.toUpperCase());
             }
 
         } catch (Exception e) {
