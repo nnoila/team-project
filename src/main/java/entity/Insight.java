@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Insight {
-    private int insightId;
     private String userId;
     private LocalDate generatedAt;
     private String summaryText;
