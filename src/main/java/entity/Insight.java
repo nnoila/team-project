@@ -10,14 +10,6 @@ public class Insight {
     private String summaryText;
     private List<String> recommendations;
 
-    public int getInsightId() {
-        return  this.insightId;
-    }
-
-    public void setInsightId(int insightId) {
-        this.insightId = insightId;
-    }
-
     public String getUserId() {
         return this.userId;
     }
