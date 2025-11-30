@@ -68,7 +68,7 @@ public class AppBuilder {
     private UploadStatementView uploadStatementView;
     private SpendingLimitsView spendingLimitsView;
 
-    // <-- NEW: Transaction Categorizer View
+    // Transaction Categorizer View
     private TransactionCategorizerView categorizerView;
     private TransactionCategorizerService categorizerService;
 
@@ -111,9 +111,9 @@ public class AppBuilder {
         return this;
     }
 
-    // <-- NEW: Add Transaction Categorizer View
+    // Transaction Categorizer View
     public AppBuilder addCategorizerView() {
-        // Initialize your Gemini AI categorizer with transaction DAO
+
         categorizerService = new TransactionCategorizerService(transactionDataAccessObject, System.getenv("GEMINI_API_KEY"));
         categorizerView = new TransactionCategorizerView(categorizerService);
         cardPanel.add(categorizerView, categorizerView.getViewName());
@@ -175,7 +175,7 @@ public class AppBuilder {
         return application;
     }
 
-    // <-- Optional: getter to test categorizer outside GUI
+    // getter to test categorizer outside GUI
     public TransactionCategorizerView getCategorizerView() {
         return categorizerView;
     }

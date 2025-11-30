@@ -11,7 +11,7 @@ public class Main {
                 .addLoggedInView()
                 .addUploadStatementView()
                 .addSpendingLimitsView()
-                .addCategorizerView() // <-- Added your transaction categorizer GUI
+                .addCategorizerView() // <-- Added the transaction categorizer GUI
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
