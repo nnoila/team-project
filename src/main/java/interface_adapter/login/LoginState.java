@@ -8,6 +8,17 @@ public class LoginState {
     private String loginError;
     private String password = "";
 
+    // Copy constructor for creating defensive copies
+    public LoginState(LoginState copy) {
+        username = copy.username;
+        loginError = copy.loginError;
+        password = copy.password;
+    }
+
+    // Default constructor
+    public LoginState() {
+    }
+
     public String getUsername() {
         return username;
     }
@@ -24,8 +35,8 @@ public class LoginState {
         this.username = username;
     }
 
-    public void setLoginError(String usernameError) {
-        this.loginError = usernameError;
+    public void setLoginError(String loginError) {
+        this.loginError = loginError;
     }
 
     public void setPassword(String password) {
