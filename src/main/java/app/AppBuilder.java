@@ -242,7 +242,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addSpendingReportUseCase() {
-        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView);
+        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView, viewManagerModel);
         final GenerateReportInteractor interactor = new GenerateReportInteractor(
                 transactionDataAccessObject, presenter);
         final GenerateReportController controller = new GenerateReportController(interactor);

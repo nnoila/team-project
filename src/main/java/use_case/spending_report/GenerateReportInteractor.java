@@ -41,4 +41,9 @@ public class GenerateReportInteractor implements GenerateReportInputBoundary {
         SpendingReport report = new SpendingReport(categoryTotals);
         presenter.presentReport(new GenerateReportOutput(report, true));
     }
+
+    @Override
+    public void backToCategorizeView() {
+        presenter.backToCategorizeView();
+    }
 }

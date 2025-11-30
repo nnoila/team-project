@@ -11,4 +11,8 @@ public class GenerateReportController {
         GenerateReportInput inputData = new GenerateReportInput(username);
         interactor.execute(inputData);
     }
+
+    public void backToCategorizeView() {
+        interactor.backToCategorizeView();
+    }
 }

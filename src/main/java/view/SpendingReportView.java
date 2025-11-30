@@ -16,6 +16,7 @@ public class SpendingReportView extends JPanel {
     private final String viewName = "spending report";
     private GenerateReportController controller;
     private final SpendingReportViewModel viewModel;
+    private final JButton backButton;
 
     public void setGenerateReportController(GenerateReportController controller) {
         this.controller = controller;
@@ -33,10 +34,15 @@ public class SpendingReportView extends JPanel {
 
         topPanel.add(new JLabel("Chart Type:"));
         topPanel.add(chartTypeDropdown);
+        backButton = new JButton("Back");
+        topPanel.add(backButton);
         add(topPanel, BorderLayout.NORTH);
 
         chartPanelContainer = new JPanel(new BorderLayout());
         add(chartPanelContainer, BorderLayout.CENTER);
+        backButton.addActionListener(e-> {
+            controller.backToCategorizeView();
+        });
 
         // Wire UI listeners on the SpendingReportView to call the controller
         this.addChartTypeDropdownListener(e -> {
