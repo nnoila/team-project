@@ -27,6 +27,9 @@ public class UploadStatementView extends JPanel implements PropertyChangeListene
         final JPanel buttons = new JPanel();
         analyzeStatementButton = new JButton("Analyze Statement");
         buttons.add(analyzeStatementButton);
+        analyzeStatementButton.addActionListener(e ->
+                this.uploadStatementController.goToCategorizer()
+        );
         setSpendingAlertsButton = new JButton("Set Spending Alerts");
         buttons.add(setSpendingAlertsButton);
         setSpendingAlertsButton.addActionListener(e ->
