@@ -1,9 +1,7 @@
-package controller;
+package use_case.ai_insights;
 
 import entity.Insight;
 import entity.SpendingSummary;
-import use_case.ai_insights.InsightService;
-import use_case.ai_insights.InsightPresenter;
 
 public class InsightsController {
     private final InsightService interactor;

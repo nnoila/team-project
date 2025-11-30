@@ -36,7 +36,8 @@ public class InsightService {
         System.out.println("\nRAW RESPONSE >>>\n" + rawResponse + "\n<<< END\n");
 
         try {
-            rawResponse = rawResponse.replace("```json", "").replace("```", "").trim();
+            rawResponse = rawResponse.replace("```json", "").replace("```", "").
+                    trim();
 
             JSONObject root = new JSONObject(rawResponse);
 
