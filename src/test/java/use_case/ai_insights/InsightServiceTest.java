@@ -21,7 +21,7 @@ class InsightServiceTest {
 
         @Override
         public String generateInsight(String prompt) {
-            // We ignore the prompt, just return stubbed Gemini-like response
+            // we ignore the prompt, just return stubbed Gemini-like response
             JSONObject inner = new JSONObject()
                     .put("summary", "You spent a lot on food.")
                     .put("tips", List.of("Cook at home more", "Track grocery deals"));
@@ -72,4 +72,29 @@ class InsightServiceTest {
         assertEquals("Not enough transaction data to generate insights.", insight.getSummaryText());
         assertEquals(1, insight.getRecommendations().size());
     }
+
+    static class FakeFailingClient extends InsightClient {
+        @Override
+        public String generateInsight(String prompt) {
+            return "{not valid json}";
+        }
+    }
+
+    @Test
+    void generateInsightsHandlesMalformedGeminiResponse() {
+        InsightService service = new InsightService(new FakeFailingClient());
+
+        SpendingSummary summary = new SpendingSummary(
+                150.0,
+                Map.of("Food", 150.0),
+                "Food"
+        );
+
+        Insight insight = service.generateInsights(summary, "userABC");
+
+        assertEquals("userABC", insight.getUserId());
+        assertEquals("Insight generation failed.", insight.getSummaryText());
+        assertTrue(insight.getRecommendations().isEmpty());
+    }
+
 }
