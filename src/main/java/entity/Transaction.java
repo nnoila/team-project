@@ -10,6 +10,14 @@ public class Transaction {
     private String category;
 
     // Constructor for CSV data
+    public Transaction(LocalDate date, String category, double amount, String description) {
+        this.date = date;
+        this.merchant = description;
+        this.amount = (float) amount;
+        this.category = category;
+    }
+
+    // Constructor for CSV data
     public Transaction(LocalDate date, String category, double amount, String description, String username) {
         this.date = date;
         this.merchant = description;
