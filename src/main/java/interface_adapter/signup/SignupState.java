@@ -11,6 +11,20 @@ public class SignupState {
     private String repeatPassword = "";
     private String repeatPasswordError;
 
+    // Copy constructor for creating defensive copies
+    public SignupState(SignupState copy) {
+        username = copy.username;
+        usernameError = copy.usernameError;
+        password = copy.password;
+        passwordError = copy.passwordError;
+        repeatPassword = copy.repeatPassword;
+        repeatPasswordError = copy.repeatPasswordError;
+    }
+
+    // Default constructor
+    public SignupState() {
+    }
+
     public String getUsername() {
         return username;
     }

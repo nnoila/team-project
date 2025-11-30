@@ -25,12 +25,25 @@ public class ChangePasswordInteractor implements ChangePasswordInputBoundary {
             userPresenter.prepareFailView("New password cannot be empty");
         }
         else {
-            //final User user = userFactory.create(changePasswordInputData.getUsername(),
-            //        changePasswordInputData.getPassword());
-            //userDataAccessObject.changePassword(user);
+            // Retrieve the existing user to get their userId
+            final User existingUser = userDataAccessObject.get(changePasswordInputData.getUsername());
 
-            //final ChangePasswordOutputData changePasswordOutputData = new ChangePasswordOutputData(user.getName());
-            //userPresenter.prepareSuccessView(changePasswordOutputData);
+            // Hash the new password
+            final String newPasswordHash = UserFactory.hashPasswordSHA256(changePasswordInputData.getPassword());
+
+            // Create a new User object with the same userId but new password hash
+            final User updatedUser = userFactory.loadUser(
+                    existingUser.getUserId(),
+                    existingUser.getUsername(),
+                    newPasswordHash
+            );
+
+            // Save the updated user
+            userDataAccessObject.changePassword(updatedUser);
+
+            // Prepare success response
+            final ChangePasswordOutputData changePasswordOutputData = new ChangePasswordOutputData(updatedUser.getUsername());
+            userPresenter.prepareSuccessView(changePasswordOutputData);
         }
     }
 }
