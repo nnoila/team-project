@@ -16,7 +16,7 @@ import java.util.List;
 public class UploadStatementInteractor implements UploadStatementInputBoundary {
     private final InMemoryTransactionDataAccessObject transactionGateway;
     private final UploadStatementOutputBoundary uploadStatementPresenter;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public UploadStatementInteractor(InMemoryTransactionDataAccessObject transactionGateway,
                                      UploadStatementPresenter uploadStatementPresenter) {
@@ -35,13 +35,14 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
             br.readLine();
 
             while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
+                String[] values = line.split(",",4);
 
-                LocalDate date = LocalDate.parse(values[0], formatter);
-                String title = values[1];
+                LocalDate date = LocalDate.parse(values[0].trim(), formatter);
+                String category = values[1].trim();
                 double amount = Double.parseDouble(values[2]);
+                String description = values[3].trim();
 
-                Transaction transaction = new Transaction(date, category, amount, title);
+                Transaction transaction = new Transaction(date, category, amount, description);
 
                 transactionGateway.saveTransaction(transaction);
             }
@@ -60,4 +61,10 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
     public void goToSpendingLimits() {
         uploadStatementPresenter.prepareSpendingLimitsView();
     }
+
+    @Override
+    public void goToCategorizer() {
+        uploadStatementPresenter.prepareCategorizerView();
+    }
+
 }

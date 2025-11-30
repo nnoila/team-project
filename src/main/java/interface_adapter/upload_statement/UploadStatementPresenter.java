@@ -44,4 +44,11 @@ public class UploadStatementPresenter implements UploadStatementOutputBoundary {
         this.viewManagerModel.setState(spendingLimitsViewModel.getViewName());
         this.viewManagerModel.firePropertyChange();
     }
+
+    @Override
+    public void prepareCategorizerView() {
+        viewManagerModel.setState("categorizer view");
+        viewManagerModel.firePropertyChange();
+    }
+
 }

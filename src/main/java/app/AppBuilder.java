@@ -3,6 +3,7 @@ package app;
 import data_access.FileSpendingLimitsDAO;
 import data_access.FileUserDataAccessObject;
 import data_access.InMemoryTransactionDataAccessObject;
+import entity.Transaction;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.ChangePasswordController;
@@ -46,6 +47,7 @@ import view.TransactionCategorizerView; // <-- ADDED
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -113,10 +115,10 @@ public class AppBuilder {
 
     // Transaction Categorizer View
     public AppBuilder addCategorizerView() {
-
-        categorizerService = new TransactionCategorizerService(transactionDataAccessObject, System.getenv("GEMINI_API_KEY"));
-        categorizerView = new TransactionCategorizerView(categorizerService);
+        List<Transaction> transactions = transactionDataAccessObject.getAllTransactions();
+        categorizerView = new TransactionCategorizerView(transactions);
         cardPanel.add(categorizerView, categorizerView.getViewName());
+
         return this;
     }
 

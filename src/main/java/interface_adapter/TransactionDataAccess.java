@@ -6,4 +6,5 @@ import entity.Transaction;
 
 public interface TransactionDataAccess {
     List<Transaction> getTransactions(int userId, String month);
+    List<Transaction> getAllTransactions();
 }

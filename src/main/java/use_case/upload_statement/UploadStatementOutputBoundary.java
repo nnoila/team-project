@@ -4,5 +4,6 @@ public interface UploadStatementOutputBoundary {
     void prepareSuccessView(UploadStatementOutputData outputData);
     void prepareFailView(String errorMessage);
     void prepareSpendingLimitsView();
+    void prepareCategorizerView();
 }
 

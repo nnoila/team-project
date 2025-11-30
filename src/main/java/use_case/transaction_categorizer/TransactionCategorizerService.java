@@ -16,45 +16,100 @@ public class TransactionCategorizerService {
 
     public void categorize(List<Transaction> transactions) {
 
+        if (System.getenv("GEMINI_API_KEY") == null) {
+            System.out.println("No Gemini API key detected: fallback mode.");
+            transactions.forEach(t -> t.setCategory("ERRNOKEY"));
+            return;
+        }
+
+        StringBuilder batchPrompt = new StringBuilder("""
+                You are a classification engine.
+                
+                Categorize each transaction into EXACTLY one of the following categories:
+                SHOPPING, DINING OUT, ENTERTAINMENT, UTILITIES, TRANSPORTATION, FITNESS, MISCELLANEOUS.
+                
+                IMPORTANT:
+                - Respond ONLY with VALID JSON.
+                - NO explanations, no comments.
+                - DO NOT add extra text.
+                - Format MUST be:
+                
+                [
+                  {"description": "...", "category": "SHOPPING"},
+                  {"description": "...", "category": "DINING OUT"}
+                ]
+                
+                Here are the transactions:
+                """);
+
         for (Transaction t : transactions) {
-            String prompt = TransactionPromptBuilder.buildPrompt(t);
+            batchPrompt.append("- ").append(t.getDescription())
+                    .append(" ($").append(t.getAmount()).append(")\n");
+        }
 
-            String response = client.askGemini(prompt);
+        String response = client.askGemini(batchPrompt.toString());
 
-            // if missing key → default
-            if (response.equals("ERROR_NO_KEY")) {
-                t.setCategory("MISCELLANEOUS");
-                continue;
-            }
+        System.out.println("\nRAW BATCH RESPONSE\n" + response);
 
-            try {
-                JSONObject json = new JSONObject(response);
-                JSONArray parts = json
-                        .getJSONArray("candidates")
-                        .getJSONObject(0)
-                        .getJSONObject("content")
-                        .getJSONArray("parts");
+        try {response = response
+                .replace("```json", "")
+                .replace("```", "")
+                .trim();
 
-                String aiCategory = parts.getJSONObject(0).getString("text").trim();
-                aiCategory = aiCategory
-                        .replace("\"", "")
-                        .replace(".", "")
-                        .replace("`", "")
-                        .trim();
+            JSONObject fullJson = new JSONObject(response);
 
-                String normalized = aiCategory.toUpperCase();
+            String textBlock = fullJson
+                    .getJSONArray("candidates")
+                    .getJSONObject(0)
+                    .getJSONObject("content")
+                    .getJSONArray("parts")
+                    .getJSONObject(0)
+                    .getString("text");
 
-                if (!TransactionPromptBuilder.isValid(normalized)) {
-                    aiCategory = "Miscellaneous";
+            textBlock = textBlock
+                    .replace("```json", "")
+                    .replace("```", "")
+                    .trim();
+
+            String jsonOnly = textBlock.substring(textBlock.indexOf("["), textBlock.lastIndexOf("]") + 1);
+
+            JSONArray jsonArray = new JSONArray(jsonOnly);
+
+            for (int i = 0; i < transactions.size() && i < jsonArray.length(); i++) {
+                String category = jsonArray.getJSONObject(i)
+                        .optString("category", "MISCELLANEOUS")
+                        .trim()
+                        .toUpperCase()
+                        .replaceAll("[^A-Z ]", "");
+
+                category = normalizeCategory(category);
+
+                if (!TransactionPromptBuilder.isValid(category)) {
+                    category = "MISCELLANEOUS";
                 }
 
-                // 4. Save result to entity
-                t.setCategory(aiCategory);
-
-            } catch (Exception e) {
-                System.err.println("Failed to parse Gemini response: " + e.getMessage());
-                t.setCategory("Miscellaneous");
+                transactions.get(i).setCategory(category.toUpperCase());
             }
+
+        } catch (Exception e) {
+            System.err.println("Failed to parse batch, applying fallback");
+            transactions.forEach(t -> t.setCategory("MISCELLANEOUS"));
+
         }
+
     }
+    private String normalizeCategory(String raw) {
+
+        raw = raw.toLowerCase();
+
+        return switch (raw) {
+            case "food", "takeout", "restaurant", "eat out" -> "DINING OUT";
+            case "shopping", "clothes", "electronics" -> "SHOPPING";
+            case "transport", "taxi", "uber", "bus", "car" -> "TRANSPORTATION";
+            case "entertainment", "movies", "concert", "streaming" -> "ENTERTAINMENT";
+            case "utilities", "internet", "phone", "electricity" -> "UTILITIES";
+            default -> raw;
+        };
+    }
+
 }

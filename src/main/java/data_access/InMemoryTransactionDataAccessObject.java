@@ -35,9 +35,9 @@ public class InMemoryTransactionDataAccessObject {
         HashMap<String, Float> result = new HashMap<>();
         for (Transaction transaction : this.transactions) {
             if (result.containsKey(transaction.getCategory())) {
-                result.put(transaction.getCategory(), result.get(transaction.getCategory()) + transaction.getAmount());
+                // result.put(transaction.getCategory(), result.get(transaction.getCategory()) + transaction.getAmount());
             } else {
-                result.put(transaction.getCategory(), transaction.getAmount());
+                // result.put(transaction.getCategory(), transaction.getAmount());
             }
         }
         return result;
