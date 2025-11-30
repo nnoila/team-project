@@ -23,4 +23,10 @@ public class TransactionPromptBuilder {
                         t.getAmount()
                 );
     }
+
+    public static boolean isValid(String category) {
+        return FIXED_CATEGORIES
+                .toUpperCase()
+                .contains(category.toUpperCase());
+    }
 }

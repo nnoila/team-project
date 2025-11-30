@@ -36,11 +36,24 @@ public class TransactionCategorizerService {
                         .getJSONArray("parts");
 
                 String aiCategory = parts.getJSONObject(0).getString("text").trim();
+                aiCategory = aiCategory
+                        .replace("\"", "")
+                        .replace(".", "")
+                        .replace("`", "")
+                        .trim();
 
-                t.setCategory(aiCategory.toUpperCase());
+                String normalized = aiCategory.toUpperCase();
+
+                if (!TransactionPromptBuilder.isValid(normalized)) {
+                    aiCategory = "Miscellaneous";
+                }
+
+                // 4. Save result to entity
+                t.setCategory(aiCategory);
 
             } catch (Exception e) {
-                t.setCategory("MISCELLANEOUS");
+                System.err.println("Failed to parse Gemini response: " + raw);
+                t.setCategory("Miscellaneous");
             }
         }
     }
