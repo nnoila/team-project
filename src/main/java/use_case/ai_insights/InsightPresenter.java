@@ -20,16 +20,16 @@ public class InsightPresenter {
     }
 
     public void presentSummary(SpendingSummary summary) {
-         String breakdown = summary.totals().entrySet().stream()
-             .map(entry -> entry.getKey() + ": $" + entry.getValue())
-             .reduce("", (a, b) -> a + b + "\n")
-             .trim();
+        StringBuilder breakdown = new StringBuilder("Spending Breakdown:\n");
 
-         viewModel.setSpendingBreakdown(
-             "Total Spent: $" + summary.totalSpent() + "\n\n" +
-             "Breakdown:\n" + breakdown + "\n\n" +
-             "Highest Category: " + summary.highestCategory()
-            );
+        for (Map.Entry<String, Double> entry : summary.totals().entrySet()) {
+            breakdown.append(entry.getKey())
+                    .append(": $")
+                    .append(String.format("%.2f", entry.getValue()))
+                    .append("\n");
+        }
+
+        viewModel.setSpendingBreakdown(breakdown.toString());
         }
 
     public void present(Insight insight, SpendingSummary summary) {

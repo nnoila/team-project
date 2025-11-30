@@ -16,45 +16,81 @@ public class TransactionCategorizerService {
 
     public void categorize(List<Transaction> transactions) {
 
+        StringBuilder batchPrompt = new StringBuilder("""
+                You are a classification engine.
+                
+                Categorize each transaction into EXACTLY one of the following categories:
+                SHOPPING, DINING OUT, ENTERTAINMENT, UTILITIES, TRANSPORTATION, FITNESS, MISCELLANEOUS.
+                
+                IMPORTANT:
+                - Respond ONLY with VALID JSON.
+                - NO explanations, no comments.
+                - DO NOT add extra text.
+                - Format MUST be:
+                
+                [
+                  {"description": "...", "category": "SHOPPING"},
+                  {"description": "...", "category": "DINING OUT"}
+                ]
+                
+                Here are the transactions:
+                """);
+
         for (Transaction t : transactions) {
-            String prompt = TransactionPromptBuilder.buildPrompt(t);
+            batchPrompt.append("- ").append(t.getDescription())
+                    .append(" ($").append(t.getAmount()).append(")\n");
+        }
 
-            String response = client.askGemini(prompt);
+        // 2) Make ONE call to Gemini
+        String response = client.askGemini(batchPrompt.toString());
 
-            // if missing key → default
-            if (response.equals("ERROR_NO_KEY")) {
-                t.setCategory("MISCELLANEOUS");
-                continue;
-            }
+        System.out.println("\n===== RAW BATCH RESPONSE =====\n" + response + "\n========================\n");
 
-            try {
-                JSONObject json = new JSONObject(response);
-                JSONArray parts = json
-                        .getJSONArray("candidates")
-                        .getJSONObject(0)
-                        .getJSONObject("content")
-                        .getJSONArray("parts");
+        try {
+            response = response.replace("```json", "")
+                    .replace("```", "")
+                    .trim();
 
-                String aiCategory = parts.getJSONObject(0).getString("text").trim();
-                aiCategory = aiCategory
-                        .replace("\"", "")
-                        .replace(".", "")
-                        .replace("`", "")
-                        .trim();
+            String jsonOnly = response.replaceAll("(?s).*?(\\[.*\\]).*", "$1");
 
-                String normalized = aiCategory.toUpperCase();
+            JSONArray jsonArray = new JSONArray(jsonOnly);
 
-                if (!TransactionPromptBuilder.isValid(normalized)) {
-                    aiCategory = "Miscellaneous";
+            for (int i = 0; i < transactions.size() && i < jsonArray.length(); i++) {
+                String category = jsonArray.getJSONObject(i)
+                        .optString("category", "MISCELLANEOUS")
+                        .trim()
+                        .toUpperCase()
+                        .replaceAll("[^A-Z ]", ""); // clean symbols
+
+                category = normalizeCategory(category);
+                category = category.toUpperCase();
+
+                if (!TransactionPromptBuilder.isValid(category)) {
+                    category = "MISCELLANEOUS";
                 }
 
-                // 4. Save result to entity
-                t.setCategory(aiCategory);
-
-            } catch (Exception e) {
-                System.err.println("Failed to parse Gemini response: " + e.getMessage());
-                t.setCategory("Miscellaneous");
+                transactions.get(i).setCategory(category);
             }
+
+        } catch (Exception e) {
+            System.err.println("Failed to parse batch — applying fallback");
+            transactions.forEach(t -> t.setCategory("MISCELLANEOUS"));
+
         }
+
     }
+    private String normalizeCategory(String raw) {
+
+        raw = raw.toLowerCase();
+
+        return switch (raw) {
+            case "food", "takeout", "restaurant", "eat out" -> "DINING OUT";
+            case "shopping", "clothes", "electronics" -> "SHOPPING";
+            case "transport", "taxi", "uber", "bus", "car" -> "TRANSPORTATION";
+            case "entertainment", "movies", "concert", "streaming" -> "ENTERTAINMENT";
+            case "utilities", "internet", "phone", "electricity" -> "UTILITIES";
+            default -> raw;
+        };
+    }
+
 }

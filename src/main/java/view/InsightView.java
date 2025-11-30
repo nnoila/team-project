@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class InsightView extends JFrame {
 
-    public InsightView() {
+    public InsightView(SpendingSummary summary) {
 
         JLabel spendingSummaryLabel = new JLabel("<html>Loading summary...</html>");
         JLabel resultLabel = new JLabel("<html>Press the button to generate insights on your spending pattern.</html>");
@@ -31,18 +31,9 @@ public class InsightView extends JFrame {
         InsightService interactor = new InsightService(new InsightClient());
         InsightsController controller = new InsightsController(interactor, presenter);
 
-        // temp spending data
-        SpendingSummary summary = new SpendingSummary(
-                560.75,
-                Map.of(
-                        "Dining", 210.50,
-                        "Groceries", 320.25,
-                        "Shopping", 30.00
-                ),
-                "Groceries"
-        );
-
         presenter.presentSummary(summary);
+
+
         spendingSummaryLabel.setText("<html>" + vm.getSpendingBreakdown().replace("\n", "<br>") + "</html>");
 
         generateButton.addActionListener(e -> {
