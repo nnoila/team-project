@@ -61,6 +61,9 @@ public class TransactionPromptBuilder {
     }
 
     public static boolean isValid(String category) {
+        if (category == null || category.trim().isEmpty()) {
+            return false;
+        }
         return FIXED_CATEGORIES
                 .toUpperCase()
                 .contains(category.toUpperCase());
