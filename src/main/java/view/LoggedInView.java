@@ -46,7 +46,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         username = new JLabel();
 
         uploadStatement = new JButton("Upload statement");
-        uploadStatement.addActionListener(this);
+
 
         final JPanel buttons = new JPanel();
         logOut = new JButton("Log Out");
@@ -95,8 +95,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             java.io.File file = fileChooser.getSelectedFile();
-            uploadStatementController.execute(file.getAbsolutePath());
-
+            uploadStatementController.execute(file.getAbsolutePath(), loggedInViewModel.getState().getUsername());
         }
     }
 

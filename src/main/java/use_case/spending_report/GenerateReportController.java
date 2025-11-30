@@ -7,8 +7,8 @@ public class GenerateReportController {
         this.interactor = interactor;
     }
 
-    public void generateReport(int userId, String month) {
-        GenerateReportInput inputData = new GenerateReportInput(userId, month);
+    public void generateReport(String username) {
+        GenerateReportInput inputData = new GenerateReportInput(username);
         interactor.execute(inputData);
     }
 }

@@ -1,5 +1,7 @@
 package app;
 
+import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -9,12 +11,17 @@ public class Main {
                 .addSignupView()
                 .addLoggedInView()
                 .addUploadStatementView()
+                .addSpendingLimitsView()
                 .addSpendingReportView()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
                 .addUploadStatementUseCase()
+                .addSpendingLimitsUseCase()
                 .addSpendingReportUseCase()
                 .build();
+        application.pack();
+        application.setLocationRelativeTo(null);
+        application.setVisible(true);
     }
 }

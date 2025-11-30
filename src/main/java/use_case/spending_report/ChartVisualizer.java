@@ -13,21 +13,19 @@ import javax.swing.JPanel;
 
 public class ChartVisualizer {
     
-    public static JPanel createChart(Map<String, Float> categoryData, String month, String chartType) {
+    public static JPanel createChart(Map<String, Float> categoryData, String chartType) {
         if ("Pie Chart".equals(chartType)) {
-            return new SimplePieChartPanel(categoryData, month);
+            return new SimplePieChartPanel(categoryData);
         } else {
-            return new SimpleBarChartPanel(categoryData, month);
+            return new SimpleBarChartPanel(categoryData);
         }
     }
     
     public static class SimpleBarChartPanel extends JPanel {
         private final java.util.List<Map.Entry<String, Float>> entries;
-        private final String month;
 
-        public SimpleBarChartPanel(Map<String, Float> data, String month) {
+        public SimpleBarChartPanel(Map<String, Float> data) {
             this.entries = new ArrayList<>(data.entrySet());
-            this.month = month;
             setPreferredSize(new Dimension(800, 450));
         }
 
@@ -43,7 +41,7 @@ public class ChartVisualizer {
 
             if (entries.isEmpty()) {
                 g2.setColor(Color.BLACK);
-                g2.drawString("No data to display for " + month, 10, 20);
+                g2.drawString("No data to display", 10, 20);
                 return;
             }
 
@@ -61,7 +59,7 @@ public class ChartVisualizer {
 
             g2.setColor(Color.BLACK);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 16f));
-            g2.drawString("Spending for " + month, padding, 20);
+            g2.drawString("Spending Report", padding, 20);
 
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12f));
             for (Map.Entry<String, Float> e : entries) {
@@ -86,11 +84,9 @@ public class ChartVisualizer {
 
     public static class SimplePieChartPanel extends JPanel {
         private final java.util.List<Map.Entry<String, Float>> entries;
-        private final String month;
 
-        public SimplePieChartPanel(Map<String, Float> data, String month) {
+        public SimplePieChartPanel(Map<String, Float> data) {
             this.entries = new ArrayList<>(data.entrySet());
-            this.month = month;
             setPreferredSize(new Dimension(800, 450));
         }
 
@@ -108,13 +104,13 @@ public class ChartVisualizer {
 
             if (entries.isEmpty()) {
                 g2.setColor(Color.BLACK);
-                g2.drawString("No data to display for " + month, 10, 20);
+                g2.drawString("No data to display", 10, 20);
                 return;
             }
 
             g2.setColor(Color.BLACK);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 16f));
-            g2.drawString("Spending for " + month, 20, 20);
+            g2.drawString("Spending Report", 20, 20);
 
             int diameter = Math.min(width, height) - 100;
             int x = (width - diameter) / 2;

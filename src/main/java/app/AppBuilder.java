@@ -1,7 +1,8 @@
 package app;
 
+import data_access.CSVTransactionDAO;
+import data_access.FileSpendingLimitsDAO;
 import data_access.FileUserDataAccessObject;
-import data_access.InMemoryTransactionDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.ChangePasswordController;
@@ -15,6 +16,9 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.spending_limits.SpendingLimitsController;
+import interface_adapter.spending_limits.SpendingLimitsPresenter;
+import interface_adapter.spending_limits.SpendingLimitsViewModel;
 import interface_adapter.upload_statement.UploadStatementController;
 import interface_adapter.upload_statement.UploadStatementPresenter;
 import interface_adapter.upload_statement.UploadStatementViewModel;
@@ -30,6 +34,9 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.spending_limits.SpendingLimitsInputBoundary;
+import use_case.spending_limits.SpendingLimitsInteractor;
+import use_case.spending_limits.SpendingLimitsOutputBoundary;
 import use_case.upload_statement.UploadStatementInputBoundary;
 import use_case.upload_statement.UploadStatementInteractor;
 import view.*;
@@ -54,18 +61,20 @@ public class AppBuilder {
 
     // DAO version using local file storage
     final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
-    final InMemoryTransactionDataAccessObject transactionDataAccessObject = new InMemoryTransactionDataAccessObject();
-    // DAO version using a shared external database
-    // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    final CSVTransactionDAO transactionDataAccessObject = new CSVTransactionDAO("transactions.csv");
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private SpendingLimitsViewModel spendingLimitsViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
     private UploadStatementViewModel uploadStatementViewModel;
     private UploadStatementView uploadStatementView;
+    private SpendingLimitsView spendingLimitsView;
+    private SpendingReportView spendingReportView;
+    private SpendingReportViewModel spendingReportViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -99,9 +108,10 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addSpendingReportView() {
-        spendingReportViewModel = new SpendingReportViewModel();
-        spendingReportView = new SpendingReportView();
+    public AppBuilder addSpendingLimitsView() {
+        spendingLimitsViewModel = new SpendingLimitsViewModel();
+        spendingLimitsView = new SpendingLimitsView(spendingLimitsViewModel);
+        cardPanel.add(spendingLimitsView, spendingLimitsView.getViewName());
         return this;
     }
 
@@ -139,28 +149,27 @@ public class AppBuilder {
     }
 
 
-    public AppBuilder addSpendingReportUseCase() {
-        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView);
-        final GenerateReportInteractor interactor = new GenerateReportInteractor(
-                transactionDataAccessObject, presenter);
-        final GenerateReportController controller = new GenerateReportController(interactor);
-
-        spendingReportView.addMonthDropdownListener(e -> {
-            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
-            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
-            spendingReportViewModel.setChartType(chartType);
-            controller.generateReport(1, selectedMonth);
-        });
-
-        spendingReportView.addChartTypeDropdownListener(e -> {
-            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
-            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
-            spendingReportViewModel.setChartType(chartType);
-            controller.generateReport(1, selectedMonth);
-        });
-
-        return this;
-    }
+//    public AppBuilder addSpendingReportUseCase() {
+//        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView);
+//        final GenerateReportInteractor interactor = new GenerateReportInteractor(
+//                transactionDataAccessObject, presenter);
+//        final GenerateReportController controller = new GenerateReportController(interactor);
+//
+//        spendingReportView.addMonthDropdownListener(e -> {
+//            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
+//            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
+//            spendingReportViewModel.setChartType(chartType);
+//            controller.generateReport(1, selectedMonth);
+//        });
+//
+//        spendingReportView.addChartTypeDropdownListener(e -> {
+//            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
+//            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
+//            spendingReportViewModel.setChartType(chartType);
+//            controller.generateReport(1, selectedMonth);
+//        });
+//        return this;
+//    }
 
     public AppBuilder addSpendingReportView() {
         spendingReportViewModel = new SpendingReportViewModel();
@@ -185,12 +194,22 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addSpendingLimitsUseCase() {
+        final SpendingLimitsOutputBoundary spendingLimitsOutputBoundary = new SpendingLimitsPresenter(viewManagerModel,
+                        spendingLimitsViewModel, uploadStatementViewModel);
+        final SpendingLimitsInputBoundary spendingLimitsInteractor =
+                new SpendingLimitsInteractor(spendingLimitsOutputBoundary, new FileSpendingLimitsDAO());
+        spendingLimitsView.setController(new SpendingLimitsController(spendingLimitsInteractor));
+        return this;
+    }
+
     public AppBuilder addUploadStatementUseCase() {
         final UploadStatementPresenter uploadStatementOutputBoundary =
                 new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel, spendingReportViewModel);
         final UploadStatementInputBoundary uploadStatementInteractor = new UploadStatementInteractor(transactionDataAccessObject,
                 uploadStatementOutputBoundary);
         UploadStatementController uploadStatementController = new UploadStatementController(uploadStatementInteractor);
+        uploadStatementView.setUploadStatementController(uploadStatementController);
         loggedInView.setUploadStatementController(uploadStatementController);
         return this;
     }
@@ -207,24 +226,15 @@ public class AppBuilder {
         final GenerateReportController controller = new GenerateReportController(interactor);
 
         // Wire UI listeners on the SpendingReportView to call the controller
-        spendingReportView.addMonthDropdownListener(e -> {
-            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
-            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
-            if (spendingReportViewModel != null) spendingReportViewModel.setChartType(chartType);
-            controller.generateReport(1, selectedMonth);
-        });
-
         spendingReportView.addChartTypeDropdownListener(e -> {
-            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
             String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
             if (spendingReportViewModel != null) spendingReportViewModel.setChartType(chartType);
-            controller.generateReport(1, selectedMonth);
+            controller.generateReport("default");
         });
 
         SwingUtilities.invokeLater(() -> {
             spendingReportView.setVisible(true);
-            spendingReportView.setInitialMonth("December 2025");
-            controller.generateReport(1, "December 2025");
+            controller.generateReport("default");
         });
 
         return this;

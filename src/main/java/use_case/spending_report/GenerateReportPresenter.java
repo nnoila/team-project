@@ -11,10 +11,10 @@ public class GenerateReportPresenter implements GenerateReportOutputBoundary {
     @Override
     public void presentReport(GenerateReportOutput outputData) {
         if (outputData.isSuccess()) {
-            view.displayChart(outputData.getReport().getCategoryBreakdown(), 
-                                 outputData.getReport().getMonth());
+            view.displayChart(outputData.getReport().getCategoryBreakdown()
+            );
         } else {
-            view.displayChart(null, "");
+            view.displayChart(null);
         }
     }
 }

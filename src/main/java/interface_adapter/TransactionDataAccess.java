@@ -5,5 +5,6 @@ import java.util.List;
 import entity.Transaction;
 
 public interface TransactionDataAccess {
-    List<Transaction> getTransactions(int userId, String month);
+    void saveTransaction(Transaction transaction);
+    List<Transaction> getTransactions(String username);
 }

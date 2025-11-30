@@ -4,36 +4,24 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Transaction {
-    private int id;
-    private int userId;
+    private String username;
     private LocalDate date;
     private String merchant;
     private float amount;
     private String category;
-    
+
     // Constructor for CSV data
-    public Transaction(LocalDate date, String category, double amount, String description) {
-        this.id = -1;
-        this.userId = 1;
+    public Transaction(LocalDate date, String category, double amount, String description, String username) {
         this.date = date;
         this.merchant = description;
         this.amount = (float) amount; 
         this.category = category;
+        this.username = username;
     }
-    
-    public Transaction(int id, int userId, String dateString, String merchant, float amount, String category) {
-        this.id = id;
-        this.userId = userId;
-        this.date = LocalDate.parse(dateString);
-        this.merchant = merchant;
-        this.amount = amount;
-        this.category = category;
-    }
-    
-    public int getId() { return id; }
-    public int getUserId() { return userId; }
-    public LocalDate getDate() { return date; }
-    public String getMerchant() { return merchant; }
+
+    public LocalDate getDate() {return date;}
+    public String getMerchant() {return merchant;}
+    public String getUsername() {return username;}
     public Float getAmount() { return amount; }
     public String getCategory() { return category; }
     

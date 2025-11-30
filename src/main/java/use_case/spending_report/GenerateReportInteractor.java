@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import data_access.CSVTransactionDAO;
 import entity.SpendingReport;
 import entity.Transaction;
-import interface_adapter.TransactionDataAccess;
 
 public class GenerateReportInteractor implements GenerateReportInputBoundary {
-    private final TransactionDataAccess transactionDAO;
+    private final CSVTransactionDAO transactionDAO;
     private final GenerateReportOutputBoundary presenter;
 
-    public GenerateReportInteractor(TransactionDataAccess transactionDAO,
+    public GenerateReportInteractor(CSVTransactionDAO transactionDAO,
                                     GenerateReportOutputBoundary presenter) {
         this.transactionDAO = transactionDAO;
         this.presenter = presenter;
@@ -20,9 +20,7 @@ public class GenerateReportInteractor implements GenerateReportInputBoundary {
 
     @Override
     public void execute(GenerateReportInput inputData) {
-        List<Transaction> transactions = transactionDAO.getTransactions(
-                inputData.getUserId(), inputData.getMonth());
-
+        List<Transaction> transactions = transactionDAO.getTransactions(inputData.getUsername());
         if (transactions.isEmpty()) {
             presenter.presentReport(new GenerateReportOutput(null, false));
             return;
@@ -40,7 +38,7 @@ public class GenerateReportInteractor implements GenerateReportInputBoundary {
             }
         }
 
-        SpendingReport report = new SpendingReport(inputData.getMonth(), categoryTotals);
+        SpendingReport report = new SpendingReport(categoryTotals);
         presenter.presentReport(new GenerateReportOutput(report, true));
     }
 }
