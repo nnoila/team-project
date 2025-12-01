@@ -29,6 +29,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     private final JButton logIn;
     private final JButton cancel;
+    private final JButton signUp;
+
     private LoginController loginController = null;
 
     public LoginView(LoginViewModel loginViewModel) {
@@ -70,6 +72,22 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         addUsernameListener(loginViewModel);
         addPasswordListener(loginViewModel);
 
+        // Section to ask users who don't have an account to make an account
+        final JPanel signupSection = new JPanel();
+        signupSection.setLayout(new FlowLayout(FlowLayout.CENTER));
+        final JLabel signupPrompt = new JLabel("<html><center>New user?<br/>Create an account to get started!</center></html>");
+        signupPrompt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        signUp = new JButton("Sign Up");
+        signUp.setFont(new Font("Arial", Font.BOLD, 12));
+        signupSection.add(signupPrompt);
+        signupSection.add(signUp);
+
+        signUp.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                loginController.switchToSignupView();
+            }
+        });
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(title);
@@ -78,6 +96,9 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.add(passwordInfo);
         this.add(passwordErrorField);
         this.add(buttons);
+
+        this.add(Box.createRigidArea(new Dimension(0, 10)));
+        this.add(signupSection);
     }
 
     private void addUsernameListener(LoginViewModel loginViewModel) {
