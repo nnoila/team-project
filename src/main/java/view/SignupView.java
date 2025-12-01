@@ -172,7 +172,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     @Override
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource().equals(cancel)) {
-            // Clear fields and errors in both view and ViewModel
             usernameInputField.setText("");
             passwordInputField.setText("");
             repeatPasswordInputField.setText("");
