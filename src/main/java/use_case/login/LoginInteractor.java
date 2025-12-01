@@ -24,6 +24,7 @@ public class LoginInteractor implements LoginInputBoundary {
         // Validate user exists
         if (!userDataAccessObject.existsByUsername(username)) {
             loginPresenter.prepareFailView(username + ": Account does not exist.");
+            return;
         }
 
         // Get user and authenticate
@@ -32,6 +33,7 @@ public class LoginInteractor implements LoginInputBoundary {
 
         if (!user.authenticatePassword(inputPasswordHash)) {
             loginPresenter.prepareFailView("Incorrect password for \"" + username + "\".");
+            return;
         }
 
         userDataAccessObject.setCurrentUsername(username);
