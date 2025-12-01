@@ -159,7 +159,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
      */
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource().equals(cancel)) {
-            // Clear fields and error in both view and ViewModel state
             usernameInputField.setText("");
             passwordInputField.setText("");
             usernameErrorField.setText("");

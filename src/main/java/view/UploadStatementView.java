@@ -1,18 +1,16 @@
 package view;
 
-
-import interface_adapter.upload_statement.UploadStatementController;
-import interface_adapter.upload_statement.UploadStatementState;
-import interface_adapter.upload_statement.UploadStatementViewModel;
-import use_case.upload_statement.UploadStatementInputData;
-
-import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import interface_adapter.upload_statement.UploadStatementController;
+import interface_adapter.upload_statement.UploadStatementState;
+import interface_adapter.upload_statement.UploadStatementViewModel;
+import use_case.upload_statement.UploadStatementInputData;
 
 
 public class UploadStatementView extends JPanel implements PropertyChangeListener {
