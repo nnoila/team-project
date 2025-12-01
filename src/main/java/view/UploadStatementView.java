@@ -11,6 +11,7 @@ import interface_adapter.upload_statement.UploadStatementController;
 import interface_adapter.upload_statement.UploadStatementState;
 import interface_adapter.upload_statement.UploadStatementViewModel;
 import use_case.upload_statement.UploadStatementInputData;
+import interface_adapter.filter_search.FilterSearchController;
 
 
 public class UploadStatementView extends JPanel implements PropertyChangeListener {
@@ -21,6 +22,8 @@ public class UploadStatementView extends JPanel implements PropertyChangeListene
     private final JButton analyzeStatementButton;
     private final JButton setSpendingAlertsButton;
     private UploadStatementController uploadStatementController;
+    private FilterSearchController filterSearchController;
+
 
     public UploadStatementView(UploadStatementViewModel viewModel) {
         this.viewModel = viewModel;
@@ -41,6 +44,13 @@ public class UploadStatementView extends JPanel implements PropertyChangeListene
         setSpendingAlertsButton.addActionListener(e ->
                 this.uploadStatementController.goToSpendingLimits()
         );
+        JButton filterSearchButton = new JButton("Filter Transactions");
+        buttons.add(filterSearchButton);
+
+        filterSearchButton.addActionListener(e ->
+                this.uploadStatementController.goToFilterSearch()
+        );
+
         this.add(buttons);
     }
 
@@ -52,6 +62,10 @@ public class UploadStatementView extends JPanel implements PropertyChangeListene
 
     public void setUploadStatementController(UploadStatementController controller) {
         this.uploadStatementController = controller;
+    }
+
+    public void setFilterSearchController(FilterSearchController controller) {
+        this.filterSearchController = controller;
     }
 
     public String getViewName() {

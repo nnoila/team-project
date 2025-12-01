@@ -21,6 +21,8 @@ public class Main {
                 .addSpendingLimitsView()
                 .addSpendingLimitsUseCase()
                 .addUploadStatementUseCase()
+                .addFilterSearchView()
+                .addFilterSearchUseCase()
                 .build();
 
         application.pack();
