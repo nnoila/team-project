@@ -1,10 +1,14 @@
 package app;
 
+import java.awt.CardLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
 import data_access.CSVTransactionDAO;
 import data_access.FileSpendingLimitsDAO;
 import data_access.FileUserDataAccessObject;
-import data_access.InMemoryTransactionDataAccessObject;
-import entity.Transaction;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.categorizer.CategorizerController;
@@ -42,21 +46,25 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.spending_limits.SpendingLimitsInputBoundary;
 import use_case.spending_limits.SpendingLimitsInteractor;
 import use_case.spending_limits.SpendingLimitsOutputBoundary;
-import use_case.transaction_categorizer.*;
+import use_case.spending_report.GenerateReportController;
+import use_case.spending_report.GenerateReportInteractor;
+import use_case.spending_report.GenerateReportPresenter;
+import use_case.spending_report.SpendingReportViewModel;
+import use_case.transaction_categorizer.CategorizerInputBoundary;
+import use_case.transaction_categorizer.CategorizerInteractor; // <-- ADDED
+import use_case.transaction_categorizer.CategorizerOutputBoundary;
+import use_case.transaction_categorizer.GeminiClient;
+import use_case.transaction_categorizer.TransactionCategorizerService;
 import use_case.upload_statement.UploadStatementInputBoundary;
 import use_case.upload_statement.UploadStatementInteractor;
-import view.*;
+import view.LoggedInView;
+import view.LoginView;
+import view.SignupView;
+import view.SpendingLimitsView;
 import view.SpendingReportView;
-import use_case.spending_report.SpendingReportViewModel;
-import use_case.spending_report.GenerateReportPresenter;
-import use_case.spending_report.GenerateReportInteractor;
-import use_case.spending_report.GenerateReportController;
-
-import view.TransactionCategorizerView; // <-- ADDED
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
+import view.TransactionCategorizerView;
+import view.UploadStatementView;
+import view.ViewManager;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -81,9 +89,7 @@ public class AppBuilder {
     private SpendingReportView spendingReportView;
     private SpendingReportViewModel spendingReportViewModel;
     private CategorizerViewModel categorizerViewModel;
-    // Transaction Categorizer View
     private TransactionCategorizerView categorizerView;
-    private TransactionCategorizerService categorizerService;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -124,7 +130,6 @@ public class AppBuilder {
         return this;
     }
 
-    // Transaction Categorizer View
     public AppBuilder addCategorizerView() {
         categorizerViewModel = new CategorizerViewModel();
         final CategorizerOutputBoundary categorizerOutputBoundary = new CategorizerPresenter(categorizerViewModel,
@@ -176,28 +181,6 @@ public class AppBuilder {
         loggedInView.setChangePasswordController(changePasswordController);
         return this;
     }
-
-//    public AppBuilder addSpendingReportUseCase() {
-//        final GenerateReportPresenter presenter = new GenerateReportPresenter(spendingReportView);
-//        final GenerateReportInteractor interactor = new GenerateReportInteractor(
-//                transactionDataAccessObject, presenter);
-//        final GenerateReportController controller = new GenerateReportController(interactor);
-//
-//        spendingReportView.addMonthDropdownListener(e -> {
-//            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
-//            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
-//            spendingReportViewModel.setChartType(chartType);
-//            controller.generateReport(1, selectedMonth);
-//        });
-//
-//        spendingReportView.addChartTypeDropdownListener(e -> {
-//            String selectedMonth = (String) spendingReportView.getMonthDropdown().getSelectedItem();
-//            String chartType = (String) spendingReportView.getChartTypeDropdown().getSelectedItem();
-//            spendingReportViewModel.setChartType(chartType);
-//            controller.generateReport(1, selectedMonth);
-//        });
-//        return this;
-//    }
 
     public AppBuilder addSpendingReportView() {
         spendingReportViewModel = new SpendingReportViewModel();

@@ -1,14 +1,18 @@
 package view;
 
-import use_case.spending_report.ChartVisualizer;
-import use_case.spending_report.GenerateReportController;
-import use_case.spending_report.SpendingReportViewModel;
-
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import use_case.spending_report.ChartVisualizer;
+import use_case.spending_report.GenerateReportController;
+import use_case.spending_report.SpendingReportViewModel;
 
 public class SpendingReportView extends JPanel {
     private final JComboBox<String> chartTypeDropdown;

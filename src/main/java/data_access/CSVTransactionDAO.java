@@ -1,6 +1,12 @@
 package data_access;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,8 +16,8 @@ import entity.Transaction;
 import interface_adapter.TransactionDataAccess;
 
 public class CSVTransactionDAO implements TransactionDataAccess {
-    private List<Transaction> transactions;
-    private String csvFilePath;
+    private final List<Transaction> transactions;
+    private final String csvFilePath;
 
     public CSVTransactionDAO(String csvFilePath) {
         this.csvFilePath = csvFilePath;
@@ -26,7 +32,7 @@ public class CSVTransactionDAO implements TransactionDataAccess {
             if (!file.exists()) {
                 System.err.println("CSV file not found: " + csvFilePath);
                 System.err.println("Current directory: " + new File(".").getAbsolutePath());
-                return loadedTransactions; // Return empty list instead of crashing
+                return loadedTransactions;
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -92,7 +98,7 @@ public class CSVTransactionDAO implements TransactionDataAccess {
 
     @Override
     public List<Transaction> getAllTransactions() {
-        return new ArrayList<>(transactions); // defensive copy
+        return new ArrayList<>(transactions);
     }
 
 }
