@@ -1,10 +1,8 @@
 package use_case.spending_report;
 
-import interface_adapter.ViewModel;
-
 import java.util.Map;
 
-import javax.swing.JFrame;
+import interface_adapter.ViewModel;
 
 public class SpendingReportViewModel extends ViewModel<SpendingReportState> {
     private Map<String, Float> categoryData;
@@ -31,6 +29,7 @@ public class SpendingReportViewModel extends ViewModel<SpendingReportState> {
     public String getChartType() { return chartType; }
     public void setChartType(String chartType) { this.chartType = chartType; }
     
+    @Override
     public String getViewName() { return viewName; }
     
     public boolean hasData() {

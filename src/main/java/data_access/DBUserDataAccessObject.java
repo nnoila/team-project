@@ -1,16 +1,21 @@
 package data_access;
 
-import entity.User;
-import entity.UserFactory;
-import okhttp3.*;
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import entity.User;
+import entity.UserFactory;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
-
-import java.io.IOException;
 
 /**
  * The DAO for user data.
@@ -102,7 +107,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
         final JSONObject requestBody = new JSONObject();
         requestBody.put(USERNAME, user.getUsername());
-        // requestBody.put(PASSWORD, user.getPassword());
         final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
                 .url("http://vm003.teach.cs.toronto.edu:20112/user")

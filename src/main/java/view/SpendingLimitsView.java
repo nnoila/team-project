@@ -1,18 +1,20 @@
 package view;
 
-import interface_adapter.spending_limits.SpendingLimitsController;
-import interface_adapter.spending_limits.SpendingLimitsViewModel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Dimension;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import static common.Constants.CATEGORIES;
+import interface_adapter.spending_limits.SpendingLimitsController;
+import interface_adapter.spending_limits.SpendingLimitsViewModel;
 
 public class SpendingLimitsView extends JPanel implements PropertyChangeListener {
 

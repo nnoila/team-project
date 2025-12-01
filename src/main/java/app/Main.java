@@ -1,6 +1,6 @@
 package app;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,7 +13,7 @@ public class Main {
                 .addSpendingLimitsView()
                 .addSpendingReportView()
                 .addSpendingReportUseCase()
-                .addCategorizerView() // <-- Added the transaction categorizer GUI
+                .addCategorizerView()
                 .addCategorizerUseCase()
                 .addSignupUseCase()
                 .addSpendingLimitsUseCase()

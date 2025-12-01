@@ -1,11 +1,10 @@
 package use_case.spending_report;
 import interface_adapter.ViewManagerModel;
 import view.SpendingReportView;
-import view.ViewManager;
 
 public class GenerateReportPresenter implements GenerateReportOutputBoundary {
-    private SpendingReportView view;
-    private ViewManagerModel viewManagerModel;
+    private final SpendingReportView view;
+    private final ViewManagerModel viewManagerModel;
 
     public GenerateReportPresenter(SpendingReportView view, ViewManagerModel viewManagerModel) {
         this.view = view;
