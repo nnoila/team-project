@@ -6,7 +6,7 @@ import interface_adapter.categorizer.CategorizerController;
 import interface_adapter.categorizer.CategorizerState;
 import interface_adapter.categorizer.CategorizerViewModel;
 import interface_adapter.logged_in.LoggedInState;
-import use_case.ai_insights.TrendAnalyzer;
+import use_case.ai_insights.*;
 import use_case.transaction_categorizer.TransactionCategorizerService;
 import use_case.transaction_categorizer.GeminiClient;
 
@@ -20,6 +20,7 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
 
     private final String viewName = "categorizer view";
 
+    private final JTextArea insightArea = new JTextArea("Insights will appear here...");
     private final JTextArea resultsArea = new JTextArea();
     private final JButton categorizeButton = new JButton("Categorize Transactions");
     private final JButton insightButton = new JButton("Generate Insights");
@@ -32,6 +33,8 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
         this.vm = vm;
         setLayout(new BorderLayout());
         resultsArea.setEditable(false);
+        insightArea.setEditable(false);
+        insightArea.setVisible(false);
         vm.addPropertyChangeListener(this);
         JPanel topPanel = new JPanel();
         topPanel.add(categorizeButton);
@@ -39,6 +42,13 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
         topPanel.add(insightButton);
         add(topPanel, BorderLayout.NORTH);
         add(new JScrollPane(resultsArea), BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.setBorder(BorderFactory.createTitledBorder("AI Insights"));
+        bottomPanel.add(new JScrollPane(insightArea), BorderLayout.CENTER);
+
+        add(bottomPanel, BorderLayout.SOUTH);
+
 
         categorizeButton.addActionListener(e ->
                 categorizerController.categorizeTransactions(vm.getTransactions()));
@@ -54,10 +64,42 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
             return;
         }
 
+        insightArea.setText("Generating insights...\nPlease wait.");
+        insightArea.setVisible(true);
+
         TrendAnalyzer analyzer = new TrendAnalyzer();
         SpendingSummary summary = analyzer.analyze(vm.getTransactions());
 
-        new InsightView(summary);
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() {
+                InsightViewModel insightVM = new InsightViewModel();
+                InsightPresenter presenter = new InsightPresenter(insightVM);
+                InsightService interactor = new InsightService(new InsightClient());
+                InsightsController controller = new InsightsController(interactor, presenter);
+
+                controller.generateInsight(summary, "demoUser");
+
+                String formatted = """
+                    Insight:
+                    %s
+                    
+                    Recommendations:
+                    %s
+                    
+                    %s
+                    """.formatted(
+                        insightVM.getSummary(),
+                        insightVM.getRecommendations(),
+                        insightVM.getDate()
+                );
+
+                insightArea.setText(formatted);
+                return null;
+            }
+        };
+
+        worker.execute();
     }
 
     public String getViewName() { return viewName; }
