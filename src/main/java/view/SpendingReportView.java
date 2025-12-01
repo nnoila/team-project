@@ -48,7 +48,6 @@ public class SpendingReportView extends JPanel {
             controller.backToCategorizeView();
         });
 
-        // Wire UI listeners on the SpendingReportView to call the controller
         this.addChartTypeDropdownListener(e -> {
             String chartType = (String) this.getChartTypeDropdown().getSelectedItem();
             viewModel.setChartType(chartType);
@@ -75,7 +74,6 @@ public class SpendingReportView extends JPanel {
             chartPanelContainer.removeAll();
             chartPanelContainer.revalidate();
             chartPanelContainer.repaint();
-            // JOptionPane.showMessageDialog(this, "No transactions found for this month.");
             return;
         }
         chartPanelContainer.removeAll();

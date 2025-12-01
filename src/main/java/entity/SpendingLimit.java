@@ -1,8 +1,8 @@
 package entity;
 
 public class SpendingLimit {
-    private String category;
-    private double limit;
+    private final String category;
+    private final double limit;
 
     public SpendingLimit(String category, double limit) {
         this.category = category;

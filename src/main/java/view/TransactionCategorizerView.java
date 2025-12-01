@@ -1,20 +1,20 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 import entity.SpendingSummary;
 import entity.Transaction;
 import interface_adapter.categorizer.CategorizerController;
-import interface_adapter.categorizer.CategorizerState;
 import interface_adapter.categorizer.CategorizerViewModel;
-import interface_adapter.logged_in.LoggedInState;
 import use_case.ai_insights.TrendAnalyzer;
-import use_case.transaction_categorizer.TransactionCategorizerService;
-import use_case.transaction_categorizer.GeminiClient;
-
-import javax.swing.*;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.List;
 
 public class TransactionCategorizerView extends JPanel implements PropertyChangeListener {
 
@@ -84,9 +84,3 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
     }
 
 }
-
-
-
-
-
-

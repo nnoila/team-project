@@ -91,7 +91,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     }
 
     private void handleChangePassword() {
-        // Simple dialog to get the new password from the user
         JPasswordField newPasswordField = new JPasswordField(15);
         int result = JOptionPane.showConfirmDialog(
                 this,
@@ -109,11 +108,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Update the displayed username when state changes
         final LoggedInState state = (LoggedInState) evt.getNewValue();
         username.setText(state.getUsername());
 
-        // Display password error if present (for change password feature)
         if (state.getPasswordError() != null) {
             passwordErrorField.setText(state.getPasswordError());
             JOptionPane.showMessageDialog(this, state.getPasswordError());
@@ -133,11 +130,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         }
     }
 
-
     public String getViewName() {
         return viewName;
     }
-
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
