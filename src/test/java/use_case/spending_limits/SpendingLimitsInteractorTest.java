@@ -23,13 +23,10 @@ class SpendingLimitsInteractorTest {
 
     @Test
     void testLoadLimitsSuccess() {
-        // Arrange
         dataAccess.mockLimits.put("SHOPPING", 200.0);
 
-        // Act
         interactor.loadLimits("user123");
 
-        // Assert
         assertTrue(presenter.presentLimitsCalled);
         assertEquals(200.0, presenter.lastLimits.get("SHOPPING"));
     }

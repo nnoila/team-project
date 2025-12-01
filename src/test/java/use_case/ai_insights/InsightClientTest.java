@@ -1,7 +1,9 @@
 package use_case.ai_insights;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
+import java.net.http.HttpClient.*;
 
 class InsightClientTest {
 
@@ -18,5 +20,22 @@ class InsightClientTest {
         );
 
         assertEquals("Missing GEMINI_API_KEY environment variable.", ex.getMessage());
+    }
+    @Test
+    void generateInsightThrowsWhenKeyMissing() {
+        // ensure environment variable isn't set
+        System.clearProperty("GEMINI_API_KEY");
+
+        InsightClient client = new InsightClient();
+
+        assertThrows(IllegalStateException.class, () -> client.generateInsight("Hello"));
+    }
+
+    @Test
+    void throwsExceptionWhenApiKeyMissing() {
+        InsightClient client = new InsightClient();
+
+        // simulate missing API key
+        assertThrows(IllegalStateException.class, () -> client.generateInsight("test"));
     }
 }
