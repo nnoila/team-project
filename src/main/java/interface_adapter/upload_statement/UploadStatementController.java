@@ -22,6 +22,8 @@ public class UploadStatementController {
         interactor.goToSpendingLimits();
     }
 
+
+
     public void goToCategorizer(UploadStatementInputData inputData) {
         interactor.goToCategorizer(inputData);
     }

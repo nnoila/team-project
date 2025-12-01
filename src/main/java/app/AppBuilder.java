@@ -65,6 +65,14 @@ import view.SpendingReportView;
 import view.TransactionCategorizerView;
 import view.UploadStatementView;
 import view.ViewManager;
+import interface_adapter.filter_search.FilterSearchController;
+import interface_adapter.filter_search.FilterSearchPresenter;
+import interface_adapter.filter_search.FilterSearchViewModel;
+
+import view.FilterSearchView;
+import use_case.filter_search.FilterSearchInteractor;
+import use_case.filter_search.FilterSearchInputBoundary;
+import use_case.filter_search.FilterSearchOutputBoundary;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -90,6 +98,9 @@ public class AppBuilder {
     private SpendingReportViewModel spendingReportViewModel;
     private CategorizerViewModel categorizerViewModel;
     private TransactionCategorizerView categorizerView;
+
+    private FilterSearchViewModel filterSearchViewModel;
+    private FilterSearchView filterSearchView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -143,6 +154,7 @@ public class AppBuilder {
         return this;
     }
 
+
     public AppBuilder addCategorizerUseCase() {
         return this;
     }
@@ -179,6 +191,29 @@ public class AppBuilder {
         ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
 
         loggedInView.setChangePasswordController(changePasswordController);
+        return this;
+    }
+
+    public AppBuilder addFilterSearchUseCase() {
+
+        // Presenter
+        FilterSearchPresenter presenter =
+                new FilterSearchPresenter(filterSearchViewModel);
+
+        // Interactor (uses DAO + presenter)
+        FilterSearchInteractor interactor =
+                new FilterSearchInteractor(transactionDataAccessObject, presenter);
+
+        // Controller
+        FilterSearchController controller =
+                new FilterSearchController(interactor);
+
+        // Connect controller to the view
+        filterSearchView.setController(controller);
+
+        // Optional: allow LoggedInView to navigate to this view
+        loggedInView.setFilterSearchController(controller);
+
         return this;
     }
 

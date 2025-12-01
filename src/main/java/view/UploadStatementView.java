@@ -22,6 +22,7 @@ public class UploadStatementView extends JPanel implements PropertyChangeListene
     private final String viewName = "statement view";
     private final JButton analyzeStatementButton;
     private final JButton setSpendingAlertsButton;
+    private final JButton filterSearchButton = new JButton("Filter Transactions");
     private UploadStatementController uploadStatementController;
 
     public UploadStatementView(UploadStatementViewModel viewModel) {
@@ -43,6 +44,12 @@ public class UploadStatementView extends JPanel implements PropertyChangeListene
         setSpendingAlertsButton.addActionListener(e ->
                 this.uploadStatementController.goToSpendingLimits()
         );
+        buttons.add(filterSearchButton);
+
+        filterSearchButton.addActionListener(e ->
+                this.uploadStatementController.goToFilterSearch()
+        );
+
         this.add(buttons);
     }
 

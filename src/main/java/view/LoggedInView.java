@@ -5,6 +5,8 @@ import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.upload_statement.UploadStatementController;
+import interface_adapter.filter_search.FilterSearchController;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +35,8 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JButton logOut;
 
     private final JButton changePasswordButton;
+
+    private FilterSearchController filterSearchController;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
@@ -138,7 +142,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         return viewName;
     }
 
-
+    public void setFilterSearchController(FilterSearchController controller) {
+        this.filterSearchController = controller;
+    }
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
