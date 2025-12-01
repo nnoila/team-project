@@ -22,4 +22,8 @@ public class CategorizerController {
         categorizerInputBoundary.goToSpendingReport(username);
     }
 
+    public void goBackToUploadStatement() {
+        categorizerInputBoundary.goBackToUploadStatement();
+    }
+
 }

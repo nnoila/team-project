@@ -48,7 +48,7 @@ public class CSVTransactionDAO implements TransactionDataAccess {
                     }
 
                     String[] values = line.split(",");
-                    if (values.length == 5) {
+                    if (values.length == 4) {
                         LocalDate date = LocalDate.parse(values[0].trim(), formatter);
                         String category = values[1].trim();
                         double amount = Double.parseDouble(values[2].trim());

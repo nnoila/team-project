@@ -21,8 +21,16 @@ public class FilterSearchView extends JPanel implements PropertyChangeListener {
 
     private final JComboBox<String> categoryBox =
             new JComboBox<>(new String[]{
-                    "All", "Shopping", "Groceries",
-                    "Dining Out", "Travel", "Entertainment"
+                    "All",
+                    "GROCERIES",
+                    "SHOPPING",
+                    "DINING OUT",
+                    "ENTERTAINMENT",
+                    "UTILITIES",
+                    "TRANSPORTATION",
+                    "FITNESS",
+                    "MISCELLANEOUS",
+                    "ERRNOKEY"
             });
 
     private final JTable resultsTable;

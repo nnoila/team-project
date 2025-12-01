@@ -23,6 +23,11 @@ public class CategorizerInteractor implements CategorizerInputBoundary {
     }
 
     @Override
+    public void goBackToUploadStatement() {
+        categorizerOutputBoundary.goBackToUploadStatement();
+    }
+
+    @Override
     public void goToSpendingReport(String username) {
         categorizerOutputBoundary.goToSpendingReport(username);
     }
