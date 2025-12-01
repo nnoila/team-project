@@ -31,6 +31,11 @@ class LoginInteractorTest {
             public void prepareFailView(String error) {
                 fail("Use case failure is unexpected.");
             }
+
+            @Override
+            public void switchToSignupView() {
+                fail("Switching to signup view is unexpected in this test.");
+            }
         };
 
 //        LoginInputBoundary interactor = new LoginInteractor(userRepository, successPresenter);
@@ -61,6 +66,11 @@ class LoginInteractorTest {
             public void prepareFailView(String error) {
                 assertEquals("Incorrect password for \"Paul\".", error);
             }
+
+            @Override
+            public void switchToSignupView() {
+                fail("Switching to signup view is unexpected in this test.");
+            }
         };
 
 //        LoginInputBoundary interactor = new LoginInteractor(userRepository, failurePresenter);
@@ -86,9 +96,37 @@ class LoginInteractorTest {
             public void prepareFailView(String error) {
                 assertEquals("Paul: Account does not exist.", error);
             }
+
+            @Override
+            public void switchToSignupView() {
+                fail("Switching to signup view is unexpected in this test.");
+            }
         };
 
 //        LoginInputBoundary interactor = new LoginInteractor(userRepository, failurePresenter);
 //        interactor.execute(inputData);
+    }
+
+    @Test
+    void switchToSignupViewTest() {
+        // Create a presenter that expects switchToSignupView to be called
+        LoginOutputBoundary switchPresenter = new LoginOutputBoundary() {
+            private boolean switchCalled = false;
+
+            @Override
+            public void prepareSuccessView(LoginOutputData user) {
+                fail("Success view is unexpected in switch test.");
+            }
+
+            @Override
+            public void prepareFailView(String error) {
+                fail("Fail view is unexpected in switch test.");
+            }
+
+            @Override
+            public void switchToSignupView() {
+                switchCalled = true;
+            }
+        };
     }
 }
