@@ -23,7 +23,7 @@ public class InsightPresenter {
         }
 
         viewModel.setSpendingBreakdown(breakdown.toString());
-        }
+    }
 
     public void present(Insight insight, SpendingSummary summary) {
 

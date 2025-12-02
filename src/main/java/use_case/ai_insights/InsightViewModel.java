@@ -7,34 +7,27 @@ public class InsightViewModel {
     private String date;
     private String spendingBreakdown; // NEW
 
-    public String getSummary() {
-        return summary;
-    }
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public String getSummary() { return summary;
     }
 
-    public String getRecommendations() {
-        return recommendations;
+    public void setSummary(String summary) { this.summary = summary;
     }
 
-    public void setRecommendations(String recommendations) {
-        this.recommendations = recommendations;
+    public String getRecommendations() { return recommendations;
     }
 
-    public String getDate() {
-        return date;
+    public void setRecommendations(String recommendations) { this.recommendations = recommendations;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public String getDate() { return date;
     }
 
-    public String getSpendingBreakdown() {
-        return spendingBreakdown;
+    public void setDate(String date) { this.date = date;
     }
 
-    public void setSpendingBreakdown(String spendingBreakdown) {
-        this.spendingBreakdown = spendingBreakdown;
+    public String getSpendingBreakdown() { return spendingBreakdown;
+    }
+
+    public void setSpendingBreakdown(String spendingBreakdown) {this.spendingBreakdown = spendingBreakdown;
     }
 }
