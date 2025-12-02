@@ -14,6 +14,7 @@ class FilterSearchInteractorTest {
 
     // ---- Fake DAO (no Mockito) ----
     static class FakeDAO extends CSVTransactionDAO {
+
         private final List<Transaction> data;
 
         public FakeDAO(List<Transaction> data) {

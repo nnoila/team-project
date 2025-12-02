@@ -1,11 +1,12 @@
 package use_case.spending_limits;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SpendingLimitsInteractorTest {
 
@@ -19,7 +20,6 @@ class SpendingLimitsInteractorTest {
         dataAccess = new TestDataAccess();
         interactor = new SpendingLimitsInteractor(presenter, dataAccess);
     }
-
 
     @Test
     void testLoadLimitsSuccess() {
@@ -60,8 +60,8 @@ class SpendingLimitsInteractorTest {
         assertEquals("Save failed!", presenter.lastError);
     }
 
-
     static class TestPresenter implements SpendingLimitsOutputBoundary {
+
         boolean presentLimitsCalled = false;
         boolean saveSuccessCalled = false;
         boolean saveFailureCalled = false;
@@ -87,13 +87,16 @@ class SpendingLimitsInteractorTest {
         }
 
         @Override
-        public void prepareSuccessView() {}
+        public void prepareSuccessView() {
+        }
 
         @Override
-        public void prepareFailView(String error) {}
+        public void prepareFailView(String error) {
+        }
     }
 
     static class TestDataAccess implements SpendingLimitsDataAccessInterface {
+
         Map<String, Double> mockLimits = new HashMap<>();
         boolean saveCalled = false;
         boolean throwErrorOnSave = false;

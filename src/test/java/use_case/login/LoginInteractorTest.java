@@ -1,11 +1,10 @@
 package use_case.login;
 
-import data_access.CSVTransactionDAO;
-import entity.UserFactory;
-import entity.User;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import entity.UserFactory;
 
 class LoginInteractorTest {
 
@@ -41,7 +40,6 @@ class LoginInteractorTest {
 //        LoginInputBoundary interactor = new LoginInteractor(userRepository, successPresenter);
 //        interactor.execute(inputData);
     }
-
 
     @Test
     void failurePasswordMismatchTest() {
@@ -83,7 +81,6 @@ class LoginInteractorTest {
 //        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add Paul to the repo so that when we check later they already exist
-
         // This creates a presenter that tests whether the test case is as we expect.
         LoginOutputBoundary failurePresenter = new LoginOutputBoundary() {
             @Override

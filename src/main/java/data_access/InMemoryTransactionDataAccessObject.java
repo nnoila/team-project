@@ -1,4 +1,5 @@
 package data_access;
+
 import entity.Transaction;
 
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class InMemoryTransactionDataAccessObject {
+
     private final List<Transaction> transactions = new ArrayList<>();
 
     public void saveTransaction(Transaction transaction) {
@@ -42,6 +44,5 @@ public class InMemoryTransactionDataAccessObject {
         }
         return result;
     }
-
 
 }

@@ -1,6 +1,7 @@
 package use_case.spending_report;
 
 public class GenerateReportController {
+
     private final GenerateReportInteractor interactor;
 
     public GenerateReportController(GenerateReportInteractor interactor) {

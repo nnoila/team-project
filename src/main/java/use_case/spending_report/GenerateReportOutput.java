@@ -3,6 +3,7 @@ package use_case.spending_report;
 import entity.SpendingReport;
 
 public class GenerateReportOutput {
+
     private final SpendingReport report;
     private final boolean success;
 
@@ -11,6 +12,11 @@ public class GenerateReportOutput {
         this.success = success;
     }
 
-    public SpendingReport getReport() { return report; }
-    public boolean isSuccess() { return success; }
+    public SpendingReport getReport() {
+        return report;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
 }

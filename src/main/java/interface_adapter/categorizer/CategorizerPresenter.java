@@ -5,12 +5,13 @@ import use_case.spending_report.SpendingReportViewModel;
 import use_case.transaction_categorizer.CategorizerOutputBoundary;
 
 public class CategorizerPresenter implements CategorizerOutputBoundary {
+
     private CategorizerViewModel categorizerViewModel;
     private ViewManagerModel viewManagerModel;
     private SpendingReportViewModel spendingReportViewModel;
 
     public CategorizerPresenter(CategorizerViewModel categorizerViewModel,
-                                ViewManagerModel viewManagerModel, SpendingReportViewModel spendingReportViewModel) {
+            ViewManagerModel viewManagerModel, SpendingReportViewModel spendingReportViewModel) {
         this.categorizerViewModel = categorizerViewModel;
         this.viewManagerModel = viewManagerModel;
         this.spendingReportViewModel = spendingReportViewModel;
@@ -29,6 +30,7 @@ public class CategorizerPresenter implements CategorizerOutputBoundary {
         this.viewManagerModel.setState("spending report");
         this.viewManagerModel.firePropertyChange();
     }
+
     @Override
     public void goBackToUploadStatement() {
         viewManagerModel.setState("statement view");

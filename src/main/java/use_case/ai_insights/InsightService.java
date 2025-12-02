@@ -1,14 +1,14 @@
 package use_case.ai_insights;
-import entity.Insight;
-import use_case.ai_insights.InsightClient;
-import entity.SpendingSummary;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import entity.Insight;
+import entity.SpendingSummary;
 
 public class InsightService {
 
@@ -18,11 +18,10 @@ public class InsightService {
         this.gemini = gemini;
     }
 
-    public Insight generateInsights(SpendingSummary summary, String userId) {
+    public Insight generateInsights(SpendingSummary summary) {
 
         if (summary.totalSpent() == 0) {
             Insight i = new Insight();
-            i.setUserId(userId);
             i.setGeneratedAt(LocalDate.now());
             i.setSummaryText("Not enough transaction data to generate insights.");
             i.setRecommendations(List.of("Add more spending history and try again."));
@@ -69,7 +68,6 @@ public class InsightService {
             }
 
             Insight insight = new Insight();
-            insight.setUserId(userId);
             insight.setGeneratedAt(LocalDate.now());
             insight.setSummaryText(summaryText);
             insight.setRecommendations(recommendations);
@@ -78,7 +76,6 @@ public class InsightService {
 
         } catch (Exception e) {
             Insight fallback = new Insight();
-            fallback.setUserId(userId);
             fallback.setGeneratedAt(LocalDate.now());
             fallback.setSummaryText("Insight generation failed.");
             fallback.setRecommendations(List.of());
@@ -87,5 +84,3 @@ public class InsightService {
     }
 
 }
-
-

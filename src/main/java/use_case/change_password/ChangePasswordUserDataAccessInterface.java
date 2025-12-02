@@ -9,12 +9,14 @@ public interface ChangePasswordUserDataAccessInterface {
 
     /**
      * Updates the system to record this user's password.
+     *
      * @param user the user whose password is to be updated
      */
     void changePassword(User user);
 
     /**
      * Returns the user with the given username.
+     *
      * @param username the username to look up
      * @return the user with the given username
      */

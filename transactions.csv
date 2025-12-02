@@ -348,3 +348,14 @@ date,category,amount,description,username
 2025-11-10,,29,99,Movie tickets,nrusdi
 2025-11-15,,68,75,Restaurant,nrusdi
 2025-11-20,,120,00,Clothing store,nrusdi
+2025-11-01,,45.50,Grocery store,o
+2025-11-05,,35.00,Gas station,o
+2025-11-10,,29.99,Movie tickets,o
+2025-11-15,,68.75,Restaurant,o
+2025-11-20,,120.00,Clothing store,o
+2025-11-01,,45.50,Grocery store,o
+2025-11-05,,35.00,Gas station,o
+2025-11-10,,29.99,Movie tickets,o
+2025-11-15,,68.75,Restaurant,o
+2025-11-20,,120.00,Clothing store,o
+2025-11-27,,2.99,Dollarama,o

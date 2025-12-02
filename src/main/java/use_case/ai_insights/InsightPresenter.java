@@ -1,4 +1,5 @@
 package use_case.ai_insights;
+
 import entity.Insight;
 import entity.SpendingSummary;
 
@@ -28,14 +29,13 @@ public class InsightPresenter {
     public void present(Insight insight, SpendingSummary summary) {
 
         viewModel.setSummary(insight.getSummaryText());
-            if (insight.getRecommendations() == null) {
-                viewModel.setRecommendations("No recommendations available.");
-            } else {
-                String formatted = "• " + String.join("\n• ", insight.getRecommendations());
-                viewModel.setRecommendations(formatted);
-            }
-
-
-            viewModel.setDate("Generated: " + insight.getGeneratedAt());
+        if (insight.getRecommendations() == null) {
+            viewModel.setRecommendations("No recommendations available.");
+        } else {
+            String formatted = "• " + String.join("\n• ", insight.getRecommendations());
+            viewModel.setRecommendations(formatted);
         }
+
+        viewModel.setDate("Generated: " + insight.getGeneratedAt());
     }
+}

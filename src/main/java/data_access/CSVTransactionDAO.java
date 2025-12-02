@@ -16,6 +16,7 @@ import entity.Transaction;
 import interface_adapter.TransactionDataAccess;
 
 public class CSVTransactionDAO implements TransactionDataAccess {
+
     private final List<Transaction> transactions;
     private final String csvFilePath;
 
@@ -78,9 +79,7 @@ public class CSVTransactionDAO implements TransactionDataAccess {
     @Override
     public void saveTransaction(Transaction transaction) {
         transactions.add(transaction);
-        try (FileWriter fw = new FileWriter(csvFilePath, true);
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter out = new PrintWriter(bw)) {
+        try (FileWriter fw = new FileWriter(csvFilePath, true); BufferedWriter bw = new BufferedWriter(fw); PrintWriter out = new PrintWriter(bw)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             out.printf("%s,%s,%.2f,%s,%s%n",
