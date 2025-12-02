@@ -25,4 +25,8 @@ public class UploadStatementController {
     public void goToCategorizer(UploadStatementInputData inputData) {
         interactor.goToCategorizer(inputData);
     }
+
+    public void goToFilterSearch() {
+        interactor.goToFilterSearch();
+    }
 }

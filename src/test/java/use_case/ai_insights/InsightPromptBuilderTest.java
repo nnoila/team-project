@@ -26,4 +26,33 @@ class InsightPromptBuilderTest {
         assertTrue(prompt.contains("Shopping: $40.0") || prompt.contains("Shopping: $40"));
         assertTrue(prompt.contains("Total spent: $100.0") || prompt.contains("Total spent: $100"));
     }
+
+    @Test
+    void buildPromptUsesUnknownWhenHighestCategoryEmpty() {
+        SpendingSummary summary = new SpendingSummary(
+                50.0,
+                Map.of("A", 50.0),
+                ""
+        );
+
+        String prompt = InsightPromptBuilder.buildPrompt(summary);
+
+        assertTrue(prompt.contains("Unknown"));
+    }
+
+    @Test
+    void buildPromptHandlesNullHighestCategory() {
+        SpendingSummary summary = new SpendingSummary(
+                50.0,
+                Map.of("Random", 50.0),
+                null
+        );
+
+        String prompt = InsightPromptBuilder.buildPrompt(summary);
+
+        assertTrue(prompt.contains("Random: $50.0"));
+        assertTrue(prompt.contains("Total spent: $50.0"));
+    }
+
+
 }

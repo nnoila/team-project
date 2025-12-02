@@ -10,5 +10,7 @@ public interface UploadStatementOutputBoundary {
     void prepareSpendingLimitsView();
     void prepareSpendingReportView();
     void prepareCategorizerView(List<Transaction> transactions);
+
+    void prepareFilterSearchView();
 }
 

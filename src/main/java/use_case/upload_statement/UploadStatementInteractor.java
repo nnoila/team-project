@@ -70,5 +70,7 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
     public void goToCategorizer(UploadStatementInputData inputData) {
         uploadStatementPresenter.prepareCategorizerView(transactionGateway.getTransactions(inputData.getUsername()));
     }
-
+    public void goToFilterSearch() {
+        uploadStatementPresenter.prepareFilterSearchView();
+    }
 }

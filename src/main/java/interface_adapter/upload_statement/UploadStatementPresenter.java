@@ -69,5 +69,9 @@ public class UploadStatementPresenter implements UploadStatementOutputBoundary {
         this.viewManagerModel.setState("categorizer view");
         this.viewManagerModel.firePropertyChange();
     }
-
+    @Override
+    public void prepareFilterSearchView() {
+        viewManagerModel.setState("filter search");
+        viewManagerModel.firePropertyChange();
+    }
 }

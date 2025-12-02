@@ -10,17 +10,19 @@ public class Main {
                 .addSignupView()
                 .addLoggedInView()
                 .addLogoutUseCase()
-                .addSpendingLimitsView()
                 .addSpendingReportView()
                 .addSpendingReportUseCase()
                 .addCategorizerView()
                 .addCategorizerUseCase()
                 .addSignupUseCase()
-                .addSpendingLimitsUseCase()
                 .addUploadStatementView()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
+                .addSpendingLimitsView()
+                .addSpendingLimitsUseCase()
                 .addUploadStatementUseCase()
+                .addFilterSearchView()
+                .addFilterSearchUseCase()
                 .build();
 
         application.pack();

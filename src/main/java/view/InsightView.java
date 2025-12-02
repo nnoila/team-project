@@ -1,22 +1,21 @@
 package view;
 
-import use_case.ai_insights.InsightClient;
-import use_case.ai_insights.InsightService;
+import use_case.ai_insights.*;
 import entity.SpendingSummary;
-import use_case.ai_insights.InsightsController;
-import use_case.ai_insights.InsightPresenter;
-import use_case.ai_insights.InsightViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class InsightView extends JFrame {
+public class InsightView extends JPanel {
+
+    private final JLabel resultLabel = new JLabel("<html>Press the button to generate insights.</html>");
 
     public InsightView(SpendingSummary summary) {
 
-        JLabel spendingSummaryLabel = new JLabel("<html>Loading summary...</html>");
-        JLabel resultLabel = new JLabel("<html>Press the button to generate insights on your spending pattern.</html>");
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        JLabel spendingSummaryLabel = new JLabel("<html>Loading summary...</html>");
         JButton generateButton = new JButton("Generate AI Insight");
 
         spendingSummaryLabel.setPreferredSize(new Dimension(550, 100));
@@ -30,36 +29,25 @@ public class InsightView extends JFrame {
         InsightService interactor = new InsightService(new InsightClient());
         InsightsController controller = new InsightsController(interactor, presenter);
 
+        // Populate summary
         presenter.presentSummary(summary);
-
-
         spendingSummaryLabel.setText("<html>" + vm.getSpendingBreakdown().replace("\n", "<br>") + "</html>");
 
         generateButton.addActionListener(e -> {
             controller.generateInsight(summary, "demoUser");
             String formattedOutput = "<html>" +
-                    vm.getSummary().replace("\n", "<br>") +
-                    "<br><br><b>Tips:</b><br>" +
-                    vm.getRecommendations().replace("\n", "<br>") +
-                    "<br><br>" + vm.getDate() +
+                    "<b>Insight:</b><br>" + vm.getSummary().replace("\n", "<br>") +
+                    "<br><br><b>Tips:</b><br>" + vm.getRecommendations().replace("\n", "<br>") +
+                    "<br><br><i>" + vm.getDate() + "</i>" +
                     "</html>";
 
             resultLabel.setText(formattedOutput);
         });
 
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(spendingSummaryLabel);
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(generateButton);
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(resultLabel);
-
-        setContentPane(panel);
-        setTitle("AI Spending Insights");
-        setSize(600, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        add(spendingSummaryLabel);
+        add(Box.createVerticalStrut(10));
+        add(generateButton);
+        add(Box.createVerticalStrut(10));
+        add(resultLabel);
     }
 }
