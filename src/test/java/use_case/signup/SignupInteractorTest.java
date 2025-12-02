@@ -1,19 +1,18 @@
 package use_case.signup;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import data_access.CSVTransactionDAO;
+import entity.UserFactory;
+import entity.User;
 import org.junit.jupiter.api.Test;
 
-import entity.UserFactory;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SignupInteractorTest {
 
     @Test
     void successTest() {
         SignupInputData inputData = new SignupInputData("Paul", "StrongP@ss1", "StrongP@ss1");
-        //    SignupUserDataAccessInterface userRepository = new CSVTransactionDAO();
+    //    SignupUserDataAccessInterface userRepository = new CSVTransactionDAO();
 
         // This creates a successPresenter that tests whether the test case is as we expect.
         SignupOutputBoundary successPresenter = new SignupOutputBoundary() {
@@ -21,7 +20,7 @@ class SignupInteractorTest {
             public void prepareSuccessView(SignupOutputData user) {
                 // 2 things to check: the output data is correct, and the user has been created in the DAO.
                 assertEquals("Paul", user.getUsername());
-                //    assertTrue(userRepository.existsByName("Paul"));
+            //    assertTrue(userRepository.existsByName("Paul"));
             }
 
             @Override
@@ -35,8 +34,8 @@ class SignupInteractorTest {
             }
         };
 
-        //    SignupInputBoundary interactor = new SignupInteractor(userRepository, successPresenter, new UserFactory());
-        //    interactor.execute(inputData);
+    //    SignupInputBoundary interactor = new SignupInteractor(userRepository, successPresenter, new UserFactory());
+    //    interactor.execute(inputData);
     }
 
     @Test
@@ -63,19 +62,19 @@ class SignupInteractorTest {
             }
         };
 
-        //    SignupInputBoundary interactor = new SignupInteractor(userRepository, failurePresenter, new UserFactory());
-        //    interactor.execute(inputData);
+    //    SignupInputBoundary interactor = new SignupInteractor(userRepository, failurePresenter, new UserFactory());
+    //    interactor.execute(inputData);
     }
 
     @Test
     void failureUserExistsTest() {
         SignupInputData inputData = new SignupInputData("Paul", "StrongP@ss1", "StrongP@ss1");
-        //    SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+    //    SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add Paul to the repo so that when we check later they already exist
         UserFactory factory = new UserFactory();
-        //    User user = factory.create("Paul", "pwd");
-        //   userRepository.save(user);
+    //    User user = factory.create("Paul", "pwd");
+     //   userRepository.save(user);
 
         // This creates a presenter that tests whether the test case is as we expect.
         SignupOutputBoundary failurePresenter = new SignupOutputBoundary() {
@@ -96,8 +95,8 @@ class SignupInteractorTest {
             }
         };
 
-        //    SignupInputBoundary interactor = new SignupInteractor(userRepository, failurePresenter, new UserFactory());
-        //    interactor.execute(inputData);
+    //    SignupInputBoundary interactor = new SignupInteractor(userRepository, failurePresenter, new UserFactory());
+    //    interactor.execute(inputData);
     }
 
     @Test

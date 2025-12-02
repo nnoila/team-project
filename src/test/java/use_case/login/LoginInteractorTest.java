@@ -41,6 +41,7 @@ class LoginInteractorTest {
 //        interactor.execute(inputData);
     }
 
+
     @Test
     void failurePasswordMismatchTest() {
         LoginInputData inputData = new LoginInputData("Paul", "wrong");
@@ -81,6 +82,7 @@ class LoginInteractorTest {
 //        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add Paul to the repo so that when we check later they already exist
+
         // This creates a presenter that tests whether the test case is as we expect.
         LoginOutputBoundary failurePresenter = new LoginOutputBoundary() {
             @Override

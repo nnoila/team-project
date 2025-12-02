@@ -7,7 +7,6 @@ import interface_adapter.upload_statement.UploadStatementPresenter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,15 +33,7 @@ public class UploadStatementInteractor implements UploadStatementInputBoundary {
             br.readLine();
 
             while ((line = br.readLine()) != null) {
-                String[] values = line.split(",",4);
-
-                LocalDate date = LocalDate.parse(values[0].trim(), formatter);
-                String description = values[1].trim();
-                double amount = Double.parseDouble(values[2].trim());
-
-                Transaction transaction = new Transaction(date, "", amount, description,
-                        inputData.getUsername());
-
+                Transaction transaction = TransactionParser.parseCsvLine(line, inputData.getUsername());
                 transactionGateway.saveTransaction(transaction);
             }
             List<Transaction> transactionList = transactionGateway.getTransactions(inputData.getUsername());
