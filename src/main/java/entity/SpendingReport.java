@@ -7,8 +7,8 @@ import java.util.Map;
  */
 public class SpendingReport {
 
-    private float totalSpent;
-    private Map<String, Float> categoryBreakdown;
+    private final float totalSpent;
+    private final Map<String, Float> categoryBreakdown;
 
     public SpendingReport(Map<String, Float> categoryBreakdown) {
         this.categoryBreakdown = categoryBreakdown;

@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class Transaction {
     private String username;
-    private LocalDate date;
-    private String merchant;
-    private float amount;
+    private final LocalDate date;
+    private final String merchant;
+    private final float amount;
     private String category;
 
     // Constructor for CSV data
