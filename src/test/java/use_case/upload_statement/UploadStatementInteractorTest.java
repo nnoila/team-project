@@ -53,11 +53,11 @@ class UploadStatementInteractorTest {
         CSVTransactionDAO dao = new CSVTransactionDAO("src/test/resources/csv/transactions.csv");
         StubPresenter presenter = new StubPresenter();
 
-        UploadStatementInteractor interactor =
-                new UploadStatementInteractor(dao, presenter);
+        UploadStatementInteractor interactor
+                = new UploadStatementInteractor(dao, presenter);
 
-        UploadStatementInputData inputData =
-                new UploadStatementInputData(temp.getAbsolutePath(), "testUser");
+        UploadStatementInputData inputData
+                = new UploadStatementInputData(temp.getAbsolutePath(), "testUser");
 
         interactor.execute(inputData);
 

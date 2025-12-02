@@ -48,7 +48,7 @@ class GenerateReportInteractorTest {
         assertTrue(presenter.presentReportCalled);
         assertTrue(presenter.lastOutput.isSuccess());
         assertNotNull(presenter.lastOutput.getReport());
-        
+
         Map<String, Float> categoryTotals = presenter.lastOutput.getReport().getCategoryBreakdown();
         assertEquals(80.0, categoryTotals.get("Food"), 0.01);
         assertEquals(100.0, categoryTotals.get("Transport"), 0.01);
@@ -102,6 +102,7 @@ class GenerateReportInteractorTest {
     }
 
     static class TestPresenter implements GenerateReportOutputBoundary {
+
         boolean presentReportCalled = false;
         boolean backToCategorizeViewCalled = false;
         GenerateReportOutput lastOutput;
@@ -119,6 +120,7 @@ class GenerateReportInteractorTest {
     }
 
     static class TestTransactionDAO extends CSVTransactionDAO {
+
         List<Transaction> mockTransactions = new ArrayList<>();
 
         public TestTransactionDAO() {
