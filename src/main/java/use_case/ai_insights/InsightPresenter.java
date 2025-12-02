@@ -39,5 +39,3 @@ public class InsightPresenter {
             viewModel.setDate("Generated: " + insight.getGeneratedAt());
         }
     }
-
-
