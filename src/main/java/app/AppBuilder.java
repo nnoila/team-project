@@ -66,6 +66,17 @@ import view.TransactionCategorizerView;
 import view.UploadStatementView;
 import view.ViewManager;
 
+import interface_adapter.filter_search.FilterSearchController;
+import interface_adapter.filter_search.FilterSearchPresenter;
+import interface_adapter.filter_search.FilterSearchViewModel;
+
+import use_case.filter_search.FilterSearchInputBoundary;
+import use_case.filter_search.FilterSearchInteractor;
+import use_case.filter_search.FilterSearchOutputBoundary;
+
+import view.FilterSearchView;
+
+
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -90,6 +101,8 @@ public class AppBuilder {
     private SpendingReportViewModel spendingReportViewModel;
     private CategorizerViewModel categorizerViewModel;
     private TransactionCategorizerView categorizerView;
+    private FilterSearchViewModel filterSearchViewModel;
+    private FilterSearchView filterSearchView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -106,6 +119,13 @@ public class AppBuilder {
         loginViewModel = new LoginViewModel();
         loginView = new LoginView(loginViewModel);
         cardPanel.add(loginView, loginView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addFilterSearchView() {
+        filterSearchViewModel = new FilterSearchViewModel();
+        filterSearchView = new FilterSearchView(filterSearchViewModel);
+        cardPanel.add(filterSearchView, filterSearchView.getViewName());
         return this;
     }
 
@@ -193,6 +213,23 @@ public class AppBuilder {
      * Adds the Logout Use Case to the application.
      * @return this builder
      */
+    public AppBuilder addFilterSearchUseCase() {
+
+        FilterSearchOutputBoundary presenter =
+                new FilterSearchPresenter(filterSearchViewModel, viewManagerModel);
+
+        FilterSearchInputBoundary interactor =
+                new FilterSearchInteractor(transactionDataAccessObject, presenter);
+
+        FilterSearchController controller =
+                new FilterSearchController(interactor);
+
+        filterSearchView.setController(controller);
+        uploadStatementView.setFilterSearchController(controller);
+
+        return this;
+    }
+
     public AppBuilder addLogoutUseCase() {
         final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
                 loggedInViewModel, loginViewModel);

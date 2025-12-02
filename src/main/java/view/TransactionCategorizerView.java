@@ -35,6 +35,8 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
     private final JButton categorizeButton = new JButton("Categorize Transactions");
     private final JButton insightButton = new JButton("Generate Insights");
     private final JButton viewReportButton = new JButton("View Report");
+    private final JButton backButton = new JButton("Back");
+
 
     private final CategorizerViewModel vm;
     private CategorizerController categorizerController;
@@ -50,6 +52,7 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
         topPanel.add(categorizeButton);
         topPanel.add(viewReportButton);
         topPanel.add(insightButton);
+        topPanel.add(backButton);
         add(topPanel, BorderLayout.NORTH);
         add(new JScrollPane(resultsArea), BorderLayout.CENTER);
 
@@ -58,6 +61,11 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
         bottomPanel.add(new JScrollPane(insightArea), BorderLayout.CENTER);
 
         add(bottomPanel, BorderLayout.SOUTH);
+
+        backButton.addActionListener(e -> {
+            // Go back to upload statement screen
+            categorizerController.goBackToUploadStatement();
+        });
 
 
         categorizeButton.addActionListener(e ->

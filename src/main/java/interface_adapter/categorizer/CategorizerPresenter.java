@@ -29,5 +29,10 @@ public class CategorizerPresenter implements CategorizerOutputBoundary {
         this.viewManagerModel.setState("spending report");
         this.viewManagerModel.firePropertyChange();
     }
+    @Override
+    public void goBackToUploadStatement() {
+        viewManagerModel.setState("statement view");
+        viewManagerModel.firePropertyChange();
+    }
 
 }
