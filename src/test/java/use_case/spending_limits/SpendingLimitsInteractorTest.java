@@ -59,6 +59,11 @@ class SpendingLimitsInteractorTest {
         assertTrue(presenter.saveFailureCalled);
         assertEquals("Save failed!", presenter.lastError);
     }
+    @Test
+    void testExecuteDoesNothing() {
+        assertDoesNotThrow(() -> interactor.execute());
+
+    }
 
 
     static class TestPresenter implements SpendingLimitsOutputBoundary {
