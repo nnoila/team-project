@@ -23,7 +23,6 @@ class InsightClientTest {
     }
     @Test
     void generateInsightThrowsWhenKeyMissing() {
-        // ensure environment variable isn't set
         System.clearProperty("GEMINI_API_KEY");
 
         InsightClient client = new InsightClient();
@@ -35,7 +34,15 @@ class InsightClientTest {
     void throwsExceptionWhenApiKeyMissing() {
         InsightClient client = new InsightClient();
 
-        // simulate missing API key
         assertThrows(IllegalStateException.class, () -> client.generateInsight("test"));
     }
+
+    @Test
+    void throwsWhenApiKeyMissing() {
+        InsightClient client = new InsightClient(); // uses real env var → null during test
+
+        assertThrows(IllegalStateException.class,
+                () -> client.generateInsight("test prompt"));
+    }
 }
+
