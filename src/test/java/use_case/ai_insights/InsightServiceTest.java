@@ -49,9 +49,8 @@ class InsightServiceTest {
         );
 
         InsightService service = new InsightService(new StubInsightClient("{}"));
-        Insight insight = service.generateInsights(summary, "user123");
+        Insight insight = service.generateInsights(summary);
 
-        assertEquals("user123", insight.getUserId());
         assertNotNull(insight.getGeneratedAt());
         assertTrue(insight.getSummaryText().contains("food"));
         assertEquals(2, insight.getRecommendations().size());
@@ -66,9 +65,8 @@ class InsightServiceTest {
         );
 
         InsightService service = new InsightService(new StubInsightClient("{}"));
-        Insight insight = service.generateInsights(summary, "user123");
+        Insight insight = service.generateInsights(summary);
 
-        assertEquals("user123", insight.getUserId());
         assertEquals("Not enough transaction data to generate insights.", insight.getSummaryText());
         assertEquals(1, insight.getRecommendations().size());
     }
@@ -90,9 +88,8 @@ class InsightServiceTest {
                 "Food"
         );
 
-        Insight insight = service.generateInsights(summary, "userABC");
+        Insight insight = service.generateInsights(summary);
 
-        assertEquals("userABC", insight.getUserId());
         assertEquals("Insight generation failed.", insight.getSummaryText());
         assertTrue(insight.getRecommendations().isEmpty());
     }
@@ -114,7 +111,7 @@ class InsightServiceTest {
                 "Food"
         );
 
-        Insight insight = service.generateInsights(summary, "user456");
+        Insight insight = service.generateInsights(summary);
 
         assertNotNull(insight.getGeneratedAt());
     }

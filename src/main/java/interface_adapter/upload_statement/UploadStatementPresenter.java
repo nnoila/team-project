@@ -12,6 +12,7 @@ import use_case.upload_statement.UploadStatementOutputBoundary;
 import use_case.upload_statement.UploadStatementOutputData;
 
 public class UploadStatementPresenter implements UploadStatementOutputBoundary {
+
     private final ViewManagerModel viewManagerModel;
     private final UploadStatementViewModel uploadStatementViewModel;
     private final SpendingLimitsViewModel spendingLimitsViewModel;
@@ -19,10 +20,10 @@ public class UploadStatementPresenter implements UploadStatementOutputBoundary {
     private final CategorizerViewModel categorizerViewModel;
 
     public UploadStatementPresenter(ViewManagerModel viewManagerModel,
-                                    UploadStatementViewModel uploadStatementViewModel,
-                                    SpendingLimitsViewModel spendingLimitsViewModel,
-                                    SpendingReportViewModel spendingReportViewModel,
-                                    CategorizerViewModel categorizerViewModel) {
+            UploadStatementViewModel uploadStatementViewModel,
+            SpendingLimitsViewModel spendingLimitsViewModel,
+            SpendingReportViewModel spendingReportViewModel,
+            CategorizerViewModel categorizerViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.uploadStatementViewModel = uploadStatementViewModel;
         this.spendingReportViewModel = spendingReportViewModel;
@@ -36,7 +37,6 @@ public class UploadStatementPresenter implements UploadStatementOutputBoundary {
         state.setTotalSpend(outputData.getTotalSpend());
         state.setUsername(outputData.getUsername());
         this.uploadStatementViewModel.firePropertyChange();
-
 
         // Switch to UploadStatementView
         this.viewManagerModel.setState(uploadStatementViewModel.getViewName());
@@ -69,6 +69,7 @@ public class UploadStatementPresenter implements UploadStatementOutputBoundary {
         this.viewManagerModel.setState("categorizer view");
         this.viewManagerModel.firePropertyChange();
     }
+
     @Override
     public void prepareFilterSearchView() {
         viewManagerModel.setState("filter search");

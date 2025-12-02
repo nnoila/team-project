@@ -1,8 +1,10 @@
 package use_case.spending_report;
+
 import interface_adapter.ViewManagerModel;
 import view.SpendingReportView;
 
 public class GenerateReportPresenter implements GenerateReportOutputBoundary {
+
     private final SpendingReportView view;
     private final ViewManagerModel viewManagerModel;
 

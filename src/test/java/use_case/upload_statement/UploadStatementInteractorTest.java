@@ -1,17 +1,16 @@
 package use_case.upload_statement;
 
-import data_access.CSVTransactionDAO;
-import data_access.InMemoryTransactionDataAccessObject;
-import entity.Transaction;
-import interface_adapter.upload_statement.UploadStatementPresenter;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.FileWriter;
-import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+
+import data_access.CSVTransactionDAO;
+import entity.Transaction;
+import interface_adapter.upload_statement.UploadStatementPresenter;
 
 class UploadStatementInteractorTest {
 

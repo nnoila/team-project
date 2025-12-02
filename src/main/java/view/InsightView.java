@@ -1,10 +1,21 @@
 package view;
 
-import use_case.ai_insights.*;
-import entity.SpendingSummary;
+import java.awt.Dimension;
+import java.awt.Font;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import entity.SpendingSummary;
+import use_case.ai_insights.InsightClient;
+import use_case.ai_insights.InsightPresenter;
+import use_case.ai_insights.InsightService;
+import use_case.ai_insights.InsightViewModel;
+import use_case.ai_insights.InsightsController;
 
 public class InsightView extends JPanel {
 
@@ -34,7 +45,7 @@ public class InsightView extends JPanel {
         spendingSummaryLabel.setText("<html>" + vm.getSpendingBreakdown().replace("\n", "<br>") + "</html>");
 
         generateButton.addActionListener(e -> {
-            controller.generateInsight(summary, "demoUser");
+            controller.generateInsight(summary);
             String formattedOutput = "<html>" +
                     "<b>Insight:</b><br>" + vm.getSummary().replace("\n", "<br>") +
                     "<br><br><b>Tips:</b><br>" + vm.getRecommendations().replace("\n", "<br>") +

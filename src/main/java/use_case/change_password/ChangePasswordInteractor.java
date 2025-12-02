@@ -1,13 +1,15 @@
 package use_case.change_password;
 
+import java.util.regex.Pattern;
+
 import entity.User;
 import entity.UserFactory;
-import java.util.regex.Pattern;
 
 /**
  * The Change Password Interactor.
  */
 public class ChangePasswordInteractor implements ChangePasswordInputBoundary {
+
     private final ChangePasswordUserDataAccessInterface userDataAccessObject;
     private final ChangePasswordOutputBoundary userPresenter;
     private final UserFactory userFactory;
@@ -21,8 +23,8 @@ public class ChangePasswordInteractor implements ChangePasswordInputBoundary {
     private static final int MIN_PASSWORD_LENGTH = 8;
 
     public ChangePasswordInteractor(ChangePasswordUserDataAccessInterface changePasswordDataAccessInterface,
-                                    ChangePasswordOutputBoundary changePasswordOutputBoundary,
-                                    UserFactory userFactory) {
+            ChangePasswordOutputBoundary changePasswordOutputBoundary,
+            UserFactory userFactory) {
         this.userDataAccessObject = changePasswordDataAccessInterface;
         this.userPresenter = changePasswordOutputBoundary;
         this.userFactory = userFactory;
@@ -45,15 +47,12 @@ public class ChangePasswordInteractor implements ChangePasswordInputBoundary {
             return;
         }
 
-        // Retrieve the existing user to get their userId
         final User existingUser = userDataAccessObject.get(username);
 
         // Hash the new password
         final String newPasswordHash = UserFactory.hashPasswordSHA256(newPassword);
 
-        // Create a new User object with the same userId but new password hash
         final User updatedUser = userFactory.loadUser(
-                existingUser.getUserId(),
                 existingUser.getUsername(),
                 newPasswordHash
         );
@@ -67,8 +66,8 @@ public class ChangePasswordInteractor implements ChangePasswordInputBoundary {
     }
 
     /**
-     * Validates password strength and returns a specific error message,
-     * or null if the password is strong enough.
+     * Validates password strength and returns a specific error message, or null
+     * if the password is strong enough.
      */
     private String validatePasswordStrength(String password) {
         StringBuilder errors = new StringBuilder();
