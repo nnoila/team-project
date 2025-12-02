@@ -1,5 +1,4 @@
 package use_case.ai_insights;
-
 import entity.Insight;
 import entity.Transaction;
 import use_case.transaction_categorizer.GeminiClient;
@@ -20,7 +19,7 @@ public class TrendAnalyzer {
 
         double totalSpent = 0;
 
-        for (Transaction t : transactions) {
+        for (Transaction t: transactions) {
             totals.put(t.getCategory(),
                     totals.getOrDefault(t.getCategory(), 0.0) + t.getAmount());
             totalSpent += t.getAmount();
@@ -31,6 +30,7 @@ public class TrendAnalyzer {
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
                 .orElse("Unknown");
+
 
         return new SpendingSummary(totalSpent, totals, highestCategory);
     }

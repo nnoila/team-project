@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class FileSpendingLimitsDAO implements SpendingLimitsDataAccessInterface {
-
     private static final String FILE_PATH = "spending_limits.csv";
     private static final List<String> HEADERS = List.of(
             "username",

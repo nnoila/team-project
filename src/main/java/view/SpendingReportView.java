@@ -15,7 +15,6 @@ import use_case.spending_report.GenerateReportController;
 import use_case.spending_report.SpendingReportViewModel;
 
 public class SpendingReportView extends JPanel {
-
     private final JComboBox<String> chartTypeDropdown;
     private final JPanel chartPanelContainer;
     private final String viewName = "spending report";
@@ -45,7 +44,7 @@ public class SpendingReportView extends JPanel {
 
         chartPanelContainer = new JPanel(new BorderLayout());
         add(chartPanelContainer, BorderLayout.CENTER);
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(e-> {
             controller.backToCategorizeView();
         });
 
@@ -56,17 +55,11 @@ public class SpendingReportView extends JPanel {
         });
     }
 
-    public JComboBox<String> getChartTypeDropdown() {
-        return chartTypeDropdown;
-    }
+    public JComboBox<String> getChartTypeDropdown() { return chartTypeDropdown; }
+    public JPanel getChartPanelContainer() { return chartPanelContainer; }
+    public String getViewName() { return viewName; }
 
-    public JPanel getChartPanelContainer() {
-        return chartPanelContainer;
-    }
 
-    public String getViewName() {
-        return viewName;
-    }
 
     public void addChartTypeDropdownListener(ActionListener listener) {
         chartTypeDropdown.addActionListener(listener);

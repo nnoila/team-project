@@ -1,7 +1,6 @@
 package entity;
 
 public class UserPreferences {
-
     private final String theme;
     private final String notification;
 

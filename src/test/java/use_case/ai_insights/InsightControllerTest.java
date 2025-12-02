@@ -1,27 +1,28 @@
 package use_case.ai_insights;
 
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.Test;
-
 import entity.Insight;
 import entity.SpendingSummary;
+import org.junit.jupiter.api.Test;
+
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class InsightControllerTest {
 
     static class FakeInsightService extends InsightService {
 
         public SpendingSummary receivedSummary;
+        public String receivedUser;
 
         public FakeInsightService() {
             super(null); // bypass real client
         }
 
         @Override
-        public Insight generateInsights(SpendingSummary summary) {
+        public Insight generateInsights(SpendingSummary summary, String userId) {
             this.receivedSummary = summary;
+            this.receivedUser = userId;
 
             Insight insight = new Insight();
             insight.setSummaryText("Test Insight");
@@ -57,10 +58,11 @@ class InsightControllerTest {
         FakePresenter fakePresenter = new FakePresenter(new InsightViewModel());
 
         InsightsController controller = new InsightsController(fakeService, fakePresenter);
-        controller.generateInsight(summary);
+        controller.generateInsight(summary, "user123");
 
         // Assertions
         assertEquals(summary, fakeService.receivedSummary);
+        assertEquals("user123", fakeService.receivedUser);
 
         assertNotNull(fakePresenter.receivedInsight);
         assertEquals(summary, fakePresenter.receivedSummary);

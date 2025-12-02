@@ -14,9 +14,6 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.categorizer.CategorizerController;
 import interface_adapter.categorizer.CategorizerPresenter;
 import interface_adapter.categorizer.CategorizerViewModel;
-import interface_adapter.filter_search.FilterSearchController;
-import interface_adapter.filter_search.FilterSearchPresenter;
-import interface_adapter.filter_search.FilterSearchViewModel;
 import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -37,9 +34,6 @@ import interface_adapter.upload_statement.UploadStatementViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
-import use_case.filter_search.FilterSearchInputBoundary;
-import use_case.filter_search.FilterSearchInteractor;
-import use_case.filter_search.FilterSearchOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -57,13 +51,12 @@ import use_case.spending_report.GenerateReportInteractor;
 import use_case.spending_report.GenerateReportPresenter;
 import use_case.spending_report.SpendingReportViewModel;
 import use_case.transaction_categorizer.CategorizerInputBoundary;
-import use_case.transaction_categorizer.CategorizerInteractor;
+import use_case.transaction_categorizer.CategorizerInteractor; // <-- ADDED
 import use_case.transaction_categorizer.CategorizerOutputBoundary;
 import use_case.transaction_categorizer.GeminiClient;
 import use_case.transaction_categorizer.TransactionCategorizerService;
 import use_case.upload_statement.UploadStatementInputBoundary;
 import use_case.upload_statement.UploadStatementInteractor;
-import view.FilterSearchView;
 import view.LoggedInView;
 import view.LoginView;
 import view.SignupView;
@@ -73,8 +66,18 @@ import view.TransactionCategorizerView;
 import view.UploadStatementView;
 import view.ViewManager;
 
-public class AppBuilder {
+import interface_adapter.filter_search.FilterSearchController;
+import interface_adapter.filter_search.FilterSearchPresenter;
+import interface_adapter.filter_search.FilterSearchViewModel;
 
+import use_case.filter_search.FilterSearchInputBoundary;
+import use_case.filter_search.FilterSearchInteractor;
+import use_case.filter_search.FilterSearchOutputBoundary;
+
+import view.FilterSearchView;
+
+
+public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
     final UserFactory userFactory = new UserFactory();
@@ -151,8 +154,8 @@ public class AppBuilder {
         categorizerViewModel = new CategorizerViewModel();
         final CategorizerOutputBoundary categorizerOutputBoundary = new CategorizerPresenter(categorizerViewModel,
                 viewManagerModel, spendingReportViewModel);
-        CategorizerInputBoundary categorizerInputBoundary
-                = new CategorizerInteractor(new TransactionCategorizerService(new GeminiClient()), categorizerOutputBoundary);
+        CategorizerInputBoundary categorizerInputBoundary =
+                new CategorizerInteractor(new TransactionCategorizerService(new GeminiClient()), categorizerOutputBoundary);
         CategorizerController categorizerController = new CategorizerController(categorizerInputBoundary);
         categorizerView = new TransactionCategorizerView(categorizerViewModel);
         categorizerView.setCategorizerController(categorizerController);
@@ -190,8 +193,8 @@ public class AppBuilder {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(viewManagerModel,
                 loggedInViewModel);
 
-        final ChangePasswordInputBoundary changePasswordInteractor
-                = new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
+        final ChangePasswordInputBoundary changePasswordInteractor =
+                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
 
         ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
 
@@ -208,19 +211,18 @@ public class AppBuilder {
 
     /**
      * Adds the Logout Use Case to the application.
-     *
      * @return this builder
      */
     public AppBuilder addFilterSearchUseCase() {
 
-        FilterSearchOutputBoundary presenter
-                = new FilterSearchPresenter(filterSearchViewModel, viewManagerModel);
+        FilterSearchOutputBoundary presenter =
+                new FilterSearchPresenter(filterSearchViewModel, viewManagerModel);
 
-        FilterSearchInputBoundary interactor
-                = new FilterSearchInteractor(transactionDataAccessObject, presenter);
+        FilterSearchInputBoundary interactor =
+                new FilterSearchInteractor(transactionDataAccessObject, presenter);
 
-        FilterSearchController controller
-                = new FilterSearchController(interactor);
+        FilterSearchController controller =
+                new FilterSearchController(interactor);
 
         filterSearchView.setController(controller);
         uploadStatementView.setFilterSearchController(controller);
@@ -232,8 +234,8 @@ public class AppBuilder {
         final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
                 loggedInViewModel, loginViewModel);
 
-        final LogoutInputBoundary logoutInteractor
-                = new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+        final LogoutInputBoundary logoutInteractor =
+                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
@@ -242,16 +244,16 @@ public class AppBuilder {
 
     public AppBuilder addSpendingLimitsUseCase() {
         final SpendingLimitsOutputBoundary spendingLimitsOutputBoundary = new SpendingLimitsPresenter(viewManagerModel,
-                spendingLimitsViewModel, uploadStatementViewModel);
-        final SpendingLimitsInputBoundary spendingLimitsInteractor
-                = new SpendingLimitsInteractor(spendingLimitsOutputBoundary, new FileSpendingLimitsDAO());
+                        spendingLimitsViewModel, uploadStatementViewModel);
+        final SpendingLimitsInputBoundary spendingLimitsInteractor =
+                new SpendingLimitsInteractor(spendingLimitsOutputBoundary, new FileSpendingLimitsDAO());
         spendingLimitsView.setController(new SpendingLimitsController(spendingLimitsInteractor));
         return this;
     }
 
     public AppBuilder addUploadStatementUseCase() {
-        final UploadStatementPresenter uploadStatementOutputBoundary
-                = new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel,
+        final UploadStatementPresenter uploadStatementOutputBoundary =
+                new UploadStatementPresenter(viewManagerModel, uploadStatementViewModel, spendingLimitsViewModel,
                         spendingReportViewModel, categorizerViewModel);
         final UploadStatementInputBoundary uploadStatementInteractor = new UploadStatementInteractor(transactionDataAccessObject,
                 uploadStatementOutputBoundary);

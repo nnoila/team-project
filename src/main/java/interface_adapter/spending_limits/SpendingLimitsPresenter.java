@@ -7,14 +7,13 @@ import use_case.spending_limits.SpendingLimitsOutputBoundary;
 import java.util.Map;
 
 public class SpendingLimitsPresenter implements SpendingLimitsOutputBoundary {
-
     private final ViewManagerModel viewManagerModel;
     private final SpendingLimitsViewModel spendingLimitsViewModel;
     private final UploadStatementViewModel uploadStatementViewModel;
 
     public SpendingLimitsPresenter(ViewManagerModel viewManagerModel,
-            SpendingLimitsViewModel viewModel,
-            UploadStatementViewModel uploadStatementViewModel) {
+                                   SpendingLimitsViewModel viewModel,
+                                   UploadStatementViewModel uploadStatementViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.spendingLimitsViewModel = viewModel;
         this.uploadStatementViewModel = uploadStatementViewModel;

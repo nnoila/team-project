@@ -6,7 +6,6 @@ import interface_adapter.ViewModel;
 import java.util.List;
 
 public class CategorizerViewModel extends ViewModel<CategorizerState> {
-
     private CategorizerState state;
 
     public CategorizerViewModel() {
@@ -14,11 +13,6 @@ public class CategorizerViewModel extends ViewModel<CategorizerState> {
         this.state = new CategorizerState();
     }
 
-    public void setTransactions(List<Transaction> t) {
-        state.setTransactions(t);
-    }
-
-    public List<Transaction> getTransactions() {
-        return state.getTransactions();
-    }
+    public void setTransactions(List<Transaction> t) { state.setTransactions(t); }
+    public List<Transaction> getTransactions() { return state.getTransactions(); }
 }

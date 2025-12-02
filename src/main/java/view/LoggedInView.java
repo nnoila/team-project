@@ -80,7 +80,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
      * React to a button click that results in evt.
      * @param evt the ActionEvent to react to
      */
-    @Override
     public void actionPerformed(ActionEvent evt) {
         Object source = evt.getSource();
         if (source.equals(logOut)) {

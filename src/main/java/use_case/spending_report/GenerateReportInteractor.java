@@ -9,12 +9,11 @@ import entity.SpendingReport;
 import entity.Transaction;
 
 public class GenerateReportInteractor implements GenerateReportInputBoundary {
-
     private final CSVTransactionDAO transactionDAO;
     private final GenerateReportOutputBoundary presenter;
 
     public GenerateReportInteractor(CSVTransactionDAO transactionDAO,
-            GenerateReportOutputBoundary presenter) {
+                                    GenerateReportOutputBoundary presenter) {
         this.transactionDAO = transactionDAO;
         this.presenter = presenter;
     }
@@ -31,7 +30,7 @@ public class GenerateReportInteractor implements GenerateReportInputBoundary {
         for (Transaction t : transactions) {
             String category = t.getCategory();
             Float amount = (float) t.getAmount();
-
+            
             if (categoryTotals.containsKey(category)) {
                 categoryTotals.put(category, categoryTotals.get(category) + amount);
             } else {

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SpendingLimitsState {
-
     private Map<String, Double> limits;
     private String username;
 
@@ -24,7 +23,5 @@ public class SpendingLimitsState {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void setUsername(String username) { this.username = username; }
 }

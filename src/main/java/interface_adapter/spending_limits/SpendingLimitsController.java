@@ -5,7 +5,6 @@ import use_case.spending_limits.SpendingLimitsInputBoundary;
 import java.util.Map;
 
 public class SpendingLimitsController {
-
     private final SpendingLimitsInputBoundary interactor;
 
     public SpendingLimitsController(SpendingLimitsInputBoundary interactor) {

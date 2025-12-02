@@ -1,11 +1,9 @@
 package interface_adapter.filter_search;
 
+import entity.Transaction;
 import java.util.List;
 
-import entity.Transaction;
-
 public class FilterSearchState {
-
     private List<Transaction> filtered;
     private String error;
 
@@ -17,9 +15,7 @@ public class FilterSearchState {
         this.filtered = filtered;
     }
 
-    public String getError() {
-        return error;
-    }
+    public String getError() { return error; }
 
     public void setError(String error) {
         this.error = error;

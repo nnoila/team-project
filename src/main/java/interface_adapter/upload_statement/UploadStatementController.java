@@ -4,7 +4,6 @@ import use_case.upload_statement.UploadStatementInputBoundary;
 import use_case.upload_statement.UploadStatementInputData;
 
 public class UploadStatementController {
-
     private final UploadStatementInputBoundary interactor;
 
     public UploadStatementController(UploadStatementInputBoundary interactor) {
@@ -19,7 +18,6 @@ public class UploadStatementController {
     public void goToSpendingReport() {
         interactor.goToSpendingReport();
     }
-
     public void goToSpendingLimits() {
         interactor.goToSpendingLimits();
     }

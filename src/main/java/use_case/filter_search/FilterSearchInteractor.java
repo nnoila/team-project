@@ -12,7 +12,7 @@ public class FilterSearchInteractor implements FilterSearchInputBoundary {
     private final FilterSearchOutputBoundary presenter;
 
     public FilterSearchInteractor(CSVTransactionDAO transactionDAO,
-            FilterSearchOutputBoundary presenter) {
+                                  FilterSearchOutputBoundary presenter) {
         this.transactionDAO = transactionDAO;
         this.presenter = presenter;
     }
@@ -21,9 +21,9 @@ public class FilterSearchInteractor implements FilterSearchInputBoundary {
     public void execute(FilterSearchInputData inputData) {
 
         // Validation: invalid date range
-        if (inputData.getStartDate() != null
-                && inputData.getEndDate() != null
-                && inputData.getStartDate().isAfter(inputData.getEndDate())) {
+        if (inputData.getStartDate() != null &&
+                inputData.getEndDate() != null &&
+                inputData.getStartDate().isAfter(inputData.getEndDate())) {
 
             presenter.prepareFailView("Start date cannot be after end date.");
             return;
@@ -55,8 +55,8 @@ public class FilterSearchInteractor implements FilterSearchInputBoundary {
         }
 
         // Merchant keyword
-        if (inputData.getMerchant() != null
-                && !inputData.getMerchant().trim().isEmpty()) {
+        if (inputData.getMerchant() != null &&
+                !inputData.getMerchant().trim().isEmpty()) {
 
             String keyword = inputData.getMerchant().toLowerCase();
 

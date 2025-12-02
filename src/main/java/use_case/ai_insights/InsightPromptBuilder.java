@@ -1,8 +1,14 @@
 package use_case.ai_insights;
-
-import java.util.Map;
-
+import entity.Insight;
+import use_case.transaction_categorizer.GeminiClient;
 import entity.SpendingSummary;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 public class InsightPromptBuilder {
 
@@ -40,8 +46,8 @@ public class InsightPromptBuilder {
 
             User's spending data:
             """ + spendingLines + """
-            Total spent: $""" + summary.totalSpent() + "\n"
-                + "Highest spending category: " + highest;
+            Total spent: $""" + summary.totalSpent() + "\n" +
+            "Highest spending category: " + highest;
     }
 
 }

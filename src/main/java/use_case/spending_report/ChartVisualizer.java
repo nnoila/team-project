@@ -12,7 +12,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 public class ChartVisualizer {
-
+    
     public static JPanel createChart(Map<String, Float> categoryData, String chartType) {
         if ("Pie Chart".equals(chartType)) {
             return new SimplePieChartPanel(categoryData);
@@ -20,9 +20,8 @@ public class ChartVisualizer {
             return new SimpleBarChartPanel(categoryData);
         }
     }
-
+    
     public static class SimpleBarChartPanel extends JPanel {
-
         private final java.util.List<Map.Entry<String, Float>> entries;
 
         public SimpleBarChartPanel(Map<String, Float> data) {
@@ -52,8 +51,8 @@ public class ChartVisualizer {
             }
             int padding = 40;
             int labelHeight = 20;
-            int availableHeight = height - padding * 2 - labelHeight;
-            int availableWidth = width - padding * 2;
+            int availableHeight = height - padding*2 - labelHeight;
+            int availableWidth = width - padding*2;
             int barWidth = Math.max(10, availableWidth / Math.max(1, entries.size()) - 10);
             int x = padding;
             int yBase = height - padding - labelHeight;
@@ -84,7 +83,6 @@ public class ChartVisualizer {
     }
 
     public static class SimplePieChartPanel extends JPanel {
-
         private final java.util.List<Map.Entry<String, Float>> entries;
 
         public SimplePieChartPanel(Map<String, Float> data) {
@@ -119,9 +117,7 @@ public class ChartVisualizer {
             int y = (height - diameter) / 2;
 
             float total = 0;
-            for (Map.Entry<String, Float> e : entries) {
-                total += e.getValue();
-            }
+            for (Map.Entry<String, Float> e : entries) total += e.getValue();
 
             float startAngle = 0;
 
@@ -129,7 +125,7 @@ public class ChartVisualizer {
                 float value = e.getValue();
                 float angle = (value / total) * 360f;
 
-                g2.setColor(Color.getHSBColor((float) Math.random(), 0.5f, 0.9f));
+                g2.setColor(Color.getHSBColor((float)Math.random(), 0.5f, 0.9f));
                 g2.fillArc(x, y, diameter, diameter, Math.round(startAngle), Math.round(angle));
 
                 startAngle += angle;

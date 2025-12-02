@@ -4,7 +4,6 @@ import entity.Insight;
 import entity.SpendingSummary;
 
 public class InsightsController {
-
     private final InsightService interactor;
     private final InsightPresenter presenter;
 
@@ -13,8 +12,8 @@ public class InsightsController {
         this.presenter = presenter;
     }
 
-    public void generateInsight(SpendingSummary summary) {
-        Insight insight = interactor.generateInsights(summary);
+    public void generateInsight(SpendingSummary summary, String userId) {
+        Insight insight = interactor.generateInsights(summary, userId);
 
         presenter.present(insight, summary);
     }

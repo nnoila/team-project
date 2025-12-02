@@ -18,9 +18,9 @@ public class LoginPresenter implements LoginOutputBoundary {
     private final SignupViewModel signupViewModel;
 
     public LoginPresenter(ViewManagerModel viewManagerModel,
-            LoggedInViewModel loggedInViewModel,
-            LoginViewModel loginViewModel,
-            SignupViewModel signupViewModel) {
+                          LoggedInViewModel loggedInViewModel,
+                          LoginViewModel loginViewModel,
+                          SignupViewModel signupViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;

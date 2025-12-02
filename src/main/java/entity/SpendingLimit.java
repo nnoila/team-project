@@ -1,7 +1,6 @@
 package entity;
 
 public class SpendingLimit {
-
     private final String category;
     private final double limit;
 
@@ -9,12 +8,6 @@ public class SpendingLimit {
         this.category = category;
         this.limit = limit;
     }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public double getLimit() {
-        return limit;
-    }
+    public String getCategory() {return category;}
+    public double getLimit() {return limit;}
 }

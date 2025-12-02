@@ -4,23 +4,26 @@ import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingWorker;
 
 import entity.SpendingSummary;
 import entity.Transaction;
 import interface_adapter.categorizer.CategorizerController;
 import interface_adapter.categorizer.CategorizerViewModel;
-import use_case.ai_insights.InsightClient;
-import use_case.ai_insights.InsightPresenter;
-import use_case.ai_insights.InsightService;
-import use_case.ai_insights.InsightViewModel;
-import use_case.ai_insights.InsightsController;
+import interface_adapter.logged_in.LoggedInState;
+import use_case.ai_insights.*;
+import use_case.transaction_categorizer.TransactionCategorizerService;
+import use_case.transaction_categorizer.GeminiClient;
+
+import javax.swing.*;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
 import use_case.ai_insights.TrendAnalyzer;
 
 public class TransactionCategorizerView extends JPanel implements PropertyChangeListener {
@@ -93,7 +96,7 @@ public class TransactionCategorizerView extends JPanel implements PropertyChange
                 InsightService interactor = new InsightService(new InsightClient());
                 InsightsController controller = new InsightsController(interactor, presenter);
 
-                controller.generateInsight(summary);
+                controller.generateInsight(summary, "demoUser");
 
                 String formatted = """
                     Insight:
