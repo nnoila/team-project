@@ -1,12 +1,13 @@
 package use_case.categorization;
 
-import entity.Transaction;
-import org.junit.jupiter.api.Test;
-import use_case.transaction_categorizer.TransactionPromptBuilder;
-
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import entity.Transaction;
+import use_case.transaction_categorizer.TransactionPromptBuilder;
 
 class TransactionPromptBuilderTest {
 
@@ -43,5 +44,3 @@ class TransactionPromptBuilderTest {
         assertFalse(TransactionPromptBuilder.isValid("")); // empty
     }
 }
-
-
