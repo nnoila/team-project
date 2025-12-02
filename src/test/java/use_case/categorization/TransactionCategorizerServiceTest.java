@@ -1,22 +1,21 @@
 package use_case.categorization;
 
+import entity.Transaction;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.jupiter.api.Test;
+import use_case.transaction_categorizer.GeminiClient;
+import use_case.transaction_categorizer.TransactionCategorizerService;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
-
-import entity.Transaction;
-import use_case.transaction_categorizer.GeminiClient;
-import use_case.transaction_categorizer.TransactionCategorizerService;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionCategorizerServiceTest {
 
     static class StubGeminiClient extends GeminiClient {
-
         private final String response;
 
         StubGeminiClient(String response) {
@@ -45,8 +44,8 @@ class TransactionCategorizerServiceTest {
 
         String stubResponse = arr.toString();
 
-        TransactionCategorizerService service
-                = new TransactionCategorizerService(new StubGeminiClient(stubResponse));
+        TransactionCategorizerService service =
+                new TransactionCategorizerService(new StubGeminiClient(stubResponse));
 
         service.categorize(txs);
 
@@ -66,8 +65,8 @@ class TransactionCategorizerServiceTest {
 
         String stubResponse = arr.toString();
 
-        TransactionCategorizerService service
-                = new TransactionCategorizerService(new StubGeminiClient(stubResponse));
+        TransactionCategorizerService service =
+                new TransactionCategorizerService(new StubGeminiClient(stubResponse));
 
         service.categorize(txs);
 
@@ -89,8 +88,8 @@ class TransactionCategorizerServiceTest {
                 }
                 """;
 
-        TransactionCategorizerService service
-                = new TransactionCategorizerService(new StubGeminiClient(errorJson));
+        TransactionCategorizerService service =
+                new TransactionCategorizerService(new StubGeminiClient(errorJson));
 
         service.categorize(txs);
 
@@ -102,11 +101,12 @@ class TransactionCategorizerServiceTest {
         List<Transaction> txs = new ArrayList<>();
         txs.add(new Transaction(LocalDate.of(2025, 11, 1), "Uncategorized", 10.00, "Test"));
 
-        TransactionCategorizerService service
-                = new TransactionCategorizerService(new StubGeminiClient("MISCELLANEOUS"));
+        TransactionCategorizerService service =
+                new TransactionCategorizerService(new StubGeminiClient("MISCELLANEOUS"));
 
         service.categorize(txs);
 
         assertEquals("MISCELLANEOUS", txs.get(0).getCategory());
     }
 }
+
