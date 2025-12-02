@@ -29,7 +29,7 @@ public class InsightPresenter {
 
         viewModel.setSummary(insight.getSummaryText());
             if (insight.getRecommendations() == null) {
-                 viewModel.setRecommendations("No recommendations available.");
+                viewModel.setRecommendations("No recommendations available.");
             } else {
                 String formatted = "• " + String.join("\n• ", insight.getRecommendations());
                 viewModel.setRecommendations(formatted);
